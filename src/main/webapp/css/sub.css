@@ -1406,14 +1406,20 @@
   padding: 30px;
 }
 
+.profile_contents_wrap>.profile_contents .edit_account {
+  padding: 10px;
+}
+
 .profile_contents_wrap .profile_title {
   font-size: 20pt;
+  padding-bottom: 20px;
 }
 
 .profile_contents .my_profile,
 .profile_contents .my_history,
 .profile_contents .my_account,
-.profile_contents .delete_account {
+.profile_contents .delete_account,
+.profile_contents .edit_account {
   display: flex;
   align-items: center;
   position: relative;
@@ -1428,13 +1434,24 @@
   margin-right: 10px;
 } */
 
+.my_profile {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile_left {
+  display: flex;
+  align-items: center;
+}
+
 .profile_image_container {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   overflow: hidden;
-  margin-right: 10px;
+  margin-right: 20px;
   border: 2px solid #fff;
+  display: flex;
 }
 
 .profile_image_container img {
@@ -1444,8 +1461,9 @@
 }
 
 .my_profile span {
-  display: inline-block;
-  vertical-align: middle;
+  display: flex;
+  font-size: 25px;
+  margin: 6px;
 }
 
 .my_account button,
@@ -1460,12 +1478,13 @@
 }
 
 .my_history ul li {
-  font-size: 14pt;
+  font-size: 18px;
   font-weight: 500;
-  padding: 12pt;
+  padding: 12px;
 }
 
-.delete_account button {
+.delete_account button,
+.edit_account button {
   padding: 10px 20px;
   background-color: var(--color-space);
   border-radius: 5px;
@@ -1489,6 +1508,7 @@
   width: 100%;
   /* 요소 간 간격 추가 */
   margin-bottom: 10px;
+  margin-left: 14px;
 }
 
 
@@ -1497,7 +1517,7 @@
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #444;
+
   border-radius: 4px;
   /* 배경색 투명으로 변경 */
   background-color: transparent;
@@ -1515,6 +1535,38 @@
 }
 
 
+.edit_account {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#edit_actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+
+/* delete_account안의 ul li안의 label 왼쪽 정렬 */
+.delete_account ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete_account ul li label {
+  flex: 1;
+  text-align: left;
+}
+
+/* 회원탈퇴 버튼 오른쪽 정렬 */
+.delete_account ul li button {
+  margin-left: auto;
+}
+
+
 
 
 /* 마이페이지 게임 기록 확인  */
@@ -1522,6 +1574,7 @@
 .my_score select {
   position: relative;
   z-index: 1;
+  width: 200px;
 }
 
 .my_score .table_col:nth-child(1) {
@@ -1541,22 +1594,37 @@
   width: 20%;
 }
 
-.my_post .table_col:nth-child(2) {
+.my_comment .table_col:nth-child(2) span,
+.my_question .table_col:nth-child(2) span,
+.my_bookmark .table_col:nth-child(2) span,
+.my_post .table_col:nth-child(2) span {
   text-align: center;
 }
 
+.my_post .table_col:nth-child(2),
 .my_comment .table_col:nth-child(2),
 .my_question .table_col:nth-child(2),
 .my_bookmark .table_col:nth-child(2) {
   text-align: center;
 }
 
+.my_post .table_col:nth-child(3),
+.my_comment .table_col:nth-child(3),
+.my_question .table_col:nth-child(3),
+.my_bookmark .table_col:nth-child(3) {
+  width: 20%;
+}
+
+
 /* 드롭다운 기본 스타일 */
 .dropdown-container {
-  width: 200px;
+  /* width: 100%; */
   /* 필요에 따라 조정 */
   margin: 20px 0;
   text-align: left;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
 }
 
 .profile_contents label {
@@ -1671,6 +1739,18 @@
   .tab-dropdown {
     display: block;
   }
+
+  /* 모바일에선 padding 없앰 */
+  .profile_contents_wrap>.profile_contents {
+    padding: unset;
+    position: relative;
+  }
+
+  /* padding이 없어짐으로써, 곡선 정리 */
+  .profile_contents::after {
+    border-radius: unset;
+  }
+
 }
 
 @media all and (max-width: 650px) {
@@ -2120,12 +2200,25 @@
   .profile_contents .my_account,
   .profile_contents .delete_account {
     flex-direction: column;
+    padding: 10px;
   }
 
   .my_account button,
   .my_profile button {
     margin: unset;
   }
+
+  .profile_left {
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .delete_account button {
+    margin-left: 0;
+  }
+
+
 }
 
 @media (min-width: 650px) and (max-width: 1000px) {
@@ -2233,6 +2326,19 @@
   .cont_box .cont_body .comm_box .comm .btn_box .likes_option span {
     font-size: 14px;
   }
+
+
+  /* 마이페이지 반응형 */
+
+  /* 버튼 토글 컨테이너 */
+  .button_container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+
 }
 
 @media (min-width: 1000px) and (max-width: 1400px) {
