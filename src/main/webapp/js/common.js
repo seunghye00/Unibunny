@@ -44,6 +44,7 @@ function initializeMainSwiper() {
   mainSwiper = new Swiper('.mainSwiper', {
     spaceBetween: 30,
     centeredSlides: true,
+    loop: true, // loop를 true로 설정
     autoplay: {
       delay: 2500,
       disableOnInteraction: false,
@@ -58,15 +59,6 @@ function initializeMainSwiper() {
     },
   });
 }
-
-// 초기화 및 리사이즈 이벤트 핸들러 등록
-$(document).ready(function () {
-  initializeMainSwiper(); // 초기 Swiper 설정
-
-  $(window).resize(function () {
-    initializeMainSwiper(); // 창 크기 변경 시 Swiper 재설정
-  });
-});
 // Game 콘텐츠 스와이퍼
 // Swiper를 초기화하는 함수
 function initializeGameSwiper() {
@@ -102,6 +94,7 @@ $(document).ready(function () {
 
 // ourpage 스와이퍼
 // Swiper를 초기화하는 함수
+// ourpage 스와이퍼 초기화
 function initializeOurSwiper() {
   if (ourpage_swiper) {
     ourpage_swiper.destroy(true, true); // 기존 Swiper 인스턴스를 파괴
@@ -133,10 +126,12 @@ function initializeOurSwiper() {
 
 // 초기화 및 리사이즈 이벤트 핸들러 등록
 $(document).ready(function () {
-  initializeOurSwiper(); // 초기 Swiper 설정
+  initializeOurSwiper(); // ourpage 스와이퍼 초기화
+  initializeMainSwiper(); // main 스와이퍼 초기화
 
   $(window).resize(function () {
-    initializeOurSwiper(); // 창 크기 변경 시 Swiper 재설정
+    initializeOurSwiper(); // ourpage 스와이퍼 재설정
+    initializeMainSwiper(); // main 스와이퍼 재설정
   });
 });
 
