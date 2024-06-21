@@ -24,13 +24,13 @@
         </a>
       </div>
       <div class="img_box">
-        <a href="javascript:;">
+         <a href="#" onclick="location.href='/login/login.jsp';">
           <img src="../image/index/index_login.png" alt="">
         </a>
       </div>
       <div class="img_box">
-        <a href="javascript:;">
-          <img src="../image/index/index_ourpage.png" alt="">
+        <a href="javascript:;" >
+          <img src="../image/index/index_ourpage.png" alt="">s
         </a>
       </div>
     </div>
