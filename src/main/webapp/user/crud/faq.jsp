@@ -209,5 +209,15 @@
       </div>
     </div>
   </div>
+  
+      <script>
+    $(document).ready(function() {
+        $('.faq-toggle').on('click', function() {
+            var $faq = $(this).closest('.faq');
+            $faq.toggleClass('active');
+        });
+    });
+    </script>
+    
 </body>
 </html>
