@@ -1081,6 +1081,9 @@
 
 
 /* 단상 */
+.dropdown-btn {
+    opacity: 0;
+}
 .podium {
   display: flex;
   justify-content: center;
@@ -1182,6 +1185,7 @@
 
 
 /* 랭킹 리스트 */
+
 .rank .table_col:nth-child(1) {
   width: 25%;
 }
@@ -1215,6 +1219,9 @@
   z-index: 3;
   border-top: 1px solid var(--color-line);
   align-items: center;
+}
+.rank .table_row span{
+	text-align:center;
 }
 
 
@@ -2229,7 +2236,7 @@
   .podium .first img {
     position: absolute;
     /* 이미지의 위치를 조정하는 값 */
-    top: -270px;
+    top: -275px;
     left: 55%;
     transform: translateX(-50%);
     width: 120px;
