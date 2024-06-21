@@ -540,6 +540,7 @@
   margin-top: 15px;
 }
 
+
 /* qa_detail 간격 */
 .body .wrap .con_wrap .qa_title_box {
   color: var(--color-text);
@@ -1088,7 +1089,7 @@
   margin: 10px;
   position: relative;
   color: white;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .podium div {
@@ -1179,6 +1180,44 @@
   height: 150px;
 }
 
+
+/* 랭킹 리스트 */
+.rank .table_col:nth-child(1) {
+  width: 25%;
+}
+
+.rank .table_col:nth-child(2) {
+  width: 25%;
+  text-align: center;
+}
+
+.rank .table_header .table_col:nth-child(2) {
+  width: 25%;
+  text-align: center;
+}
+
+.rank .table_col:nth-child(3) {
+  width: 25%;
+}
+
+.rank .table_col:nth-child(4) {
+  width: 25%;
+}
+
+.rank .list_table .table_col .img {
+  max-width: 14%;
+  min-width: 50px;
+}
+
+.rank .table_row {
+  display: flex;
+  position: relative;
+  z-index: 3;
+  border-top: 1px solid var(--color-line);
+  align-items: center;
+}
+
+
 /*  */
 /* qa_list 스타일 */
 .agent_list {
@@ -1209,6 +1248,56 @@
   z-index: 1;
 }
 
+/* qa 리스트*/
+.qa .table_col:nth-child(1) {
+  width: 25%;
+}
+
+.qa .table_col:nth-child(2) {
+  width: 25%;
+  text-align: center;
+}
+
+.qa .table_header .table_col:nth-child(2) {
+  width: 25%;
+  text-align: center;
+}
+
+.qa .table_col:nth-child(3) {
+  width: 25%;
+}
+
+.qa .table_col:nth-child(4) {
+  width: 25%;
+}
+
+/* qa 버튼 */
+.qa_btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.qa_write_btn {
+  right: 0px;
+  padding: 10px 20px;
+  background-color: var(--color-space);
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.qa_write_btn:hover {
+  background-color: var(--color-space-click);
+}
+
+/* qa_detail 간격 */
+.body .wrap .con_wrap .qa_title_box {
+  color: var(--color-text);
+  padding-bottom: 20px;
+}
 /* faq리스트 */
 /* 토글 버튼 스타일 */
 .faq-title {
@@ -2101,20 +2190,41 @@
   }
 
   /* 게임 랭킹 반응형 */
+  .dropdown-btn {
+    opacity: 1;
+    display: block;
+    background-color: var(--color-space-click);
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .game_list {
+    display: none;
+    flex-direction: column;
+    gap: 10px 0;
+  }
+
+  .game_list.show {
+    display: flex;
+  }
+
   .podium img {
     position: absolute;
     width: 450px;
     height: 150px;
   }
 
-  .game_list a {
+  /* .game_list a {
     margin: 0;
     text-decoration: none;
     color: var(--color-text);
     font-size: 20px;
     position: relative;
     z-index: 1;
-  }
+  } */
 
   .podium .first img {
     position: absolute;
@@ -2503,27 +2613,6 @@
     font-size: 13px;
   }
 
-
-  .game_list {
-    display: none;
-    flex-direction: column;
-    gap: 10px 0;
-  }
-
-  .dropdown-btn {
-    display: block;
-    background-color: var(--color-space-click);
-    color: white;
-    padding: 10px;
-    margin-top: 10px;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .game_list.show {
-    display: flex;
-  }
-
   /* qa디테일 NO 숨김 */
   .qa_con .table_col:nth-child(1),
   .qa_detail_con .table_col:nth-child(1) {
@@ -2552,32 +2641,6 @@
     width: 20%;
   }
 
-  /* 랭킹 리스트 */
-  .rank .table_col:nth-child(1) {
-    width: 20%;
-  }
-
-  .rank .table_col:nth-child(2) {
-    width: 20%;
-    text-align: center;
-  }
-
-  .rank .table_header .table_col:nth-child(2) {
-    width: 20%;
-    text-align: center;
-  }
-
-  .rank .table_col:nth-child(3) {
-    width: 20%;
-  }
-
-  .rank .table_col:nth-child(4) {
-    width: 20%;
-  }
-
-  .rank .table_col:nth-child(5) {
-    width: 20%;
-  }
 
   /* qa 리스트*/
   .qa .table_col:nth-child(1) {

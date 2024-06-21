@@ -4,16 +4,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="../../../css/common.css">
-<link rel="stylesheet" href="../../../css/sub.css">
-<link rel="stylesheet" href="../../../css/layout.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>랭크</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="../../css/common.css">
+  <link rel="stylesheet" href="../../css/sub.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script defer src="../../js/common.js"></script>
 </head>
+
 <body>
-<div class="wrapper">
+  <div class="wrapper">
     <div class="header_area">
       <div class="header">
         <div class="wrap mob_hidden">
@@ -89,7 +93,7 @@
               <div class="title_box">
                 <p class="title">랭킹</p>
               </div>
-              <div class="dropdown-btn">게임</div>
+              <div class="dropdown-btn">Game</div>
               <div class="game_list">
                 <a href="" title="게임1로 이동">호두러너</a>
                 <a href="" title="게임2로 이동">게임2</a>
@@ -102,23 +106,22 @@
                 <div class="podium">
                   <div class="second">
                     <div class="second-2">
-                      <span>손민서<br>
-                        500점
-                      </span>
+                      <p>500점</p>
+                      <P>손민서</P>
                     </div>
                     <img src="../../image/rank/silver.png" alt="로고">
                   </div>
                   <div class="first">
                     <div class="first-2">
-                      <span>손민서<br>
-                        1000점</span>
+                      <p>1000점</p>
+                      <P>손민서</P>
                     </div>
                     <img src="../../image/rank/gold.png" alt="로고">
                   </div>
                   <div class="third">
                     <div class="third-2">
-                      <span>손민서<br>
-                        500점</span>
+                      <p>500점</p>
+                      <P>손민서</P>
                     </div>
                     <img src="../../image/rank/bronze.png" alt="로고">
                   </div>
@@ -139,62 +142,51 @@
                   <div class="table_col">
                     <span>점수</span>
                   </div>
-                  <div class="table_col">
-                    <span>날짜</span>
-                  </div>
                 </div>
                 <div class="table_row">
                   <div class="table_col"><span>4</span></div>
-                  <div class="table_col"><span>프로필</span></div>
+                  <div class="table_col"><img src="../../image/rank/gold.png" class="img"></div>
                   <div class="table_col"><span>데이터</span></div>
                   <div class="table_col"><span>70점</span></div>
-                  <div class="table_col"><span>24.06.13</span></div>
                 </div>
                 <div class="table_row">
                   <div class="table_col"><span>5</span></div>
-                  <div class="table_col"><span>프로필</span></div>
+                  <div class="table_col"><img src="../../image/rank/gold.png" class="img"></div>
                   <div class="table_col"><span>데이터</span></div>
                   <div class="table_col"><span>60점</span></div>
-                  <div class="table_col"><span>24.06.13</span></div>
                 </div>
                 <div class="table_row">
                   <div class="table_col"><span>6</span></div>
-                  <div class="table_col"><span>프로필</span></div>
+                  <div class="table_col"><img src="../../image/rank/gold.png" class="img"></div>
                   <div class="table_col"><span>데이터</span></div>
                   <div class="table_col"><span>50점</span></div>
-                  <div class="table_col"><span>24.06.13</span></div>
                 </div>
                 <div class="table_row">
                   <div class="table_col"><span>7</span></div>
-                  <div class="table_col"><span>프로필</span></div>
+                  <div class="table_col"><img src="../../image/rank/gold.png" class="img"></div>
                   <div class="table_col"><span>데이터</span></div>
                   <div class="table_col"><span>40점</span></div>
-                  <div class="table_col"><span>24.06.13</span></div>
                 </div>
                 <div class="table_row">
                   <div class="table_col"><span>8</span></div>
-                  <div class="table_col"><span>프로필</span></div>
+                  <div class="table_col"><img src="../../image/rank/gold.png" class="img"></div>
                   <div class="table_col"><span>데이터</span></div>
                   <div class="table_col"><span>30점</span></div>
-                  <div class="table_col"><span>24.06.13</span></div>
                 </div>
                 <div class="table_row">
                   <div class="table_col"><span>9</span></div>
-                  <div class="table_col"><span>프로필</span></div>
+                  <div class="table_col"><img src="../../image/rank/gold.png" class="img"></div>
                   <div class="table_col"><span>데이터</span></div>
                   <div class="table_col"><span>20점</span></div>
-                  <div class="table_col"><span>24.06.13</span></div>
                 </div>
                 <div class="table_row">
                   <div class="table_col"><span>10</span></div>
-                  <div class="table_col"><span>프로필</span></div>
+                  <div class="table_col"><img src="../../image/rank/gold.png" class="img"></div>
                   <div class="table_col"><span>데이터</span></div>
                   <div class="table_col"><span>10점</span></div>
-                  <div class="table_col"><span>24.06.13</span></div>
                 </div>
               </div>
               <div>
-                <ul>
               </div>
             </div>
           </div>
@@ -236,4 +228,5 @@
 
   </script>
 </body>
+
 </html>
