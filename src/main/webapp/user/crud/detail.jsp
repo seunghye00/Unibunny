@@ -145,6 +145,9 @@
                           <button class="write_btn">작성</button>
                         </div>
                       </div>
+                     </div>
+                   </form>
+                   <form action="/update.reply">
                       <div style="padding: 10px;"></div>
                       <div class="choi_box">
                         <div class="btn_box">
@@ -222,8 +225,8 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </form>
+                     </form>
+                   </div>
                 </div>
               </div>
             </div>
