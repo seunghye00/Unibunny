@@ -1,18 +1,18 @@
 package dto;
 
-public class FAQDAO {
+public class FAQDTO {
 	private int faq_seq;
 	private String title;
 	private String content;
 	
-	public FAQDAO(int faq_seq, String title, String content) {
+	public FAQDTO(int faq_seq, String title, String content) {
 		super();
 		this.faq_seq = faq_seq;
 		this.title = title;
 		this.content = content;
 	}
 	
-	public FAQDAO() {
+	public FAQDTO() {
 		super();
 	}
 	
