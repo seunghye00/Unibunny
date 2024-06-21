@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.BoardDAO;
+import dto.BoardDTO;
+import commons.Pagination;
+
+import java.util.List;
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -19,6 +23,7 @@ public class BoardController extends HttpServlet {
 		String cmd = request.getRequestURI();
 		System.out.println(cmd);
 		BoardDAO dao = BoardDAO.getInstance();
+		Pagination BoardConfig = new Pagination();
 		try {
 			if(cmd.equals("/list.board")) {
 				String pcpage = request.getParameter("cpage");
@@ -27,7 +32,7 @@ public class BoardController extends HttpServlet {
 				}
 				int cpage = Integer.parseInt(pcpage);
 				
-				LIst<boardDTO> list = dao.selectBoardList(cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage -1),
+				List<BoardDTO> list = dao.selectBoardList(cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage -1),
 						cpage * BoardConfig.recordCountPerPage);
 				request.setAttribute("boardlist", list);
 			} else if (cmd.equals("/list.board")){
