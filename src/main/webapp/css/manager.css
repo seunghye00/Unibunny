@@ -1014,7 +1014,8 @@
 }
 
 .faq .faq_btn,
-.faq .save_btn {
+.faq .save_btn,
+.faq .cancel_btn {
   padding: 10px 20px;
   background-color: var(--color-space);
   border-radius: 10px;
@@ -1025,6 +1026,7 @@
 }
 
 .faq .faq_btn:hover,
-.faq .save_btn:hover {
+.faq .save_btn:hover,
+.faq .cancel_btn:hover {
   background-color: var(--color-space-click);
 }
