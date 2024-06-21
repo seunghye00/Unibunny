@@ -42,7 +42,7 @@
               </li>
             </ul>
             <ul class="header_my">
-              <li class="my_01 "><a href="javascript:;" class="btn_mypage"><img src="../image/icon/mypageW.png"
+              <li class="my_01 "><a href="#" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="../image/icon/mypageW.png"
                     alt="마이페이지 로고"></a></li>
               <li class="my_02"><a href="javascript:;" class="btn_login"><img src="../image/icon/login.png"
                     alt="로그인 로고"></a></li>

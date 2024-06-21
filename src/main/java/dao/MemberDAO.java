@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import dto.BoardDTO;
 import dto.MemberDTO;
 
 public class MemberDAO {
@@ -54,7 +58,7 @@ public class MemberDAO {
 
 
 	public boolean login(String userid, String pw) throws Exception {
-		String sql = "select *from  members where  id=? and pw=? ";
+		String sql = "select *from  member where  userid=? and pw=? ";
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, userid);
 			pst.setString(2, pw);
@@ -104,4 +108,52 @@ public class MemberDAO {
             }
         }
     }
+    
+    
+//    마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임,가입날짜)
+    
+public MemberDTO searchProfileInfo(String id) throws Exception{
+		
+		String sql = "select * from member where userid = ?";
+	
+			
+		try(
+				Connection con = this.getConnection();	
+				PreparedStatement pstat = con.prepareStatement(sql);
+				
+				){
+			pstat.setString(1,id);
+			
+			
+			try(ResultSet rs = pstat.executeQuery();){
+
+			while(rs.next()) {
+				
+				String userid = rs.getString("userid");
+				String nickname = rs.getString("nickname");
+				String pw = rs.getString("pw");
+				String phone = rs.getString("phone");
+				String reg_num = rs.getString("reg_num");
+				String email = rs.getString("email");
+				String postcode= rs.getString("postcode");
+				String address1 = rs.getString("address1");
+				String address2 = rs.getString("address2");
+				Timestamp join_date = rs.getTimestamp("join_date");
+				int memcode = rs.getInt("memcode");
+				
+				
+				MemberDTO dto = new MemberDTO(userid,nickname,pw,phone,reg_num,email,postcode,address1,address2,join_date,memcode);
+				return dto;		
+			}
+		
+			}
+		}
+		return null;
+	}
+    
+
+    
+    
+    
+    
 }

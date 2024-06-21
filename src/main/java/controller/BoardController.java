@@ -37,6 +37,18 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("boardlist", list);
 			} else if (cmd.equals("/list.board")){
 				
+			} else if (cmd.equals("/mylist.board")) {
+				String pcpage = request.getParameter("cpage");
+				if( pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				
+				List<BoardDTO> list = dao.selectBoardList(cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage -1),
+						cpage * BoardConfig.recordCountPerPage);
+				request.setAttribute("boardlist", list);
+				
+				
 			}
 			
 		} catch (Exception e) {

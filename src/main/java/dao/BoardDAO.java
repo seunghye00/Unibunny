@@ -61,4 +61,32 @@ public class BoardDAO {
 			}
 		}
  	}
+	
+	
+	// 마이페이지에서 게시물 작성 수를 확인하는 메서드
+	public int searchBoardCount(String id) throws Exception {
+	    String sql = "select count(*) from board where nickname = (select nickname from member where userid = ?)";
+	    try (
+	        Connection con = this.getconnection();  
+	        PreparedStatement pstat = con.prepareStatement(sql);
+	    ) {
+	        pstat.setString(1, id);
+
+	        try (ResultSet rs = pstat.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1); 
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new Exception("게시물 작성 수 조회 중 오류 발생", e);
+	    }
+	    return 0;  // 기본값으로 0을 반환
+	}
+	
+	
+	
+	
+	
+	
 }
