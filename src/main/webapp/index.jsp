@@ -14,7 +14,7 @@
   <div class="index_wrapper">
     <div class="index_wrap">
       <div class="img_box">
-        <a href="javascript:;">
+        <a href="#" onclick="location.href='/user/main.jsp';">
           <img src="../image/index/index_main.png" alt="">
         </a>
       </div>
