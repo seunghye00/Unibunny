@@ -295,14 +295,6 @@ $(document).ready(function () {
   });
 });
 
-// faq toggle
-const toggles = document.querySelectorAll('.faq-toggle');
-
-toggles.forEach((toggle) => {
-  toggle.addEventListener('click', () => {
-    toggle.parentNode.classList.toggle('active');
-  });
-});
 
 // 최신순 버튼 클릭 시
 $('#recent_btn').on('click', function () {
