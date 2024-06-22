@@ -297,37 +297,31 @@ $(document).ready(function () {
 
 
 // 최신순 버튼 클릭 시
-$('#recent_btn').on('click', function () {
+/*$('#recent_btn').on('click', function () {
   // 최신순 버튼 색 변경 및 최신 게시글 노출
   $(this).css('background-color', 'var(--color-space-click)');
-  $('.recent_list').show();
 
   // 조회순 및 추천순 버튼 색 변경 & 해당 리스트 숨김
   $('#views_btn,#likes_btn').css('background-color', 'var(--color-space');
-  $('.views_list,.likes_list').hide();
 });
 
 // 조회순 버튼 클릭 시
 $('#views_btn').on('click', function () {
   // 조회순 버튼 색 변경 및 조회순 게시글 노출
   $(this).css('background-color', 'var(--color-space-click)');
-  $('.views_list').show();
 
   // 추천순 및 최신순 버튼 색 변경 & 해당 리스트 숨김
   $('#likes_btn, #recent_btn').css('background-color', 'var(--color-space');
-  $('.likes_list, .recent_list').hide();
 });
 
 // 추천순 버튼 클릭시
 $('#likes_btn').on('click', function () {
   // 추천순 버튼 색 변경 및 추천순 게시글 노출
   $(this).css('background-color', 'var(--color-space-click)');
-  $('.likes_list').show();
 
   // 조회순, 최신순 색 변경 및 인기 게시글 숨김
   $('#views_btn, #recent_btn').css('background-color', 'var(--color-space');
-  $('.views_list, .recent_list').hide();
-});
+});*/
 
 // 댓글 최신순 버튼 클릭 시
 $('#comm_recent_btn').on('click', function () {
@@ -384,7 +378,7 @@ $('#back_btn').on('click', function () {
 
 // 작성 버튼 클릭 시
 $('#write_btn').on('click', function () {
-  location.href = '/index/crud/write.html';
+  location.href = '/user/crud/write_board.jsp';
 });
 
 $(document).ready(function () {

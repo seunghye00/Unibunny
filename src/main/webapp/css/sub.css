@@ -898,6 +898,7 @@
   padding: 5px 10px;
   border-radius: 5px;
   position: relative;
+  margin: 0 10px;
 }
 
 .cont_box .list_box .bottom_box .navi_box .arr_navi::after {
@@ -1004,7 +1005,7 @@
 
 
 
-.choi_box .btn_box:nth-child(1) .choi_btn {
+.choi_box .btn_box .choi_btn.active{
   background-color: var(--color-space-click);
 }
 
@@ -2472,7 +2473,8 @@
   }
 
   .cont_box .list_box .list_table .table_col:nth-child(4),
-  .cont_box .list_box .list_table .table_col:nth-child(5) {
+  .cont_box .list_box .list_table .table_col:nth-child(5),
+  .cont_box .list_box .list_table .table_col:nth-child(6)  {
     width: 10%;
   }
 
