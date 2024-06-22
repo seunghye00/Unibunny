@@ -166,7 +166,7 @@
                           <div class="profile_image_container">
                             <img id="profileImage" src="../../image/mypage_image/profile_icon.png" alt="Profile Image">
                           </div>
-                            <span>회원의 이름이 들어가는 곳 이에오</span>
+                            <span>${my_info.nickname }</span>
                         </div>
                         
                         <div class="button_container">
@@ -180,9 +180,9 @@
                   <div class="profile_contents">
                     <div class="my_history">
                       <ul>
-                        <li>가입날짜 : 1972년</li>
-                        <li>게시물 수 : 1972</li>
-                        <li>댓글 단 수 : 1972</li>
+                        <li>가입날짜 : ${my_info.join_date}</li>
+                        <li>게시물 수 : ${board_count }</li>
+                        <li>댓글 단 수 : ${reply_count }</li>
                       </ul>
                     </div>
                   </div>

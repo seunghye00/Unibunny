@@ -29,7 +29,7 @@
           <div class="header_con">
             <ul class="header_gnb">
               <li>
-                <a href="javascript:;" class="gnb_comu"><span>커뮤니티</span></a>
+                <a href="/list.board" class="gnb_comu"><span>커뮤니티</span></a>
               </li>
               <li>
                 <a href="javascript:;" class="gnb_rank"><span>랭킹</span></a>
@@ -42,7 +42,7 @@
               </li>
             </ul>
             <ul class="header_my">
-              <li class="my_01 "><a href="javascript:;" class="btn_mypage"><img src="../image/icon/mypageW.png"
+              <li class="my_01 "><a href="#" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="../image/icon/mypageW.png"
                     alt="마이페이지 로고"></a></li>
               <li class="my_02"><a href="javascript:;" class="btn_login"><img src="../image/icon/login.png"
                     alt="로그인 로고"></a></li>
@@ -61,7 +61,7 @@
           <div class="mob_menu">
             <ul class="mob_list">
               <li>
-                <strong><a href="javascript:;">커뮤니티</a></strong>
+                <strong><a href="/list.board">커뮤니티</a></strong>
               </li>
               <li>
                 <strong><a href="javascript:;">랭킹</a></strong>

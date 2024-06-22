@@ -12,10 +12,10 @@ public class BoardDTO {
 	private String delete_yn;
 	private Timestamp delete_date;
 	private int game_id;
-	private int nickname;
+	private String nickname;
 	
 	public BoardDTO(int board_seq, String title, String content, Timestamp write_date, int view_count, int thumbs_up,
-			String delete_yn, Timestamp delete_date, int game_id, int nickname) {
+			String delete_yn, Timestamp delete_date, int game_id, String  nickname) {
 		super();
 		this.board_seq = board_seq;
 		this.title = title;
@@ -105,11 +105,11 @@ public class BoardDTO {
 		this.game_id = game_id;
 	}
 	
-	public int getNickname() {
+	public String getNickname() {
 		return nickname;
 	}
 	
-	public void setNickname(int nickname) {
+	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
 }
