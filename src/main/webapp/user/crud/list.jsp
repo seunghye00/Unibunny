@@ -150,7 +150,7 @@
                       <div class="table_col mob_hidden"><span>작성일</span></div>
                       <div class="table_col mob_hidden"><span>조회수</span></div>
                     </div>
-                  <%-- <c:forEach var="dto" items="${list}">
+                  	<c:forEach var="dto" items="${boardlist}">
                   	<div class="table_row">
                   	 <a href="/user/detail.board?board_seq=${dto.board_seq}">
                         <div class="table_col mob_hidden"><span>${dto.board_seq}</span></div>
@@ -160,20 +160,10 @@
                         <div class="table_col"><span>${dto.view_count}</span></div>
                       </a>
                   	</div>
-                  </c:forEach>   --%>
+                  </c:forEach>
                   </div>
                   <div class="bottom_box">
                     <div class="navi_box" id="pagination">
-       <!--                <a href="#" class="page_navi arr_navi start_arr">
-                        <img class="navi_icon start_navi" src="../../image/icon/pagination.png" alt="start navi 로고">
-                      </a>
-                      <a href="#" class="page_navi cpage">1</a>
-                      <a href="#" class="page_navi">2</a>
-                      <a href="#" class="page_navi">3</a>
-                      <a href="#" class="page_navi">4</a>
-                      <a href="#" class="page_navi arr_navi">
-                        <img class="navi_icon" src="../../image/icon/pagination.png" alt="end navi 로고">
-                      </a> -->
                     </div>
                     <div class="btn_box">
                       <button class="write_btn" id="write_btn">작성하기</button>
@@ -210,50 +200,36 @@
     </div>
     <script>
     // 페이지네이션 스크립트
-    let pageNation = $("#pagination");
-    let cpage = ${cpage};
-    let record_total_count = ${record_total_count};
-    let record_count_per_page = ${record_count_per_page};
-    let navi_count_per_page = ${navi_count_per_page};
-    let pageTotalCount = 0;
-  	
-    if (record_total_count % record_count_per_page > 0) {
-    	pageTotalCount = record_total_count / record_count_per_page + 1;
-    } else {
-      pageTotalCount = record_total_count / record_count_per_page;
-    }		
-    // 네비게이터의 시작 값
-    let startNavi = Math.floor(( cpage - 1 ) / navi_count_per_page) * navi_count_per_page + 1;
-    // 네비게이터의 끝 값 
-    let endNavi = startNavi + navi_count_per_page - 1;
-  			
-    if (endNavi > pageTotalCount) {
-    	endNavi = pageTotalCount;
-    }
-  			
-    let needNext = true;
-    let needPrev = true;
-  			
-    if(startNavi == 1) {
-    	needPrev = false;
-    }
-  			
-    if(endNavi == pageTotalCount) {
-  	needNext = false;
-    }
-  			
-     if(needPrev)
-  	{pageNation.append("<a href='/list.board?cpage=" + (startNavi-1) +"'>< </a>");}		
-  	for(let i = startNavi; i <= endNavi; i++) {
-  		if(cpage == i) {
-  			pageNation.append("<a class='active' href='/list.board?cpage="+i+"'>" + i + "</a> ");
-  		} else {
-  			pageNation.append("<a href='/list.board?cpage="+i+"'>" + i + "</a> ");
-  		}
-  	}
-  	if(needNext) {
-  		pageNation.append("<a href='/list.board?cpage=" + (endNavi+1) +"'> ></a>");
-  	}
+	let pageNation = $("#pagination");
+	let cpage = ${cpage};
+	let record_total_count = ${record_total_count};
+	let record_count_per_page = ${record_count_per_page};
+	let navi_count_per_page = ${navi_count_per_page};
+	let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+	
+	// 네비게이터의 시작 값
+	let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+	// 네비게이터의 끝 값 
+	let endNavi = startNavi + navi_count_per_page - 1;
+	
+	if (endNavi > pageTotalCount) {
+	    endNavi = pageTotalCount;
+	}
+	
+	let needNext = endNavi < pageTotalCount;
+	let needPrev = startNavi > 1;
+	
+	pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/list.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+	
+	for (let i = startNavi; i <= endNavi; i++) {
+	    if (cpage == i) {
+	        pageNation.append("<a class='page_navi active' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+	    } else {
+	        pageNation.append("<a class='page_navi' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+	    }
+	}
+	
+	pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/list.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
     </script>
 </body>
 </html>

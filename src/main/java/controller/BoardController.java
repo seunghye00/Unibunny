@@ -21,8 +21,8 @@ public class BoardController extends HttpServlet {
 		// 클라이언트로부터 전송되는 문자열에 대한 인코딩을 utf8로 처리
 		//request에서 값을 꺼내기 전에 처리해야만 함!
 		String cmd = request.getRequestURI();
-//		System.out.println("진입");
-//		System.out.println(cmd);
+		System.out.println("진입");
+		System.out.println(cmd);
 		BoardDAO dao = BoardDAO.getInstance();
 		Pagination pagination = new Pagination();
 		try {
@@ -48,7 +48,7 @@ public class BoardController extends HttpServlet {
 				}
 				int cpage = Integer.parseInt(pcpage);
 				
-				List<BoardDTO> list = dao.selectBoardList(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+				List<BoardDTO> list = dao.selectListAll(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
 						cpage * pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
 			}

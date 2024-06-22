@@ -31,7 +31,7 @@ public class BoardDAO {
 	}
 	
 	private BoardDAO(){};
-	
+
 	// 게시판 게시글 조회 
 	public List<BoardDTO> selectListAll(int startNum, int endNum) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
@@ -43,7 +43,6 @@ public class BoardDAO {
 				) {
 			List<BoardDTO> list = new ArrayList<>();
 			pstat.setInt(1, startNum);
-			
 			pstat.setInt(2, endNum);
 			try (	
 					ResultSet rs= pstat.executeQuery();
@@ -58,7 +57,7 @@ public class BoardDAO {
 					 String delete_yn = rs.getString("delete_yn");
 					 Timestamp delete_date = rs.getTimestamp("delete_date");
 					 int game_id = rs.getInt("game_id");
-					 int nickname = rs.getInt("nickname");
+					 String nickname = rs.getString("nickname");
 					 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
 							 ,thumbs_up,delete_yn,delete_date,game_id,nickname));
 				 }
@@ -104,32 +103,32 @@ public class BoardDAO {
 	
 	
 	//더미데이터만들기
-//	public static void main(String[] args) throws Exception {
-//        String url = "jdbc:oracle:thin:@localhost:1521:xe";
-//        String id = "bunny";
-//        String pw = "bunny";
-//
-//        // SQL 문: 더미 데이터를 삽입하는 SQL 문
-//        String sql = "INSERT INTO Board (BOARD_SEQ, TITLE, CONTENT, WRITE_DATE, VIEW_COUNT, THUMBS_UP, DELETE_YN, GAME_ID, NICKNAME) " +
-//                     "VALUES (board_seq.NEXTVAL, ?, ?, SYSDATE, ?, ?, 'N', ?, ?)";
-//
-//        try (Connection con = DriverManager.getConnection(url, id, pw);
-//             PreparedStatement pstat = con.prepareStatement(sql)) {
-//            for (int i = 1; i <= 50; i++) {
-//                pstat.setString(1, "Title " + i); // TITLE
-//                pstat.setString(2, "Content " + i); // CONTENT
-//                pstat.setInt(3, (int) (Math.random() * 100)); // VIEW_COUNT
-//                pstat.setInt(4, (int) (Math.random() * 50)); // THUMBS_UP
-//                pstat.setInt(5, (int) (Math.random() * 10) + 1); // GAME_ID
-//                pstat.setString(6, "User" + i); // NICKNAME
-//                pstat.addBatch();
-//            }
-//            pstat.executeBatch();
-//            System.out.println("50개의 더미 데이터가 성공적으로 삽입되었습니다.");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+	public static void main(String[] args) throws Exception {
+        String url = "jdbc:oracle:thin:@localhost:1521:xe";
+        String id = "bunny";
+        String pw = "bunny";
+
+        // SQL 문: 더미 데이터를 삽입하는 SQL 문
+        String sql = "INSERT INTO Board (BOARD_SEQ, TITLE, CONTENT, WRITE_DATE, VIEW_COUNT, THUMBS_UP, DELETE_YN, GAME_ID, NICKNAME) " +
+                     "VALUES (board_seq.NEXTVAL, ?, ?, SYSDATE, ?, ?, 'N', ?, ?)";
+
+        try (Connection con = DriverManager.getConnection(url, id, pw);
+             PreparedStatement pstat = con.prepareStatement(sql)) {
+            for (int i = 1; i <= 50; i++) {
+                pstat.setString(1, "Title " + i); // TITLE
+                pstat.setString(2, "Content " + i); // CONTENT
+                pstat.setInt(3, (int) (Math.random() * 100)); // VIEW_COUNT
+                pstat.setInt(4, (int) (Math.random() * 50)); // THUMBS_UP
+                pstat.setInt(5, (int) (Math.random() * 10) + 1); // GAME_ID
+                pstat.setString(6, "User" + i); // NICKNAME
+                pstat.addBatch();
+            }
+            pstat.executeBatch();
+            System.out.println("50개의 더미 데이터가 성공적으로 삽입되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	
 	

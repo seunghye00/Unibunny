@@ -909,7 +909,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  opacity: .5;
   border-radius: 5px;
 }
 
@@ -928,12 +927,14 @@
   rotate: 180deg;
 }
 
-.cont_box .list_box .bottom_box .navi_box .start_arr,
-.end_arr {
+.cont_box .list_box .bottom_box .navi_box .start_arr.disabled ,
+.cont_box .list_box .bottom_box .navi_box .end_arr.disabled  {
   opacity: 0.6;
   pointer-events: none;
 }
-
+.cont_box .list_box .bottom_box .navi_box a.active {
+	color:var(--color-yellow);
+}
 .cont_box .list_box .bottom_box .btn_box .write_btn {
   width: 120px;
   border-radius: 10px;
