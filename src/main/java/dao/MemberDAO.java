@@ -202,6 +202,7 @@ public class MemberDAO {
 		return null;
 	}
 
+<<<<<<< HEAD
 	// 계정 정보를 간략히 Map 형식으로 가져옴.
 	public Map<String, String> getAccount(String userid) throws Exception {
 
@@ -297,4 +298,33 @@ public class MemberDAO {
 //               pstmt.executeUpdate();
 //           }
 //       }
+=======
+	public int updateUserInfo(MemberDTO dto) throws Exception {
+//	해당 유저의 id로 회원의 정보를 수정한다.
+			String sql = "update member set nickname = ?, pw = ?, phone = ?, email = ?, address1 = ?, address2 = ?, postcode = ? where userid = ?";
+			try(
+					Connection con = this.getConnection();	
+					PreparedStatement pstat = con.prepareStatement(sql);
+			 
+					){
+		
+				pstat.setString(1, dto.getNickname());
+				pstat.setString(2, dto.getPw());
+				pstat.setString(3, dto.getPhone());
+				pstat.setString(4, dto.getEmail());
+				pstat.setString(5, dto.getPostcode());
+				pstat.setString(6, dto.getAddress1());
+				pstat.setString(7, dto.getAddress2());
+				pstat.setString(8, dto.getUserid());
+			
+	
+				return pstat.executeUpdate();}
+		}
+
+
+
+    
+    
+    
+>>>>>>> 193ce74 (내 프로필 보강 작업, 계정관리 작업, 작성한 글 리스트 출력 작업)
 }

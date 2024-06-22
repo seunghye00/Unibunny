@@ -255,6 +255,56 @@ public class BoardDAO {
 		}
 		return 0; // 기본값으로 0을 반환
 	}
+<<<<<<< HEAD
+=======
+	
+	
+	public List<BoardDTO> searchMyBoardList(String id) throws Exception{
+		
+		String sql = "select * from board where nickname = (select nickname from member where userid = ?)";
+		try(
+				Connection con = this.getconnection();	
+				PreparedStatement pstat = con.prepareStatement(sql);
+				
+				){
+			pstat.setString(1, id);
+		
+			try(ResultSet rs = pstat.executeQuery()){
+		
+			
+		List<BoardDTO> list = new ArrayList<>();
+			
+		while(rs.next()) {
+			
+			int board_seq = rs.getInt("board_seq");
+			 String title = rs.getString("title");
+			 String content = rs.getString("content");
+			 Timestamp write_date = rs.getTimestamp("write_date");
+			 int view_count = rs.getInt("view_count");
+			 int thumbs_up = rs.getInt("thumbs_up");
+			 String delete_yn = rs.getString("delete_yn");
+			 Timestamp delete_date = rs.getTimestamp("delete_date");
+			 int game_id = rs.getInt("game_id");
+			 String nickname = rs.getString("nickname");
+			 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
+					 ,thumbs_up,delete_yn,delete_date,game_id,nickname));
+			
+
+				}
+				return list;
+			}
+			
+		}
+		}
+	
+	
+	
+	//더미데이터만들기
+	public static void main(String[] args) throws Exception {
+        String url = "jdbc:oracle:thin:@localhost:1521:xe";
+        String id = "bunny";
+        String pw = "bunny";
+>>>>>>> 193ce74 (내 프로필 보강 작업, 계정관리 작업, 작성한 글 리스트 출력 작업)
 
 	// board_seq 값으로 해당 레코드를 반환하는 메서드
 	public BoardDTO selectBySeq(int seq) throws Exception {
