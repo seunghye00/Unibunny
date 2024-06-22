@@ -30,7 +30,7 @@
       </div>
       <div class="img_box">
         <a href="javascript:;" >
-          <img src="../image/index/index_ourpage.png" alt="">s
+          <img src="../image/index/index_ourpage.png" alt="">
         </a>
       </div>
     </div>

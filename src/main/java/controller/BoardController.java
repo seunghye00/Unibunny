@@ -21,36 +21,37 @@ public class BoardController extends HttpServlet {
 		// 클라이언트로부터 전송되는 문자열에 대한 인코딩을 utf8로 처리
 		//request에서 값을 꺼내기 전에 처리해야만 함!
 		String cmd = request.getRequestURI();
-		System.out.println(cmd);
+//		System.out.println("진입");
+//		System.out.println(cmd);
 		BoardDAO dao = BoardDAO.getInstance();
-		Pagination BoardConfig = new Pagination();
+		Pagination pagination = new Pagination();
 		try {
 			if(cmd.equals("/list.board")) {
+				System.out.println("진입");
+				String pcpage = request.getParameter("cpage");
+				if( pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				List<BoardDTO> list = dao.selectListAll(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+						cpage * pagination.recordCountPerPage);
+				request.setAttribute("boardlist", list);
+				request.setAttribute("cpage", cpage);
+				request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
+				request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
+				request.setAttribute("record_total_count", dao.getRecordCount());
+				request.getRequestDispatcher("/user/crud/list.jsp").forward(request, response);
+			}  else if (cmd.equals("/mylist.board")) {
 				String pcpage = request.getParameter("cpage");
 				if( pcpage == null) {
 					pcpage = "1";
 				}
 				int cpage = Integer.parseInt(pcpage);
 				
-				List<BoardDTO> list = dao.selectBoardList(cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage -1),
-						cpage * BoardConfig.recordCountPerPage);
+				List<BoardDTO> list = dao.selectBoardList(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+						cpage * pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
-			} else if (cmd.equals("/list.board")){
-				
-			} else if (cmd.equals("/mylist.board")) {
-				String pcpage = request.getParameter("cpage");
-				if( pcpage == null) {
-					pcpage = "1";
-				}
-				int cpage = Integer.parseInt(pcpage);
-				
-				List<BoardDTO> list = dao.selectBoardList(cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage -1),
-						cpage * BoardConfig.recordCountPerPage);
-				request.setAttribute("boardlist", list);
-				
-				
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
