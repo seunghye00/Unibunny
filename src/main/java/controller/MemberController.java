@@ -54,7 +54,7 @@ public class MemberController extends HttpServlet {
 
 				try {
 					int result = mdao.insert(new MemberDTO(userid, nickname, pw, phone, reg_num, email, postcode,
-							address1, address2, null, 0));
+							address1, address2, null, 0,null));
 					if (result > 0) {
 						response.sendRedirect("/index.jsp");
 					} else {
@@ -111,7 +111,7 @@ public class MemberController extends HttpServlet {
 				String address2 = request.getParameter("address2");
 				String postcode = request.getParameter("postcode");
 				
-				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 0));
+				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 1,null));
 				
 				response.sendRedirect("/mypage.member");
 			}else if(cmd.equals("/account.member")) {

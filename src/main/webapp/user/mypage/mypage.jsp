@@ -136,22 +136,23 @@
                   </select>
 
                   <div class="profile_contents">
-                    <div class="my_profile">
-                        <div class="profile_left">
-                          <div class="profile_image_container">
-                            <img id="profileImage" src="../../image/mypage_image/profile_icon.png" alt="Profile Image">
-                          </div>
-                            <span>${my_info.nickname }</span>
-                        </div>
-                        
-                        <div class="button_container">
-                        <button class="profile_edit_btn">프로필 편집</button>
-                        <input type="file" class="real_upload" accept="image/*" style="display: none;">
-                        <button class="apply_changes_btn" style="display: none;">적용</button>
-                        <button class="cancel_changes_btn" style="display: none;">취소</button>
-                      </div>
-                    </div>
-                </div>
+            <form id="profileForm" action="/uploadProfile.file" method="post" enctype="multipart/form-data">
+    <div class="my_profile">
+        <div class="profile_left">
+            <div class="profile_image_container">
+                <img id="profileImage" src="${my_info.profile_img}" alt="Profile Image">
+            </div>
+            <span>${my_info.nickname}</span>
+        </div>
+        <div class="button_container">
+            <button type="button" class="profile_edit_btn">프로필 편집</button>
+            <input type="file" name="profileImage" class="real_upload" accept="image/*" style="display: none;">
+            <button type="button" class="apply_changes_btn" style="display: none;">적용</button>
+            <button type="button" class="cancel_changes_btn" style="display: none;">취소</button>
+        </div>
+    </div>
+</form>
+        </div>
                   <div class="profile_contents">
                     <div class="my_history">
                       <ul>
@@ -445,7 +446,7 @@
               </div>
             </div>
 
-            <!-- JavaScript 추가 -->
+           
             <script>
             document.addEventListener("DOMContentLoaded", function() {
             	document.getElementById("btnMyProfile").addEventListener("click", function() {

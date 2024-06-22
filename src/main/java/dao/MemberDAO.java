@@ -140,9 +140,9 @@ public MemberDTO searchProfileInfo(String id) throws Exception{
 				String address2 = rs.getString("address2");
 				Timestamp join_date = rs.getTimestamp("join_date");
 				int memcode = rs.getInt("memcode");
+				String profile_img = rs.getString("profile_img");
 				
-				
-				MemberDTO dto = new MemberDTO(userid,nickname,pw,phone,reg_num,email,postcode,address1,address2,join_date,memcode);
+				MemberDTO dto = new MemberDTO(userid,nickname,pw,phone,reg_num,email,postcode,address1,address2,join_date,memcode,profile_img);
 				return dto;		
 			}
 		

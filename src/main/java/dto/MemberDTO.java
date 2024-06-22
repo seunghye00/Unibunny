@@ -14,8 +14,12 @@ public class MemberDTO {
 	private String address2;
 	private Timestamp join_date;
 	private int memcode;
+	private String profile_img;
+	
+	
+	
 	public MemberDTO(String userid, String nickname, String pw, String phone, String reg_num, String email,
-			String postcode, String address1, String address2, Timestamp join_date, int memcode) {
+			String postcode, String address1, String address2, Timestamp join_date, int memcode, String profile_img) {
 		super();
 		this.userid = userid;
 		this.nickname = nickname;
@@ -28,6 +32,7 @@ public class MemberDTO {
 		this.address2 = address2;
 		this.join_date = join_date;
 		this.memcode = memcode;
+		this.profile_img = profile_img;
 	}
 	public String getUserid() {
 		return userid;
@@ -94,6 +99,12 @@ public class MemberDTO {
 	}
 	public void setMemcode(int memcode) {
 		this.memcode = memcode;
+	}
+	public String getProfile_img() {
+		return profile_img;
+	}
+	public void setProfile_img(String profile_img) {
+		this.profile_img = profile_img;
 	}
 	
 }

@@ -158,61 +158,61 @@ $(document).ready(function () {
 
   // 프로필 편집
 
-  $(document).ready(function () {
+  // common.js
+
+$(document).ready(function () {
     var originalImageSrc = $('#profileImage').attr('src');
 
     // 프로필 편집 버튼 클릭 시 파일 선택 창 열기
     $(document).on('click', '.profile_edit_btn', function () {
-      $(this).siblings('.real_upload').click();
+        console.log('프로필 편집 버튼 클릭됨');
+        $(this).siblings('.real_upload').click();
     });
 
     // 파일 입력 변경 시 미리보기 및 재업로드 기능
     $(document).on('change', '.real_upload', function () {
-      var input = this;
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          var imageContainer = $(input)
-            .closest('.my_profile')
-            .find('.profile_image_container');
-          // 기존 이미지 삭제
-          imageContainer.find('img').remove();
-          imageContainer.append(
-            '<img src="' + e.target.result + '" alt="Profile Image">'
-          );
-          // 버튼 표시
-          $('.profile_edit_btn').hide();
-          $('.apply_changes_btn').show();
-          $('.cancel_changes_btn').show();
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
+        console.log('파일 선택됨');
+        var input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var imageContainer = $(input)
+                    .closest('.my_profile')
+                    .find('.profile_image_container');
+                // 기존 이미지 삭제
+                imageContainer.find('img').remove();
+                imageContainer.append('<img id="profileImage" src="' + e.target.result + '" alt="Profile Image">');
+                // 버튼 표시
+                $('.profile_edit_btn').hide();
+                $('.apply_changes_btn').show();
+                $('.cancel_changes_btn').show();
+                console.log('이미지 미리보기 설정됨');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     });
 
     // 변경사항 적용 버튼 클릭 시
     $(document).on('click', '.apply_changes_btn', function () {
-      // 원래 이미지 src 업데이트
-      originalImageSrc = $('#profileImage').attr('src');
-      // 버튼 숨기기
-      $('.apply_changes_btn').hide();
-      $('.cancel_changes_btn').hide();
-      $('.profile_edit_btn').show();
+        console.log('적용 버튼 클릭됨');
+        // 폼 제출
+        $('#profileForm').submit();
     });
 
     // 취소 버튼 클릭 시
     $(document).on('click', '.cancel_changes_btn', function () {
-      var imageContainer = $('.profile_image_container');
-      // 기존 이미지로 되돌리기
-      imageContainer.find('img').remove();
-      imageContainer.append(
-        '<img src="' + originalImageSrc + '" alt="Profile Image">'
-      );
-      // 버튼 숨기기
-      $('.apply_changes_btn').hide();
-      $('.cancel_changes_btn').hide();
-      $('.profile_edit_btn').show();
+        console.log('취소 버튼 클릭됨');
+        var imageContainer = $('.profile_image_container');
+        // 기존 이미지로 되돌리기
+        imageContainer.find('img').remove();
+        imageContainer.append('<img src="' + originalImageSrc + '" alt="Profile Image">');
+        // 버튼 숨기기
+        $('.apply_changes_btn').hide();
+        $('.cancel_changes_btn').hide();
+        $('.profile_edit_btn').show();
     });
-  });
+});
+
 
   // 마이페이지 계정관리
 
