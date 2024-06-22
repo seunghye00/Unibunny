@@ -429,10 +429,10 @@ $(document).ready(function () {
     });
   });
 
-  /* page navi 만드는 코드
+  	//page navi 만드는 코드
 
     // servlet에서 받아올 데이터 (현재 페이지, 페이지 당 노출할 게시글 수, navi 수, 전체 글 수)
-    let cpage = ${ cpage };   
+    /*let cpage = ${ cpage };   
     let record_count_per_page = ${record_count_per_page};
 	let navi_count_per_page = ${navi_count_per_page};		
     let record_total_count = ${record_total_count}; 
@@ -477,6 +477,6 @@ $(document).ready(function () {
         $(".navi_box").append("<a class='page_navi arr_navi' href='/list.board?cpage=" + (endNavi + 1) + "'><img class="navi_icon" src="../../image/icon/navi.png" alt="end navi 로고"></a>");
     }else{
         $(".navi_box").append("<a class='page_navi arr_navi end_arr' href='/list.board?cpage=" + (endNavi + 1) + "'><img class="navi_icon" src="../../image/icon/navi.png" alt="end navi 로고"></a>");
-    }	
-    */
+    }*/	
+    
 });

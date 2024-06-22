@@ -19,7 +19,7 @@
         </a>
       </div>
       <div class="img_box">
-        <a href="javascript:;">
+        <a href="/list.board">
           <img src="../image/index/index_commu.png" alt="">
         </a>
       </div>
@@ -30,7 +30,7 @@
       </div>
       <div class="img_box">
         <a href="javascript:;" >
-          <img src="../image/index/index_ourpage.png" alt="">s
+          <img src="../image/index/index_ourpage.png" alt="">
         </a>
       </div>
     </div>

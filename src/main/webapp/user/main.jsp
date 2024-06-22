@@ -29,7 +29,7 @@
           <div class="header_con">
             <ul class="header_gnb">
               <li>
-                <a href="javascript:;" class="gnb_comu"><span>커뮤니티</span></a>
+                <a href="/list.board" class="gnb_comu"><span>커뮤니티</span></a>
               </li>
               <li>
                 <a href="javascript:;" class="gnb_rank"><span>랭킹</span></a>
@@ -61,7 +61,7 @@
           <div class="mob_menu">
             <ul class="mob_list">
               <li>
-                <strong><a href="javascript:;">커뮤니티</a></strong>
+                <strong><a href="/list.board">커뮤니티</a></strong>
               </li>
               <li>
                 <strong><a href="javascript:;">랭킹</a></strong>

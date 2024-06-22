@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -30,9 +31,12 @@ public class BoardDAO {
 	}
 	
 	private BoardDAO(){};
-	
-	public List<BoardDTO> selectBoardList(int startNum, int endNum) throws Exception {
-		String sql = "select * from (select board.*, row_number() over(order by seq desc) rown from board) where rown between ? and ?";
+
+	// 게시판 게시글 조회 
+	public List<BoardDTO> selectListAll(int startNum, int endNum) throws Exception {
+		// 내부 조인으로 desc 순으로 번호 출력
+		System.out.println("board_seq");
+		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown from board) where rown between ? and ?";
 		try (
 				Connection con = this.getconnection();
 				PreparedStatement pstat = con.prepareStatement(sql);	
@@ -53,7 +57,7 @@ public class BoardDAO {
 					 String delete_yn = rs.getString("delete_yn");
 					 Timestamp delete_date = rs.getTimestamp("delete_date");
 					 int game_id = rs.getInt("game_id");
-					 int nickname = rs.getInt("nickname");
+					 String nickname = rs.getString("nickname");
 					 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
 							 ,thumbs_up,delete_yn,delete_date,game_id,nickname));
 				 }
@@ -62,6 +66,18 @@ public class BoardDAO {
 		}
  	}
 	
+	// 전체 게시글 카운트 조회 
+	public int getRecordCount() throws Exception {
+		String sql = "select count(*) from board";
+		try (
+						Connection con = this.getconnection();
+						PreparedStatement pstat = con.prepareStatement(sql);
+				ResultSet rs= pstat.executeQuery();
+						) {
+				 rs.next();
+				 return rs.getInt(1);
+			}
+	}
 	
 	// 마이페이지에서 게시물 작성 수를 확인하는 메서드
 	public int searchBoardCount(String id) throws Exception {
@@ -86,7 +102,34 @@ public class BoardDAO {
 	
 	
 	
-	
+	//더미데이터만들기
+	public static void main(String[] args) throws Exception {
+        String url = "jdbc:oracle:thin:@localhost:1521:xe";
+        String id = "bunny";
+        String pw = "bunny";
+
+        // SQL 문: 더미 데이터를 삽입하는 SQL 문
+        String sql = "INSERT INTO Board (BOARD_SEQ, TITLE, CONTENT, WRITE_DATE, VIEW_COUNT, THUMBS_UP, DELETE_YN, GAME_ID, NICKNAME) " +
+                     "VALUES (board_seq.NEXTVAL, ?, ?, SYSDATE, ?, ?, 'N', ?, ?)";
+
+        try (Connection con = DriverManager.getConnection(url, id, pw);
+             PreparedStatement pstat = con.prepareStatement(sql)) {
+            for (int i = 1; i <= 50; i++) {
+                pstat.setString(1, "Title " + i); // TITLE
+                pstat.setString(2, "Content " + i); // CONTENT
+                pstat.setInt(3, (int) (Math.random() * 100)); // VIEW_COUNT
+                pstat.setInt(4, (int) (Math.random() * 50)); // THUMBS_UP
+                pstat.setInt(5, (int) (Math.random() * 10) + 1); // GAME_ID
+                pstat.setString(6, "User" + i); // NICKNAME
+                pstat.addBatch();
+            }
+            pstat.executeBatch();
+            System.out.println("50개의 더미 데이터가 성공적으로 삽입되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 	
 	
 }

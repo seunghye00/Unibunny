@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Board</title>
+<title>커뮤니티</title>
 <link rel="stylesheet" href="../../../css/common.css">
 <link rel="stylesheet" href="../../../css/sub.css">
 <link rel="stylesheet" href="../../../css/layout.css">
@@ -142,6 +142,7 @@
                   </div>
                   <!-- 추후 ajax로 데이터 받아와서 반복문으로 데이터 입력할 부분 -->
                   <div class="list_table recent_list">
+      
                     <div class="table_row table_header">
                       <div class="table_col mob_hidden"><span>번호</span></div>
                       <div class="table_col"><span>제목</span></div>
@@ -149,307 +150,20 @@
                       <div class="table_col mob_hidden"><span>작성일</span></div>
                       <div class="table_col mob_hidden"><span>조회수</span></div>
                     </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>1</span></div>
-                        <div class="table_col"><span>집에 너무 가고 싶다</span></div>
-                        <div class="table_col"><span>I'm jongho</span></div>
-                        <div class="table_col"><span>2024.06.18</span></div>
-                        <div class="table_col"><span>58</span></div>
+                  	<c:forEach var="dto" items="${boardlist}">
+                  	<div class="table_row">
+                  	 <a href="/user/detail.board?board_seq=${dto.board_seq}">
+                        <div class="table_col mob_hidden"><span>${dto.board_seq}</span></div>
+                        <div class="table_col"><span>${dto.title}</span></div>
+                        <div class="table_col"><span>${dto.content}</span></div>
+                        <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                        <div class="table_col"><span>${dto.view_count}</span></div>
                       </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>2</span></div>
-                        <div class="table_col"><span>흐ㅓ어어어엉어어ㅓ어ㅜㅡㅜㅠ</span></div>
-                        <div class="table_col"><span>jonghoHi</span></div>
-                        <div class="table_col"><span>2024.05.18</span></div>
-                        <div class="table_col"><span>5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>3</span></div>
-                        <div class="table_col"><span>어쩌라고요</span></div>
-                        <div class="table_col"><span>jonghobabo</span></div>
-                        <div class="table_col"><span>2024.04.01</span></div>
-                        <div class="table_col"><span>2456</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>4</span></div>
-                        <div class="table_col"><span>VVS</span></div>
-                        <div class="table_col"><span>jonghoV</span></div>
-                        <div class="table_col"><span>2024.01.09</span></div>
-                        <div class="table_col"><span>16786</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="list_table views_list">
-                    <div class="table_row table_header">
-                      <div class="table_col mob_hidden"><span>번호</span></div>
-                      <div class="table_col"><span>제목</span></div>
-                      <div class="table_col mob_hidden"><span>작성자</span></div>
-                      <div class="table_col mob_hidden"><span>작성일</span></div>
-                      <div class="table_col mob_hidden"><span>조회수</span></div>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>1</span></div>
-                        <div class="table_col"><span>집에 너무 가고 싶다</span></div>
-                        <div class="table_col"><span>I'm jongho</span></div>
-                        <div class="table_col"><span>2024.06.18</span></div>
-                        <div class="table_col"><span>58</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>2</span></div>
-                        <div class="table_col"><span>흐ㅓ어어어엉어어ㅓ어ㅜㅡㅜㅠ</span></div>
-                        <div class="table_col"><span>jonghoHi</span></div>
-                        <div class="table_col"><span>2024.06.18</span></div>
-                        <div class="table_col"><span>5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>3</span></div>
-                        <div class="table_col"><span>어쩌라고요</span></div>
-                        <div class="table_col"><span>jonghobabo</span></div>
-                        <div class="table_col"><span>2024.06.18</span></div>
-                        <div class="table_col"><span>2</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>4</span></div>
-                        <div class="table_col"><span>VVS</span></div>
-                        <div class="table_col"><span>jonghoV</span></div>
-                        <div class="table_col"><span>2024.06.18</span></div>
-                        <div class="table_col"><span>1</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="list_table likes_list">
-                    <div class="table_row table_header">
-                      <div class="table_col mob_hidden"><span>번호</span></div>
-                      <div class="table_col"><span>제목</span></div>
-                      <div class="table_col mob_hidden"><span>작성자</span></div>
-                      <div class="table_col mob_hidden"><span>작성일</span></div>
-                      <div class="table_col mob_hidden"><span>추천수</span></div>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>1</span></div>
-                        <div class="table_col"><span>집에 너무 가고 싶다</span></div>
-                        <div class="table_col"><span>I'm jongho</span></div>
-                        <div class="table_col"><span>2024.06.18</span></div>
-                        <div class="table_col"><span>58</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>2</span></div>
-                        <div class="table_col"><span>흐ㅓ어어어엉어어ㅓ어ㅜㅡㅜㅠ</span></div>
-                        <div class="table_col"><span>jonghoHi</span></div>
-                        <div class="table_col"><span>2024.05.18</span></div>
-                        <div class="table_col"><span>50</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>3</span></div>
-                        <div class="table_col"><span>어쩌라고요</span></div>
-                        <div class="table_col"><span>jonghobabo</span></div>
-                        <div class="table_col"><span>2024.04.01</span></div>
-                        <div class="table_col"><span>35</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="/index/crud/detail.html">
-                        <div class="table_col mob_hidden"><span>4</span></div>
-                        <div class="table_col"><span>VVS</span></div>
-                        <div class="table_col"><span>jonghoV</span></div>
-                        <div class="table_col"><span>2024.01.09</span></div>
-                        <div class="table_col"><span>1</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
-                    <div class="table_row">
-                      <a href="javascript:;">
-                        <div class="table_col mob_hidden"><span>데이터 1</span></div>
-                        <div class="table_col"><span>데이터 2</span></div>
-                        <div class="table_col"><span>데이터 3</span></div>
-                        <div class="table_col"><span>데이터 4</span></div>
-                        <div class="table_col"><span>데이터 5</span></div>
-                      </a>
-                    </div>
+                  	</div>
+                  </c:forEach>
                   </div>
                   <div class="bottom_box">
-                    <div class="navi_box">
-                      <a href="#" class="page_navi arr_navi start_arr">
-                        <img class="navi_icon start_navi" src="../../image/icon/pagination.png" alt="start navi 로고">
-                      </a>
-                      <a href="#" class="page_navi cpage">1</a>
-                      <a href="#" class="page_navi">2</a>
-                      <a href="#" class="page_navi">3</a>
-                      <a href="#" class="page_navi">4</a>
-                      <a href="#" class="page_navi arr_navi">
-                        <img class="navi_icon" src="../../image/icon/pagination.png" alt="end navi 로고">
-                      </a>
+                    <div class="navi_box" id="pagination">
                     </div>
                     <div class="btn_box">
                       <button class="write_btn" id="write_btn">작성하기</button>
@@ -484,5 +198,38 @@
         </div>
       </div>
     </div>
+    <script>
+    // 페이지네이션 스크립트
+	let pageNation = $("#pagination");
+	let cpage = ${cpage};
+	let record_total_count = ${record_total_count};
+	let record_count_per_page = ${record_count_per_page};
+	let navi_count_per_page = ${navi_count_per_page};
+	let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+	
+	// 네비게이터의 시작 값
+	let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+	// 네비게이터의 끝 값 
+	let endNavi = startNavi + navi_count_per_page - 1;
+	
+	if (endNavi > pageTotalCount) {
+	    endNavi = pageTotalCount;
+	}
+	
+	let needNext = endNavi < pageTotalCount;
+	let needPrev = startNavi > 1;
+	
+	pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/list.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+	
+	for (let i = startNavi; i <= endNavi; i++) {
+	    if (cpage == i) {
+	        pageNation.append("<a class='page_navi active' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+	    } else {
+	        pageNation.append("<a class='page_navi' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+	    }
+	}
+	
+	pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/list.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
+    </script>
 </body>
 </html>
