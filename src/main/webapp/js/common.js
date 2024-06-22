@@ -217,55 +217,66 @@ $(document).ready(function () {
   // 마이페이지 계정관리
 
   document.getElementById('edit_button').addEventListener('click', function () {
-    // 모든 input 요소를 선택
-    const inputs = document.querySelectorAll('.my_account input');
+  // 모든 input 요소를 선택
+  const inputs = document.querySelectorAll('.my_account input');
 
-    // 각 input 요소의 readonly 속성을 제거하고 border 스타일을 추가
-    inputs.forEach((input) => {
-      input.removeAttribute('readonly');
-      input.style.border = '1px solid #ffffff';
-    });
-
-    // 비밀번호 관련 라벨과 input을 표시
-    const passwordLabel = document.querySelector('label[for="password"]');
-    const passwordInput = document.getElementById('password');
-
-    if (passwordLabel && passwordInput) {
-      passwordLabel.style.display = 'block';
-      passwordInput.style.display = 'block';
-      passwordInput.style.border = '1px solid #ffffff'; // 비밀번호 input에도 border 스타일 추가
+  // 각 input 요소의 readonly 속성을 제거하고 border 스타일을 추가
+  inputs.forEach((input) => {
+    // 원래 값을 data-original-value 속성에 저장
+    if (!input.hasAttribute('data-original-value')) {
+      input.setAttribute('data-original-value', input.value);
     }
-
-    // 버튼 표시/숨기기
-    document.getElementById('edit_button').style.display = 'none';
-    document.getElementById('edit_actions').style.display = 'flex';
+    input.removeAttribute('readonly');
+    input.style.border = '1px solid #ffffff';
   });
 
-  document
-    .getElementById('cancel_button')
-    .addEventListener('click', function () {
-      // 모든 input 요소를 선택
-      const inputs = document.querySelectorAll('.my_account input');
+  // 비밀번호 관련 라벨과 input을 표시
+  const passwordLabel = document.querySelector('label[for="password"]');
+  const passwordInput = document.getElementById('password');
 
-      // 각 input 요소의 readonly 속성을 다시 추가하고 border 스타일 제거
-      inputs.forEach((input) => {
-        input.setAttribute('readonly', true);
-        input.style.border = 'none';
-      });
+  if (passwordLabel && passwordInput) {
+    passwordLabel.style.display = 'block';
+    passwordInput.style.display = 'block';
+    passwordInput.style.border = '1px solid #ffffff'; // 비밀번호 input에도 border 스타일 추가
+  }
 
-      // 비밀번호 관련 라벨과 input을 숨기기
-      const passwordLabel = document.querySelector('label[for="password"]');
-      const passwordInput = document.getElementById('password');
+  // 버튼 표시/숨기기
+  document.getElementById('edit_button').style.display = 'none';
+  document.getElementById('edit_actions').style.display = 'flex';
+});
 
-      if (passwordLabel && passwordInput) {
-        passwordLabel.style.display = 'none';
-        passwordInput.style.display = 'none';
-      }
+document.getElementById('cancel_button').addEventListener('click', function () {
+  // 모든 input 요소를 선택
+  const inputs = document.querySelectorAll('.my_account input');
 
-      // 버튼 표시/숨기기
-      document.getElementById('edit_button').style.display = 'inline';
-      document.getElementById('edit_actions').style.display = 'none';
-    });
+  // 각 input 요소의 readonly 속성을 다시 추가하고 border 스타일 제거
+  inputs.forEach((input) => {
+    // data-original-value 속성에 저장된 원래 값으로 복원
+    const originalValue = input.getAttribute('data-original-value');
+    if (originalValue !== null) {
+      input.value = originalValue;
+    }
+    input.setAttribute('readonly', true);
+    input.style.border = 'none';
+  });
+
+  // 비밀번호 관련 라벨과 input을 숨기기
+  const passwordLabel = document.querySelector('label[for="password"]');
+  const passwordInput = document.getElementById('password');
+
+  if (passwordLabel && passwordInput) {
+    passwordLabel.style.display = 'none';
+    passwordInput.style.display = 'none';
+  }
+
+  // 버튼 표시/숨기기
+  document.getElementById('edit_button').style.display = 'inline';
+  document.getElementById('edit_actions').style.display = 'none';
+});
+
+
+
+
 
   // 드롭다운 메뉴
   $('.tab-dropdown').on('change', function () {

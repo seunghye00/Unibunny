@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import dao.BoardDAO;
 import dao.Duptype;
 import dao.MemberDAO;
+import dao.ReplyDAO;
 import dto.BoardDTO;
 import dto.MemberDTO;
 
@@ -89,18 +90,42 @@ public class MemberController extends HttpServlet {
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
 				System.out.println("user1의 회원정보 가져오기완료");
 				int board_count = BoardDAO.getInstance().searchBoardCount(id);
+				int reply_count = ReplyDAO.getInstance().searchReplyCount(id);
 //				my_info : 해당 멤버의 칼럼들
 				request.setAttribute("my_info", mdto );
 //				board_count : 해당 멤버의 게시물 작성 수
 				request.setAttribute("board_count", board_count );
-				
+				request.setAttribute("reply_count", reply_count );
 				
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 				
 				
+			}else if(cmd.equals("/edit.member")) {
+				
+				String id = (String)request.getSession().getAttribute("loginID"); //변조의 가능성이 있기때문에, 세션에서 받아와야한다.
+				String pw = request.getParameter("pw");
+				String nickname = request.getParameter("nickname");
+				String phone = request.getParameter("phone");
+				String email = request.getParameter("email");
+				String address1 = request.getParameter("address1");
+				String address2 = request.getParameter("address2");
+				String postcode = request.getParameter("postcode");
+				
+				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 0));
+				
+				response.sendRedirect("/mypage.member");
+			}else if(cmd.equals("/account.member")) {
+				System.out.println("mypage요청");
+				String id = (String)request.getSession().getAttribute("loginID");
+				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
+				System.out.println("user1의 회원정보 가져오기완료");
+				
+				request.setAttribute("my_info", mdto );
+//				
+				request.setAttribute("activeTab", "myAccount");
+				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
+			
 			}
-			
-			
 			}
 		catch (Exception e) {
 			e.printStackTrace();
