@@ -416,10 +416,11 @@ function click_option(element) {
 			if ($(element).hasClass("board_like")) {
 				// 게시글 좋아요 취소
 				$.ajax({
-					url: "/unlike.board",
+					url: "/unlikes.board",
 					data: { board_seq: get_board_seq() }
 				}).done(function(resp) {
 					// 게시글 좋아요 수 변경
+					console.log(resp);
 					$(".board_like").children("p").text(resp);
 				});
 			} else {
@@ -450,10 +451,11 @@ function click_option(element) {
 			if ($(element).hasClass("board_like")) {
 				// 게시글 좋아요
 				$.ajax({
-					url: "/like.board",
+					url: "/likes.board",
 					data: { board_seq: get_board_seq() }
 				}).done(function(resp) {
 					// 게시글 좋아요 수 변경
+					console.log(resp);
 					$(".board_like").children("p").text(resp);
 				});
 			} else {
