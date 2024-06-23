@@ -13,6 +13,77 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <script defer src="../../../js/common.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+/* 페이지네이션 스타일 */
+.bottom_box {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  position: relative;
+  min-height: 45px;
+}
+
+.navi_box {
+  width: 100%;
+  font-size: 18px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.navi_box a {
+  padding: 0 20px;
+}
+
+.navi_box .arr_navi {
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.navi_box .arr_navi::after {
+  background-color: var(--color-white);
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 5px;
+}
+
+.navi_box .cpage {
+  color: var(--color-yellow);
+}
+
+.navi_box .page_navi .navi_icon {
+  width: 20px;
+  height: 20px;
+  top: 4px;
+  z-index: 1;
+}
+
+.navi_box .page_navi .start_navi {
+  rotate: 180deg;
+}
+
+.navi_box .start_arr.disabled,
+.navi_box .end_arr.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.navi_box a.active {
+  color: var(--color-yellow);
+}
+	
+
+</style>
+
 </head>
 <body>
 <div class="wrapper">
@@ -546,17 +617,17 @@
       let needNext = endNavi < pageTotalCount;
       let needPrev = startNavi > 1;
 
-      pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/list.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+      pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/myboard.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
 
       for (let i = startNavi; i <= endNavi; i++) {
           if (cpage == i) {
-              pageNation.append("<a class='page_navi active' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+              pageNation.append("<a class='page_navi active' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
           } else {
-              pageNation.append("<a class='page_navi' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+              pageNation.append("<a class='page_navi' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
           }
       }
 
-      pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/list.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
+      pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/myboard.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
     </script>
 </div>
 </body>

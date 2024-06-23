@@ -51,15 +51,60 @@ public class BoardController extends HttpServlet {
 				List<BoardDTO> list = dao.selectListAll(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
 						cpage * pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
-			}else if (cmd.equals("/myboard.board")) {
-				System.out.println("회원의 게시글 조회");
-				String id = (String)request.getSession().getAttribute("loginID");
+			}
+//				else if (cmd.equals("/myboard.board")) {
+			
+//				System.out.println("회원의 게시글 조회");
+//				String id = (String)request.getSession().getAttribute("loginID");
+//				
+//				List<BoardDTO> list = dao.searchMyBoardList(id);
+//				System.out.println("게시글 조회 완료");
+//				request.setAttribute("mylist", list);
+//				request.setAttribute("activeTab", "myPosts");
+//				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
 				
-				List<BoardDTO> list = dao.searchMyBoardList(id);
-				System.out.println("게시글 조회 완료");
-				request.setAttribute("mylist", list);
-				request.setAttribute("activeTab", "myPosts");
-				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+//			}
+				else if (cmd.equals("/myboard.board")) {
+					
+					String id = (String)request.getSession().getAttribute("loginID");
+					System.out.println("진입");
+					String pcpage = request.getParameter("cpage");
+					if( pcpage == null) {
+						pcpage = "1";
+					}
+					int cpage = Integer.parseInt(pcpage);
+					System.out.println("회원의 게시글 조회");
+					
+					List<BoardDTO> list = dao.searchMyBoardList(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+							cpage * pagination.recordCountPerPage,id);
+					System.out.println("게시글 조회 완료");
+					
+					request.setAttribute("mylist", list);
+					request.setAttribute("cpage", cpage);
+					request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
+					request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
+					request.setAttribute("record_total_count", dao.getRecordCount());	
+					request.setAttribute("activeTab", "myPosts");
+					request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				
+				
+			
+				
+				
+				
+				
 				
 			}
 		} catch (Exception e) {
