@@ -175,6 +175,20 @@ public MemberDTO searchProfileInfo(String id) throws Exception{
 		}
 
 
+	public int deleteMember(String id) throws Exception {
+		
+		String sql = "delete from member where userid = ?";
+		try(
+				Connection con = this.getConnection();	
+				PreparedStatement pstat = con.prepareStatement(sql);
+				 
+				){	
+			pstat.setString(1,id);
+			int result = pstat.executeUpdate();
+		return result;
+		}
+	}
+	
 
     
     

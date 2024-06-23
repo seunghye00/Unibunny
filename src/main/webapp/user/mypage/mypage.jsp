@@ -114,11 +114,13 @@
                   </div>
                   <ul role="menubar">
                     <li class="tab_item" role="none">
-                      <button>로그아웃</button>
+                      <button type="button" id="logout">로그아웃</button>
                     </li>
                   </ul>
                 </div>
               </div>
+
+
 
               <!-- 프로필 상세내용(모바일 마이페이지 메인화면) -->
               <div class="profile_wrapper">
@@ -221,11 +223,14 @@
                       <ul>
                           <li><label>계정 삭제하기</label></li>
                       </ul>
-                          <button>회원 탈퇴</button>
+                          <button type="button" id="memberout">회원 탈퇴</button>
                   </div>
               </div>
                 </div>
 			</form>
+
+			
+
 
                 <!-- 게임 기록 확인 -->
                 <div class="profile_contents_wrap">
@@ -448,6 +453,17 @@
 
            
             <script>
+            
+            $("#logout").on("click",function(){
+				location.href="/logout.member";
+			})
+			
+			$("#memberout").on("click",function(){
+				if(confirm("정말 탈퇴 하시겠습니까?")) {
+					location.href="/memberout.member";
+				}
+				})
+            
             document.addEventListener("DOMContentLoaded", function() {
             	document.getElementById("btnMyProfile").addEventListener("click", function() {
                     window.location.href = "/mypage.member";
@@ -503,6 +519,13 @@
       </div>
     </div>
     <script>
+    
+    
+		
+    
+    
+    
+    
       // 페이지네이션 스크립트
       let pageNation = $("#pagination");
       let cpage = ${cpage};

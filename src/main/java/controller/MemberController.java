@@ -88,7 +88,7 @@ public class MemberController extends HttpServlet {
 				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
-				System.out.println("user1의 회원정보 가져오기완료");
+				System.out.println("회원정보 가져오기완료");
 				int board_count = BoardDAO.getInstance().searchBoardCount(id);
 				int reply_count = ReplyDAO.getInstance().searchReplyCount(id);
 //				my_info : 해당 멤버의 칼럼들
@@ -125,7 +125,33 @@ public class MemberController extends HttpServlet {
 				request.setAttribute("activeTab", "myAccount");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 			
+			}else if(cmd.equals("/memberout.member")) {
+				
+				
+				HttpSession session = request.getSession();
+				
+				
+				String id = (String) session.getAttribute("loginID");
+				System.out.println((String) session.getAttribute("loginID"));
+				mdao.deleteMember(id);
+//				session.invalidate(); //무효화 -> 해당하는 명령쓰면 세션 다 날라감
+				
+				
+				
+				System.out.println("회원탈퇴 성공");
+				
+				response.sendRedirect("/index.jsp");
+			}else if(cmd.equals("/logout.member")){
+				
+				HttpSession session = request.getSession();
+				session.invalidate(); //무효화 -> 해당하는 명령쓰면 세션 다 날라감
+
+				response.sendRedirect("/index.jsp");
+			
 			}
+			
+			
+			
 			}
 		catch (Exception e) {
 			e.printStackTrace();
