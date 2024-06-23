@@ -110,10 +110,11 @@ public class MemberDAO {
     }
     
     
-//    마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임,가입날짜)
+
     
 public MemberDTO searchProfileInfo(String id) throws Exception{
-		
+//  마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임,가입날짜 등)
+	
 		String sql = "select * from member where userid = ?";
 	
 			
@@ -154,6 +155,7 @@ public MemberDTO searchProfileInfo(String id) throws Exception{
 
 	public int updateUserInfo(MemberDTO dto) throws Exception {
 //	해당 유저의 id로 회원의 정보를 수정한다.
+//	마이 페이지의 계정 관리 기능
 			String sql = "update member set nickname = ?, pw = ?, phone = ?, email = ?, address1 = ?, address2 = ?, postcode = ? where userid = ?";
 			try(
 					Connection con = this.getConnection();	
@@ -175,8 +177,10 @@ public MemberDTO searchProfileInfo(String id) throws Exception{
 		}
 
 
+	
 	public int deleteMember(String id) throws Exception {
-		
+//		해당 회원의 정보를 삭제한다.
+//		마이페이지의 회원 탈퇴 기능
 		String sql = "delete from member where userid = ?";
 		try(
 				Connection con = this.getConnection();	

@@ -180,7 +180,7 @@
                   <div class="tab_wrapper">
                     <strong class="tab_title">고객센터</strong>
                     <ul role="menubar">
-                      <li class="tab_item" role="none"><button>1:1문의</button></li>
+                      <li class="tab_item" role="none"><button id="btnmyQNA">1:1문의</button></li>
                     </ul>
                   </div>
                   <ul role="menubar">
@@ -420,18 +420,14 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>조회수</span></div>
                         </div>
+                        <c:forEach var="dto" items="${myreplylist}">
                         <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">댓글단 글1</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
+                            <div class="table_col"><span>${dto.board_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.view_count}</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">댓글단 글2</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
+                    	</c:forEach>
                       </div>
                     </div>
                   </div>
@@ -461,18 +457,14 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>조회수</span></div>
                         </div>
+                        <c:forEach var="dto" items="${mybookmark}">
                         <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">북마크한 글1</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
+                            <div class="table_col"><span>${dto.board_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.view_count}</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">북마크한 글2</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
+                    	</c:forEach>
                       </div>
                     </div>
                   </div>
@@ -502,18 +494,14 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>답변 여부</span></div>
                         </div>
+                        <c:forEach var="dto" items="${myqna}">
                         <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">문의 글1</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>N</span></div>
+                            <div class="table_col"><span>${dto.question_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.question_seq}">${dto.question_title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.answer_yn}</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">문의 글2</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>N</span></div>
-                        </div>
+                    	</c:forEach>
                       </div>
                     </div>
                   </div>
@@ -546,12 +534,18 @@
                     window.location.href = "/myboard.board";
                 });
                 document.getElementById("btnComments").addEventListener("click", function() {
-                    window.location.href = "/mycomments.board";
+                    window.location.href = "/myreply.board";
                 });
                 document.getElementById("btnBookmarks").addEventListener("click", function() {
-                    window.location.href = "/mybookmarks.board";
+                    window.location.href = "/mybookmark.board";
+                });
+                document.getElementById("btnmyQNA").addEventListener("click", function() {
+                    window.location.href = "/myqna.qna";
                 });
 
+                
+                
+                
                 // 서버에서 전달된 activeTab 값을 읽어 해당 탭을 활성화
                 const activeTab = "${activeTab}";
                 if (activeTab) {

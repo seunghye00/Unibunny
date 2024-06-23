@@ -33,6 +33,10 @@ public class FilesController extends HttpServlet {
 		
 		try {
 			if(cmd.equals("/uploadProfile.file")) {
+//				회원이 선택한 프로필 사진을 서버로 업로드 함
+//				마이페이지 프로필 편집 이후 적용이 될때 실행
+//				서버에 프로필 사진을 업로드하고, DB의 회원 테이블에 프로필 사진 정보를 저장함
+				
 				System.out.println("파일 업로드 요청 처리 시작");
 				
 				// getRealPath를 사용하여 실제 경로를 확인

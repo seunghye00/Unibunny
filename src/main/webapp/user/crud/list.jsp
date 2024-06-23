@@ -140,7 +140,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- 추후 ajax로 데이터 받아와서 반복문으로 데이터 입력할 부분 -->
+                  
                   <div class="list_table recent_list">
       
                     <div class="table_row table_header">

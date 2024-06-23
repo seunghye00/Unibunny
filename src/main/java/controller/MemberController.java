@@ -85,6 +85,9 @@ public class MemberController extends HttpServlet {
 				response.sendRedirect("/index.jsp");
 
 			}else if(cmd.equals("/mypage.member")) {
+//				마이페이지에 진입 시, 회원의 정보를 조회해 줌
+//				회원의 프로필 이미지, 가입날짜, 게시물 수, 댓글 단 수 등등
+				
 				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
@@ -101,6 +104,8 @@ public class MemberController extends HttpServlet {
 				
 				
 			}else if(cmd.equals("/edit.member")) {
+//				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
+//				회원 정보 수정
 				
 				String id = (String)request.getSession().getAttribute("loginID"); //변조의 가능성이 있기때문에, 세션에서 받아와야한다.
 				String pw = request.getParameter("pw");
@@ -115,6 +120,8 @@ public class MemberController extends HttpServlet {
 				
 				response.sendRedirect("/mypage.member");
 			}else if(cmd.equals("/account.member")) {
+//				마이페이지 계정관리에서 회원의 정보를 뽑아옴
+				
 				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
@@ -126,8 +133,9 @@ public class MemberController extends HttpServlet {
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 			
 			}else if(cmd.equals("/memberout.member")) {
-				
-				
+//				로그인한 유저의 세션을 날리고, 회원의 정보를 삭제한다
+//				마이 페이지 계정관리 -> 회원 탈퇴 기능
+		
 				HttpSession session = request.getSession();
 				
 				
@@ -142,6 +150,8 @@ public class MemberController extends HttpServlet {
 				
 				response.sendRedirect("/index.jsp");
 			}else if(cmd.equals("/logout.member")){
+//				로그인한 유저의 세션을 날림
+//				로그아웃 기능
 				
 				HttpSession session = request.getSession();
 				session.invalidate(); //무효화 -> 해당하는 명령쓰면 세션 다 날라감
