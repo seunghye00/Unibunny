@@ -623,7 +623,7 @@
   z-index: 0;
 }
 
-.cont_box .cont_body form {
+.cont_box .cont_body .board_box {
   padding: 10px;
 }
 
@@ -651,8 +651,29 @@
   background-color: var(--color-white);
 }
 
-.cont_box .cont_body .btn_box .mark_option {
+.cont_box .cont_body .btn_box{
+  position: relative;	
+}
+
+.cont_box .cont_body .btn_box .file_option {
   margin-right: 20px;
+}
+
+.cont_box .cont_body .btn_box .file_list {
+  display: none;
+  position: absolute;
+  background-color: var(--color-files);
+  right: 2.5%;
+  top: 120%;
+  padding: 0 12px;
+  font-size: 14px;
+  border-radius: 10px;
+  z-index: 20;
+}
+
+.cont_box .cont_body .btn_box .file_list .down_file{
+  padding: 10px;
+  width: 100%
 }
 
 .cont_box .cont_body .board_head .board_info {
@@ -745,7 +766,7 @@
 
 .cont_box .cont_body .btn_box .likes_option {
   min-width: 90px;
-  padding: 13px 17px;
+  padding: 13px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -757,17 +778,17 @@
   padding-left: 5px;
 }
 
-.cont_box .cont_body .btn_box .likes_option span {
+.cont_box .cont_body .btn_box .likes_option p {
   color: var(--color-text);
   font-size: 18px;
   font-weight: 500;
 }
 
 .cont_box .cont_body .comm_box {
-  min-height: 200px;
   color: var(--color-text);
   z-index: 3;
   position: relative;
+  padding: 0 10px;
 }
 
 .cont_box .cont_body .comm_box .write_comm {
@@ -777,6 +798,9 @@
 
 .cont_box .cont_body .comm_box .write_comm .input_comm {
   width: 85%;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .cont_box .cont_body .comm_box .write_comm .input_comm .input_box {
@@ -784,8 +808,8 @@
   color: var(--color-black);
   width: 100%;
   height: 100%;
-  border-radius: 10px;
   padding: 10px;
+  overflow: auto;
 }
 
 .cont_box .cont_body .comm_box .write_comm .btn_box {
@@ -796,7 +820,7 @@
 
 .cont_box .cont_body .comm_box .write_comm .btn_box .write_btn {
   width: 85%;
-  height: 90%;
+  height: 100%;
   border-radius: 10px;
 }
 
@@ -806,6 +830,13 @@
 
 .cont_box .cont_body .comm_box .comm_list {
   min-height: 120px;
+}
+
+.cont_box .cont_body .comm_box .comm_list .no_comm{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
 }
 
 .cont_box .cont_body .comm_box .comm_list .comm {
@@ -2409,6 +2440,12 @@
     width: 25%;
     font-size: 16px;
   }
+  .cont_box .cont_body .board_head .board_info>div:nth-child(2) {
+    width: 35%;
+  }
+  .cont_box .cont_body .board_head .board_info>div:nth-child(3) {
+    width: 15%;
+  }
 
   .cont_box .cont_body .board_head .edit_box {
     width: 100%;
@@ -2429,7 +2466,8 @@
   }
 
   .cont_box .cont_body .comm_box .comm_list .comm .comm_info div {
-    width: 25%;
+    min-width: 25%;
+    width : fit-content;
   }
 
   .cont_box .cont_body .comm_box .comm .btn_box .write_btn {
@@ -2479,6 +2517,12 @@
   /* 게시판 디테일 페이지 */
   .cont_box .cont_body .board_head .board_info>div:not(.edit_box) {
     width: 18%;
+  }
+    .cont_box .cont_body .board_head .board_info>div:nth-child(2) {
+    width: 22%;
+  }
+  .cont_box .cont_body .board_head .board_info>div:nth-child(3) {
+    width: 14%;
   }
 
   .cont_box .cont_body .board_head .edit_box {
