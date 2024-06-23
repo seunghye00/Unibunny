@@ -151,7 +151,24 @@ public MemberDTO searchProfileInfo(String id) throws Exception{
 		return null;
 	}
     
-
+	// 세션에 저장된 로그인 ID로 회원의 닉네임을 조회하는 메서드
+	public String getNickname(String id) throws Exception{
+		
+		String sql = "select nickname from member where userid = ?";
+		
+		try(Connection con = this.getConnection();	
+			PreparedStatement pstat = con.prepareStatement(sql);){
+			pstat.setObject(1,id);
+			try(ResultSet rs = pstat.executeQuery();){
+				// 수정할 코드
+				if(rs.next()) {
+					return rs.getString("nickname");
+				}
+				// 임시 데이터 리턴
+				return "test_user";
+			}
+		}
+	}
     
     
     
