@@ -14,15 +14,13 @@ public class BoardDTO {
 	private int game_id;
 	private String nickname;
 	
-	public BoardDTO(int board_seq, String title, String content, Timestamp write_date, int view_count, int thumbs_up,
-			String delete_yn, Timestamp delete_date, int game_id, String  nickname) {
+	public BoardDTO(int board_seq, String title, String content, Timestamp write_date, int view_count, String delete_yn, Timestamp delete_date, int game_id, String  nickname) {
 		super();
 		this.board_seq = board_seq;
 		this.title = title;
 		this.content = content;
 		this.write_date = write_date;
 		this.view_count = view_count;
-		this.thumbs_up = thumbs_up;
 		this.delete_yn = delete_yn;
 		this.delete_date = delete_date;
 		this.game_id = game_id;
@@ -71,14 +69,6 @@ public class BoardDTO {
 	
 	public void setView_count(int view_count) {
 		this.view_count = view_count;
-	}
-	
-	public int getThumbs_up() {
-		return thumbs_up;
-	}
-	
-	public void setThumbs_up(int thumbs_up) {
-		this.thumbs_up = thumbs_up;
 	}
 	
 	public String getDelete_yn() {
