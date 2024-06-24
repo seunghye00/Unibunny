@@ -89,7 +89,7 @@
 														<div class="title">
 															<div id="board_title">${dto.title }</div>
 															<div class="btn_box">
-																<button class="option_btn mark_option" type="button">
+																<button class="option_btn mark_option" id="bookmark_btn" type="button">
 																	<i class="fa-regular fa-bookmark option_icon"></i>
 																	<i class="fa-solid fa-bookmark option_icon"></i>
 																</button>

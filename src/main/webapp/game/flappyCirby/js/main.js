@@ -1,7 +1,6 @@
 var game = new Phaser.Game(288, 505, Phaser.CANVAS, 'game');
-
+var gameId = "1";
 game.States = {};
-
 game.States.boot = function() {
 	this.preload = function() {
 		if (typeof GAME !== 'undefined') {
@@ -218,27 +217,6 @@ game.States.play = function() {
 		this.stopGame();
 		if (show_text) this.showGameOverText();
 	};
-
-	// 점수 전송 함수
-	this.sendScore = function(score, gameId, nickname, logSeq) {
-		$.ajax({
-			url: '/submit.score', // 서버의 점수 처리 URL
-			type: 'POST',
-			data: {
-				score: score,
-				gameId: gameId,
-				nickname: nickname,
-				logSeq: logSeq
-			},
-			success: function(response) {
-				console.log('Score submitted successfully:', response);
-			},
-			error: function(error) {
-				console.error('Error submitting score:', error);
-			},
-		});
-	};
-
 	this.showGameOverText = function() {
 		this.scoreText.destroy();
 		game.bestScore = game.bestScore || 0;
@@ -290,7 +268,7 @@ game.States.play = function() {
 		this.gameOverGroup.y = 30;
 
 		// 점수 전송
-		this.sendScore(this.score);
+		CommonFunctions.sendScore(this.score, gameId);
 	};
 
 	this.resetPipe = function(topPipeY, bottomPipeY) {

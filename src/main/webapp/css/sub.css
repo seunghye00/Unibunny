@@ -94,6 +94,8 @@
   display: block;
   padding: 20px 0px;
   padding-left: 10px;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .table_col span {
@@ -102,6 +104,8 @@
   display: block;
   padding: 15px 0px 15px 10px;
   text-align: left;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .table_row .table_col:last-child span {

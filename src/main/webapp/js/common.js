@@ -295,6 +295,215 @@ $(document).ready(function() {
 	});
 });
 
+// 커뮤니티 게시판 테이블 조회 스크립트
+// 테이블 담을 컨테이너 변수
+let listContainer = $(".crud_table");
+let listNoticeContainer = $(".notice_table");
+
+// 페이지네이션 변수 설정
+let cpage, record_total_count, record_count_per_page = 10, navi_count_per_page = 5;
+
+// 초기 페이지네이션 변수 설정
+function initPaginationVariables(cpageParam, recordTotalCount) {
+	cpage = cpageParam;
+	record_total_count = recordTotalCount;
+}
+
+// 최신순 버튼 클릭 시
+$("#recent_btn").on("click", function() {
+	let apiUrl = "/list.board";
+	updateUrlAndFetchData(apiUrl, 1);
+});
+
+// 좋아요 버튼 클릭 시
+$("#likes_btn").on("click", function() {
+	let apiUrl = "/like.board";
+	updateUrlAndFetchData(apiUrl, 1);
+});
+
+// 조회수 버튼 클릭 시
+$("#views_btn").on("click", function() {
+	let apiUrl = "/view.board";
+	updateUrlAndFetchData(apiUrl, 1);
+});
+
+// 데이터 가져오고 테이블 렌더링 함수
+function fetchAndRenderData(apiUrl, page) {
+	$.ajax({
+		url: apiUrl,
+		method: "GET",
+		dataType: "json",
+		data: { cpage: page, recordCountPerPage: record_count_per_page }, // 페이지 번호를 쿼리 파라미터로 전달
+	}).done(function(resp) {
+		console.log(resp); // 받은 데이터 확인
+
+		// 페이지네이션 변수 초기화
+		initPaginationVariables(page, resp.record_total_count);
+
+		// 기존의 목록 컨테이너를 비웁니다.
+		listContainer.empty();
+
+		// 테이블의 헤더 부분 생성
+		let headerRow = $("<div>").addClass("table_row table_header");
+		let headerCol1 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("번호"));
+		let headerCol2 = $("<div>").addClass("table_col").append($("<span>").text("제목"));
+		let headerCol3 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성자"));
+		let headerCol4 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성일"));
+		let headerCol5 = null;
+		let headerCol6 = null;
+
+		// 버튼에 따라 추가되는 열 처리
+		if (apiUrl === "/list.board") {
+			headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
+		} else if (apiUrl === "/like.board") {
+			headerCol5 = $("<div>").addClass("table_col mob_hidden likes_column").append($("<span>").text("추천수"));
+		} else if (apiUrl === "/view.board") {
+			headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
+		}
+
+		headerRow.append(headerCol1, headerCol2, headerCol3, headerCol4, headerCol5, headerCol6);
+		listContainer.append(headerRow);
+
+		// 데이터 반복 처리
+		if (Array.isArray(resp.data)) {
+			let startNumber = (page - 1) * record_count_per_page + 1; // 시작 번호 계산
+
+			for (let i = 0; i < resp.data.length; i++) {
+				let dto = resp.data[i];
+				let row = $("<div>").addClass("table_row");
+				let link = $("<a>").attr("href", "/user/detail.board?board_seq=" + dto.board_seq);
+				let col1 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text(startNumber + i));
+				let col2 = $("<div>").addClass("table_col").append($("<span>").text(dto.title));
+				let col3 = $("<div>").addClass("table_col").append($("<span>").text(dto.nickname));
+				let col4 = $("<div>").addClass("table_col").append($("<span>").text(dto.write_date));
+				let col5 = null;
+				let col6 = null;
+
+				// 버튼에 따라 추가되는 열 처리
+				if (apiUrl === "/list.board") {
+					col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
+				} else if (apiUrl === "/like.board") {
+					col5 = $("<div>").addClass("table_col mob_hidden likes_column").append($("<span>").text(dto.thumbs_up));
+				} else if (apiUrl === "/view.board") {
+					col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
+				}
+
+				link.append(col1, col2, col3, col4, col5, col6);
+				row.append(link);
+				listContainer.append(row);
+			}
+		} else {
+			console.error("데이터 형식이 올바르지 않습니다. 데이터가 배열이 아닙니다.");
+		}
+
+		// 페이지네이션 생성
+		renderPagination(apiUrl, page);
+
+		// URL 업데이트
+		updateUrl(apiUrl, page);
+
+		// 버튼의 active 클래스 설정
+		$("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
+		if (apiUrl === "/list.board") {
+			$("#recent_btn").addClass("active");
+		} else if (apiUrl === "/like.board") {
+			$("#likes_btn").addClass("active");
+		} else if (apiUrl === "/view.board") {
+			$("#views_btn").addClass("active");
+		}
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		// AJAX 호출이 실패했을 경우 처리할 내용
+		console.error("AJAX 호출 실패: ", textStatus, errorThrown);
+	});
+}
+
+// 페이지네이션 생성 함수
+function renderPagination(apiUrl, currentPage) {
+	// 페이지네이션 초기 설정
+	let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+	let startNavi = Math.floor((currentPage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+	let endNavi = startNavi + navi_count_per_page - 1;
+
+	if (endNavi > pageTotalCount) {
+		endNavi = pageTotalCount;
+	}
+
+	let needNext = endNavi < pageTotalCount;
+	let needPrev = startNavi > 1;
+
+	// 페이지네이션 HTML 생성
+	let pageNation = $("#pagination");
+	pageNation.empty();
+
+	pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='" + (needPrev ? "#" : "#") + "' data-page='" + (needPrev ? (startNavi - 1) : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+
+	for (let i = startNavi; i <= endNavi; i++) {
+		if (currentPage === i) {
+			pageNation.append("<a class='page_navi active' href='#' data-page='" + i + "'>" + i + "</a> ");
+		} else {
+			pageNation.append("<a class='page_navi' href='#' data-page='" + i + "'>" + i + "</a> ");
+		}
+	}
+
+	pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='" + (needNext ? "#" : "#") + "' data-page='" + (needNext ? (endNavi + 1) : "#") + "'><img class='navi_icon end_navi' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
+}
+
+// 페이지네이션 클릭 이벤트 처리
+$(document).on("click", ".page_navi:not(.disabled)", function() {
+	let nextPage = $(this).data("page");
+	let currentApiUrl = getCurrentApiUrl();
+	updateUrlAndFetchData(currentApiUrl, nextPage);
+});
+
+// 현재 선택된 API 경로 반환 함수
+function getCurrentApiUrl() {
+	if ($("#recent_btn").hasClass("active")) {
+		return "/list.board";
+	} else if ($("#likes_btn").hasClass("active")) {
+		return "/like.board";
+	} else if ($("#views_btn").hasClass("active")) {
+		return "/view.board";
+	}
+	// 기본적으로 최신순으로 설정
+	return "/list.board";
+}
+
+// URL 업데이트 및 데이터 가져오는 함수
+function updateUrlAndFetchData(apiUrl, page) {
+	updateUrl(apiUrl, page);
+	fetchAndRenderData(apiUrl, page);
+}
+
+// URL 업데이트 함수
+function updateUrl(apiUrl, page) {
+	history.pushState(null, null, "?api=" + apiUrl + "&page=" + page);
+}
+
+// 초기 페이지 로드 시 실행
+$(document).ready(function() {
+	// 초기에 URL 파라미터에 따라 데이터 불러오기
+	let urlParams = new URLSearchParams(window.location.search);
+	let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
+	let page = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
+
+	fetchAndRenderData(apiUrl, page); // 초기에는 최신순 데이터를 가져오도록 설정
+
+	// 버튼의 active 클래스 설정
+	$("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
+	if (apiUrl === "/list.board") {
+		$("#recent_btn").addClass("active");
+	} else if (apiUrl === "/like.board") {
+		$("#likes_btn").addClass("active");
+	} else if (apiUrl === "/view.board") {
+		$("#views_btn").addClass("active");
+	}
+});
+$("#views_btn").on("click", function() {
+	let apiUrl = "/view.board";
+	updateUrlAndFetchData(apiUrl, 1);
+});
+
 
 // 최신순 버튼 클릭 시
 $('#recent_btn').on('click', function() {
@@ -339,7 +548,7 @@ $('#update_btn').on('click', function(e) {
 	e.preventDefault();
 
 	let trimmedHtml = $("#summernote").html().trim();
-    $("#summernote").html(trimmedHtml);
+	$("#summernote").html(trimmedHtml);
 	console.log($("#summernote").text());
 	$('#update_board').submit();
 	// return false;
@@ -347,63 +556,63 @@ $('#update_btn').on('click', function(e) {
 
 // 게시글 수정 페이지에서 취소 버튼 클릭 시
 $('#cancel_btn').on('click', function() {
-	if (confirm("수정하신 내용은 저장되지 않습니다.")){
+	if (confirm("수정하신 내용은 저장되지 않습니다.")) {
 		location.href = '/user/detail.board?board_seq=' + board_seq;
 	}
 });
 
 // 게시글 상세 페이지에서 삭제 버튼 클릭 시
 $('#del_btn').on('click', function() {
-	if (confirm("정말로 삭제하시겠습니까?")){
+	if (confirm("정말로 삭제하시겠습니까?")) {
 		location.href = '/delete.board?board_seq=' + get_board_seq();
 	}
 });
 
 // 게시글의 seq 값을 반환하는 메서드
-function get_board_seq(){
+function get_board_seq() {
 	return $("#board_seq").text().replace('# ', '');
 }
 
 // 게시글의 파일 목록을 받아오는 메서드
-function get_file_list(){
+function get_file_list() {
 	$.ajax({
 		url: "/list.file",
 		dataType: "json",
 		data: { board_seq: get_board_seq() }
 	}).done(function(resp) {
-		
-		if(resp.length == 0){
+
+		if (resp.length == 0) {
 			// 파일이 존재하지 않는 경우 버튼 클릭 불가능
 			$(".file_option").attr("disabled", true).css("cursor", "default");
 			return 0;
 		}
-		
+
 		let file_list = $(".file_list");
 		file_list.empty();
-		
+
 		for (let i of resp) {
 			let file = $("<div>", { "class": "files" });
 			let file_name = $("<button>", { "class": "down_file" });
 			file_name.text(i.oriname);
 			file.append(file_name);
 			file_list.append(file);
-			
-			file_name.on("click", function(){
+
+			file_name.on("click", function() {
 				console.log(i.oriname);
 				console.log(i.sysname);
 				$.ajax({
 					url: "/download.file",
 					dataType: "json",
-					data: { 
+					data: {
 						oriname: i.oriname,
 						sysname: i.sysname
 					}
-				}).done(function(resp){
+				}).done(function(resp) {
 					console(resp);
 				});
 			})
 		}
-		
+
 	})
 }
 
@@ -438,6 +647,14 @@ function click_option(element) {
 		} else if ($(element).hasClass("mark_option")) {
 			// 북마크 취소 기능
 			console.log("북마크 취소");
+			$.ajax({
+				url: "/unsave.bookmark",
+				data: { board_seq: get_board_seq() },
+				type: 'POST',
+			}).done(function(resp) {
+				// 북마크 취소 완료 후 처리
+				$(element).removeClass('active');
+			});
 		} else {
 			// 파일 목록 닫기 기능
 			$(".file_list").hide();
@@ -471,13 +688,22 @@ function click_option(element) {
 				});
 			}
 		} else if ($(element).hasClass("mark_option")) {
-			// 북마크 취소 기능
-			console.log("북마크 취소");
+			// 북마크 기능
+			console.log("북마크 등록");
+			$.ajax({
+				url: "/save.bookmark",
+				data: { board_seq: get_board_seq() },
+				type: 'POST',
+			}).done(function(resp) {
+				// 북마크 저장 전송
+				console.log(resp);
+				$(element).addClass('active');
+			});
 		} else {
 			// 파일이 존재하는 경우 파일 목록 열기 기능 
-			if(get_file_list() != 0 && element != null ){
+			if (get_file_list() != 0 && element != null) {
 				$(".file_list").show();
-			} 
+			}
 		}
 		$(element).children('.fa-regular').hide();
 		$(element).children('.fa-solid').show();
@@ -485,13 +711,18 @@ function click_option(element) {
 };
 
 // 추천 or 북마크 or 파일 버튼 클릭 시 
-$('.option_btn').on('click', function(){
+$('.option_btn').on('click', function() {
 	click_option($(this));
+});
+
+// 댓글 좋아요 버튼 클릭 시
+$("#comm_likes_btn").click(function() {
+	get_comm_list("thumbs_up"); // 추천수에 따라 정렬된 목록 불러오기
 });
 
 // 댓글 목록 불러오는 메서드
 function get_comm_list(order_by) {
-	if(order_by == "default"){
+	if (order_by == "default") {
 		// 정렬 기준이 dafault면 최신순으로 설정
 		order_by = "write_date";
 	}
@@ -508,10 +739,10 @@ function get_comm_list(order_by) {
 
 		let comm_list = $(".comm_list");
 		comm_list.empty();
-		
-		if(resp.length == 0){
+
+		if (resp.length == 0) {
 			// 댓글이 존재하지 않는 경우
-			let no_comm = $("<div>", { "class" : "no_comm"});
+			let no_comm = $("<div>", { "class": "no_comm" });
 			no_comm.text("댓글이 존재하지 않습니다.");
 			comm_list.append(no_comm);
 			return;
@@ -528,12 +759,12 @@ function get_comm_list(order_by) {
 			comm_date.text("작성일 : " + i.write_date);
 			comm_info.append(comm_seq, comm_writer, comm_date);
 
-			let comm_cont = $("<div>", { "class": "comm_cont" , "contenteditable": "false"});
+			let comm_cont = $("<div>", { "class": "comm_cont", "contenteditable": "false" });
 			comm_cont.text(i.content);
 
 			let edit_box = $("<div>", { "class": "edit_box" });
 			if (true) {
-			// if (i.writer == "${nickname}") {
+				// if (i.writer == "${nickname}") {
 				let btn_box1 = $("<div>", { "class": "btn_box" });
 				let edit_btn = $("<button>", { "class": "write_btn comm_btn", "type": "button" });
 				edit_btn.text("수정");
@@ -563,23 +794,23 @@ function get_comm_list(order_by) {
 
 			comm.append(comm_info, comm_cont, edit_box);
 			comm_list.append(comm);
-			
-			$(".option_btn").off().on('click', function(){
+
+			$(".option_btn").off().on('click', function() {
 				click_option(this);
 			});
-			$(".comm .write_btn").off().on('click', function(){
+			$(".comm .write_btn").off().on('click', function() {
 				let choice = $(this).text();
-				
-				if (choice == "수정"){
+
+				if (choice == "수정") {
 					// 수정 버튼 클릭 시 완료 버튼 및 취소 버튼 노출
 					$(this).closest(".edit_box").find(".comm_btn").hide();
-            		$(this).closest(".edit_box").find(".edit_btn").show();
-            		
-            		$(this).closest(".comm").find(".comm_cont").attr("contenteditable", "true").focus();
+					$(this).closest(".edit_box").find(".edit_btn").show();
 
-				} else if (choice == "완료"){
+					$(this).closest(".comm").find(".comm_cont").attr("contenteditable", "true").focus();
+
+				} else if (choice == "완료") {
 					// 완료 버튼 클릭
-					if($(this).closest(".comm").find(".comm_cont").text().trim() == ""){
+					if ($(this).closest(".comm").find(".comm_cont").text().trim() == "") {
 						alert("댓글을 먼저 입력해주세요");
 						return;
 					}
@@ -592,9 +823,9 @@ function get_comm_list(order_by) {
 					}).done(function() {
 						location.reload();
 					});
-				} else if (choice == "삭제"){
+				} else if (choice == "삭제") {
 					// 삭제 버튼 클릭
-					if(confirm("정말로 삭제하시겠습니까 ?")){
+					if (confirm("정말로 삭제하시겠습니까 ?")) {
 						$.ajax({
 							url: "/delete.reply",
 							data: { reply_seq: $(this).closest(".comm").find(".comm_seq").text() }
@@ -602,13 +833,13 @@ function get_comm_list(order_by) {
 							location.reload();
 						});
 					}
-				} else if (choice == "취소"){
+				} else if (choice == "취소") {
 					// 취소 버튼 클릭
-					if(confirm("수정하신 내용은 저장되지 않습니다")){
+					if (confirm("수정하신 내용은 저장되지 않습니다")) {
 						location.reload();
 					}
 				}
-    		});
+			});
 		}
 	})
 };
@@ -660,8 +891,8 @@ $('#back_btn').on('click', function() {
 });
 
 // 작성 버튼 클릭 시
-$('#write_btn').on('click', function () {
-  location.href = '/user/crud/write_board.jsp';
+$('#write_btn').on('click', function() {
+	location.href = '/user/crud/write_board.jsp';
 });
 
 $(document).ready(function() {
@@ -757,3 +988,5 @@ $(document).ready(function() {
 	}*/
 
 });
+
+

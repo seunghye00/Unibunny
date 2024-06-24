@@ -35,6 +35,7 @@ public class BoardController extends HttpServlet {
 		BoardDAO dao = BoardDAO.getInstance();
 		Pagination pagination = new Pagination();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
+		// reponse writer 변수 저장
 		PrintWriter pw = response.getWriter();
 		try {
 			if (cmd.equals("/list.board")) {

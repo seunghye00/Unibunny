@@ -8,6 +8,7 @@
 <title>Insert title here</title>    
 <script src="../../js/phaser.min.js"></script>
 <script src="js/main.js"></script>
+<script src="../js/common.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 	body {
