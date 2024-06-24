@@ -50,12 +50,11 @@ public class BoardDAO {
 					String content = rs.getString("content");
 					Timestamp write_date = rs.getTimestamp("write_date");
 					int view_count = rs.getInt("view_count");
-					int thumbs_up = rs.getInt("thumbs_up");
 					String delete_yn = rs.getString("delete_yn");
 					Timestamp delete_date = rs.getTimestamp("delete_date");
 					int game_id = rs.getInt("game_id");
 					String nickname = rs.getString("nickname");
-					list.add(new BoardDTO(board_seq, title, content, write_date, view_count, thumbs_up, delete_yn,
+					list.add(new BoardDTO(board_seq, title, content, write_date, view_count, delete_yn,
 							delete_date, game_id, nickname));
 				}
 				return list;
@@ -82,13 +81,12 @@ public class BoardDAO {
 					String content = rs.getString("content");
 					Timestamp write_date = rs.getTimestamp("write_date");
 					int view_count = rs.getInt("view_count");
-					int thumbs_up = rs.getInt("thumbs_up");
 					String delete_yn = rs.getString("delete_yn");
 					Timestamp delete_date = rs.getTimestamp("delete_date");
 					int game_id = rs.getInt("game_id");
 					String nickname = rs.getString("nickname");
 					list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-							,thumbs_up,delete_yn,delete_date,game_id,nickname));
+							,delete_yn,delete_date,game_id,nickname));
 				}
 				return list;
 			}
@@ -115,13 +113,12 @@ public class BoardDAO {
 					String content = rs.getString("content");
 					Timestamp write_date = rs.getTimestamp("write_date");
 					int view_count = rs.getInt("view_count");
-					int thumbs_up = rs.getInt("thumbs_up");
 					String delete_yn = rs.getString("delete_yn");
 					Timestamp delete_date = rs.getTimestamp("delete_date");
 					int game_id = rs.getInt("game_id");
 					String nickname = rs.getString("nickname");
 					list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-							,thumbs_up,delete_yn,delete_date,game_id,nickname));
+							,delete_yn,delete_date,game_id,nickname));
 				}
 				return list;
 			}
@@ -173,9 +170,8 @@ public class BoardDAO {
 					dto.setContent(rs.getString(3));
 					dto.setWrite_date(rs.getTimestamp(4));
 					dto.setView_count(rs.getInt(5));
-					dto.setThumbs_up(rs.getInt(6));
-					dto.setGame_id(rs.getInt(9));
-					dto.setNickname(rs.getString(10));
+					dto.setGame_id(rs.getInt(8));
+					dto.setNickname(rs.getString(9));
 				}
 				return dto;
 			}
