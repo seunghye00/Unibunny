@@ -190,7 +190,6 @@
 										}
 									});
 						});
-	</script>
-
+</script>
 </body>
 </html>
