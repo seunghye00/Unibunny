@@ -20,13 +20,13 @@
             </h1>
             <div class="header_con">
               <ul class="header_gnb">
-                <li><a href="../list.board" class="gnb_comu"><span>커뮤니티</span></a>
+                <li><a href="/list.board" class="gnb_comu"><span>커뮤니티</span></a>
                 </li>
                 <li><a href="/user/rank/rank.jsp" class="gnb_rank"><span>랭킹</span></a>
                 </li>
                 <li><a href="/user/ourpage/ourpage.jsp" class="gnb_our"><span>OUR
                       PAGE</span></a></li>
-                <li><a href="/user/crud/faq.jsp" class="gnb_cs"><span>고객센터</span></a>
+                <li><a href="/list.faq" class="gnb_cs"><span>고객센터</span></a>
                 </li>
               </ul>
               <ul class="header_my">
@@ -50,7 +50,7 @@
                 <li><strong><a href="/list.board">커뮤니티</a></strong></li>
                 <li><strong><a href="/user/rank/rank.jsp">랭킹</a></strong></li>
                 <li><strong><a href="/user/ourpage/ourpage.jsp">OUR PAGE</a></strong></li>
-                <li><strong><a href="/user/crud/faq.jsp">고객센터</a></strong></li>
+                <li><strong><a href="/list.faq">고객센터</a></strong></li>
               </ul>
               <div class="mob_my">
                 <ul>
