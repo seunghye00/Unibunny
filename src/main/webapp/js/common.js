@@ -333,8 +333,9 @@ function fetchAndRenderData(apiUrl, page) {
 		url: apiUrl,
 		method: "GET",
 		dataType: "json",
-		data: { cpage: page, recordCountPerPage: record_count_per_page }, // 페이지 번호를 쿼리 파라미터로 전달
+		data: { cpage: page, recordCountPerPage: record_count_per_page, gameId : gameId }, // 페이지 번호를 쿼리 파라미터로 전달
 	}).done(function(resp) {
+
 		console.log(resp); // 받은 데이터 확인
 
 		// 페이지네이션 변수 초기화
@@ -470,9 +471,9 @@ function getCurrentApiUrl() {
 }
 
 // URL 업데이트 및 데이터 가져오는 함수
-function updateUrlAndFetchData(apiUrl, page) {
-	updateUrl(apiUrl, page);
-	fetchAndRenderData(apiUrl, page);
+function updateUrlAndFetchData(apiUrl, page, gameId) {
+	updateUrl(apiUrl, page, gameId);
+	fetchAndRenderData(apiUrl, page, gameId);
 }
 
 // URL 업데이트 함수
@@ -487,7 +488,7 @@ $(document).ready(function() {
 	let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
 	let page = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
 
-	fetchAndRenderData(apiUrl, page); // 초기에는 최신순 데이터를 가져오도록 설정
+	fetchAndRenderData(apiUrl, page, gameId); // 초기에는 최신순 데이터를 가져오도록 설정
 
 	// 버튼의 active 클래스 설정
 	$("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거

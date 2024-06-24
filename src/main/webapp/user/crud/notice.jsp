@@ -40,13 +40,12 @@
 										<div style="padding: 5px;"></div>
 										<ul>
 											<li class="sub_title not_link">게시글</li>
-											<li><a href="/list.board">전체 게시글</a></li>
-											<li><a href="javascript:;">게임1</a></li>
-											<li><a href="javascript:;">게임2</a></li>
-											<li><a href="javascript:;">게임3</a></li>
-											<li><a href="javascript:;">게임4</a></li>
-											<li><a href="javascript:;">게임5</a></li>
-										</ul>
+											<li><a href="/list.board" id ="board_all">전체 게시글</a></li>
+											<li><a href="javascript:;" id ="game1">게임1</a></li>
+											<li><a href="javascript:;" id ="game2">게임2</a></li>
+											<li><a href="javascript:;" id ="game3">게임3</a></li>
+											<li><a href="javascript:;" id ="game4">게임4</a></li>
+											<li><a href="javascript:;" id ="game5">게임5</a></li>
 									</div>
 								</div>
 								<select name="sub_menu" id="sub_menu" class="sub_menu">
