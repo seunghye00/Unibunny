@@ -623,9 +623,31 @@ function get_board_seq() {
 }
 
 // 게시글 상세 페이지에서 로그인된 ID의 좋아요 기록을 확인하는 메서드
-function get_likes_record(user) {
-	console.log(user);
-	//$.ajax({}).done(function(resp){});
+function get_user_record(user) {
+	// 게시글 좋아요 기록
+	$.ajax({}).done(function(resp){});
+	$.ajax({}).done(function(resp){});
+	$.ajax({}).done(function(resp){});
+}
+
+// 해당 게시글의 북마크 수와 좋아요 수를 받아오는 메서드
+function get_options_record() {
+	// 북마크 수
+	$.ajax({
+		url: "/count.bookmark",
+		dataType: "json",
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp){
+		$(".bookmark").text("스크랩 수 : " + resp);
+	});
+	// 좋아요 수
+	$.ajax({
+		url: "/count.boardLike",
+		dataType: "json",
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp){
+		$("#board_like").text(resp);
+	});
 }
 
 // 게시글의 파일 목록을 받아오는 메서드
@@ -680,12 +702,10 @@ function click_option(element) {
 			if ($(element).hasClass("board_like")) {
 				// 게시글 좋아요 취소
 				$.ajax({
-					url: "/unlikes.board",
+					url: "/delete.boardLike",
 					data: { board_seq: get_board_seq() }
-				}).done(function(resp) {
-					// 게시글 좋아요 수 변경
-					console.log(resp);
-					$(".board_like").children("p").text(resp);
+				}).done(function() {
+					get_likes();
 				});
 			} else {
 				// 댓글 좋아요 취소
@@ -723,12 +743,10 @@ function click_option(element) {
 			if ($(element).hasClass("board_like")) {
 				// 게시글 좋아요
 				$.ajax({
-					url: "/likes.board",
+					url: "/insert.boardLike",
 					data: { board_seq: get_board_seq() }
-				}).done(function(resp) {
-					// 게시글 좋아요 수 변경
-					console.log(resp);
-					$(".board_like").children("p").text(resp);
+				}).done(function() {
+					get_likes();
 				});
 			} else {
 				// 댓글 좋아요
@@ -789,7 +807,7 @@ function get_comm_list(order_by) {
 			order_by: order_by
 		}
 	}).done(function(resp) {
-
+		console.log(resp);
 		// console.log("${loginID}");
 
 		let comm_list = $(".comm_list");
@@ -911,6 +929,7 @@ $('#write_comm').on('click', function() {
 	// 작성한 댓글 내용 ajax로 전달 
 	$.ajax({
 		url: "/write.reply",
+		method: "post",
 		data: {
 			content: $('.input_box').html(),
 			board_seq: get_board_seq()

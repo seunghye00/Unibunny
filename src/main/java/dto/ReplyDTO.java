@@ -7,8 +7,14 @@ public class ReplyDTO {
 	private String nickname;
 	private String content;
 	private Timestamp write_date;
-	private int thumbs_up;
 	private int board_seq;
+	private String delete_yn;
+	public String getDelete_yn() {
+		return delete_yn;
+	}
+	public void setDelete_yn(String delete_yn) {
+		this.delete_yn = delete_yn;
+	}
 	public int getReply_seq() {
 		return reply_seq;
 	}
@@ -33,28 +39,20 @@ public class ReplyDTO {
 	public void setWrite_date(Timestamp write_date) {
 		this.write_date = write_date;
 	}
-	public int getThumbs_up() {
-		return thumbs_up;
-	}
-	public void setThumbs_up(int thumbs_up) {
-		this.thumbs_up = thumbs_up;
-	}
 	public int getBoard_seq() {
 		return board_seq;
 	}
 	public void setBoard_seq(int board_seq) {
 		this.board_seq = board_seq;
 	}
-	public ReplyDTO(int reply_seq, String nickname, String content, Timestamp write_date, int thumbs_up,
-			int board_seq) {
+	public ReplyDTO(int reply_seq, String nickname, String content, Timestamp write_date, int board_seq, String delete_yn) {
 		super();
 		this.reply_seq = reply_seq;
 		this.nickname = nickname;
 		this.content = content;
 		this.write_date = write_date;
-		
-		this.thumbs_up = thumbs_up;
 		this.board_seq = board_seq;
+		this.delete_yn = delete_yn;
 	}
 	public ReplyDTO() {
 		super();

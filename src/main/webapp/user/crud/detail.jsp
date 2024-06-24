@@ -53,7 +53,7 @@
 																	pattern="yyyy.MM.dd HH:mm" />
 															</div>
 															<div class="views">조회수 : ${dto.view_count}</div>
-															<div class="likes">스크랩 수 : ${bookmark}</div>
+															<div class="bookmark"></div>
 															<div class="edit_box">
 
 																<div class="btn_box">
@@ -82,7 +82,7 @@
 															type="button">
 															<i class="fa-regular fa-thumbs-up option_icon"></i> <i
 																class="fa-solid fa-thumbs-up option_icon"></i>
-															<p>5</p>
+															<p id="board_like"></p>
 														</button>
 													</div>
 												</div>
@@ -117,11 +117,13 @@
 							</div>
 						</div>
 					</div>
+					<jsp:include page="../../common/footer.jsp" />
 				</div>
-				<jsp:include page="../../common/footer.jsp" />
+				
 				<script>
 					$(document).ready(function () {
-						get_likes_record("${loginID}");
+						get_options_record();
+						get_user_record("test_user");
 						get_comm_list("default");
 					});
 				</script>
