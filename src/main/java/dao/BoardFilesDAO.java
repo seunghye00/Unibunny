@@ -10,21 +10,20 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import dto.BoardFilesDTO;
 
-import dto.FilesDTO;
+public class BoardFilesDAO {
 
-public class FilesDAO {
-
-   private static FilesDAO instance;
+   private static BoardFilesDAO instance;
    
-   public static synchronized FilesDAO getInstance() {
+   public static synchronized BoardFilesDAO getInstance() {
       if (instance == null) {
-         instance = new FilesDAO();
+         instance = new BoardFilesDAO();
       }
       return instance;
    }
 
-   private FilesDAO() {}
+   private BoardFilesDAO() {}
 
    private Connection getConnection() throws Exception {
       Context ctx = new InitialContext();
@@ -33,11 +32,11 @@ public class FilesDAO {
    }
 
    // board_seq로 해당 게시물의 파일 목록 조회
-   public List<FilesDTO> selectByBoardSeq(int board_seq) throws Exception {
+   public List<BoardFilesDTO> selectByBoardSeq(int board_seq) throws Exception {
       
       String sql = "select * from files where board_seq = ?";
 
-      List<FilesDTO> list = new ArrayList<>();
+      List<BoardFilesDTO> list = new ArrayList<>();
       try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
          pstat.setInt(1, board_seq);
          try (ResultSet rs = pstat.executeQuery();) {
@@ -45,7 +44,7 @@ public class FilesDAO {
                int file_seq = rs.getInt(1);
                String oriname = rs.getString(2);
                String sysname = rs.getString(3);
-               list.add(new FilesDTO(file_seq, oriname, sysname, board_seq));
+               list.add(new BoardFilesDTO(file_seq, oriname, sysname, board_seq));
             }
             return list;
          }
