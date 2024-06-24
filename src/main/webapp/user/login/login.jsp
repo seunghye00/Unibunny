@@ -1,18 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+    
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Login</title>
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<link rel="stylesheet" href="../../css/login.css">
-<script defer src="../../js/login.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<link rel="stylesheet" href="../css/login.css">
+	<script defer src="../js/login.js"></script>
+
 </head>
+
 <body>
 	<div class="login_wrap">
+
 		<div class="container">
 			<div class="login_Box">
 				<div class="site_Name">UniBunny</div>
@@ -21,7 +28,7 @@
 					<input type="text" placeholder="Id" name="userid">
 				</div>
 				<div class="pw_Input">
-					<input type="text" placeholder="Password" name="pw">
+					<input type="password" placeholder="Password" name="pw">
 				</div>
 				<div class="login_Btn">
 					<button type="submit">Login</button>
@@ -37,15 +44,17 @@
 				</div>
 				<div class="link_Change">
 					<div class="signup_Link">
-						<a href="/member/signup.jsp" id="signup_btn">회원가입</a>
+						<a href="/login/signup.jsp" id="signup_btn">회원가입</a>
 					</div>
 
 					<div class="find_Account_Link">
-						<a href="/member/findAccount.jsp" id="find_btn">계정찾기</a>
+						<a href="/login/findAccount.jsp" id="find_btn">계정찾기</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 </body>
+
 </html>

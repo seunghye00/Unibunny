@@ -4,15 +4,15 @@ import java.sql.Timestamp;
 
 public class ScoreDTO {
 	private int score_seq;
-	private String title;
+	private int score;
 	private int game_id;
 	private String nickname;
 	private	Timestamp end_time;
 	private	int log_seq;
-	public ScoreDTO(int score_seq, String title, int game_id, String nickname, Timestamp end_time, int log_seq) {
+	public ScoreDTO(int score_seq, int score, int game_id, String nickname, Timestamp end_time, int log_seq) {
 		super();
 		this.score_seq = score_seq;
-		this.title = title;
+		this.score = score;
 		this.game_id = game_id;
 		this.nickname = nickname;
 		this.end_time = end_time;
@@ -29,11 +29,11 @@ public class ScoreDTO {
 	public void setScore_seq(int score_seq) {
 		this.score_seq = score_seq;
 	}
-	public String getTitle() {
-		return title;
+	public int getScore() {
+		return score;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setScore(int score) {
+		this.score = score;
 	}
 	public int getGame_id() {
 		return game_id;
