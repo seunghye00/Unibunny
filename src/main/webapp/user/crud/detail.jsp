@@ -199,7 +199,8 @@
 				</div>
 				<script>
 					$(document).ready(function () {
-						fetchAndRenderData("/list.board", 1, "default");
+						get_likes_record("${loginID}");
+						get_comm_list("default");
 					});
 				</script>
 			</body>
