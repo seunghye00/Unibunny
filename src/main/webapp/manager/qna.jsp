@@ -94,10 +94,10 @@
                 <div class="select_subject">
                   <ul>
                     <li>
-                      <a href="../manager/faq_component.html">FAQ</a>
+                      <li><a href="/list.faq?userType=manager">FAQ</a></li>
                     </li>
                     <li>
-                      <a href="../manager/qa.html">Q&A</a>
+                      <a href="../manager/qna.jsp">Q&A</a>
                     </li>
                   </ul>
                 </div>
@@ -126,7 +126,7 @@
                       <div class="table_col"><span>푸라닭</span></div>
                       <div class="table_col"><span>블랙알리오</span></div>
                       <div class="table_col"><span>24.06.12</span></div>
-                      <div class="table_col"><span>Y</span></div>
+                      <div class="table_col"><span>N</span></div>
                     </div>
                   </a>
                   <a href="qa_detail.html" class="table_row_link">
@@ -135,7 +135,7 @@
                       <div class="table_col"><span>푸라닭</span></div>
                       <div class="table_col"><span>고추마요</span></div>
                       <div class="table_col"><span>24.06.12</span></div>
-                      <div class="table_col"><span>Y</span></div>
+                      <div class="table_col"><span>N</span></div>
                     </div>
                   </a>
                   <a href="qa_detail.html" class="table_row_link">
@@ -144,7 +144,7 @@
                       <div class="table_col"><span>푸라닭</span></div>
                       <div class="table_col"><span>콘소메이징</span></div>
                       <div class="table_col"><span>24.06.12</span></div>
-                      <div class="table_col"><span>Y</span></div>
+                      <div class="table_col"><span>N</span></div>
                     </div>
                   </a>
                   <a href="qa_detail.html" class="table_row_link">
@@ -153,7 +153,7 @@
                       <div class="table_col"><span>60계치킨</span></div>
                       <div class="table_col"><span>크크크</span></div>
                       <div class="table_col"><span>24.06.12</span></div>
-                      <div class="table_col"><span>Y</span></div>
+                      <div class="table_col"><span>N</span></div>
                     </div>
                   </a>
                   <a href="qa_detail.html" class="table_row_link">
@@ -162,7 +162,7 @@
                       <div class="table_col"><span>60계치킨</span></div>
                       <div class="table_col"><span>크랑이</span></div>
                       <div class="table_col"><span>24.06.12</span></div>
-                      <div class="table_col"><span>Y</span></div>
+                      <div class="table_col"><span>N</span></div>
                     </div>
                   </a>
                   <a href="qa_detail.html" class="table_row_link">
@@ -171,7 +171,7 @@
                       <div class="table_col"><span>60계치킨</span></div>
                       <div class="table_col"><span>하하핫</span></div>
                       <div class="table_col"><span>24.06.12</span></div>
-                      <div class="table_col"><span>Y</span></div>
+                      <div class="table_col"><span>N</span></div>
                     </div>
                   </a>
                   <a href="qa_detail.html" class="table_row_link">
@@ -180,7 +180,7 @@
                       <div class="table_col"><span>60계치킨</span></div>
                       <div class="table_col"><span>푸하핫</span></div>
                       <div class="table_col"><span>24.06.12</span></div>
-                      <div class="table_col"><span>Y</span></div>
+                      <div class="table_col"><span>N</span></div>
                     </div>
                   </a>
                 </div>
