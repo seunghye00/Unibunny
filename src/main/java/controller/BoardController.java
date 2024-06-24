@@ -1,10 +1,10 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Map;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +18,8 @@ import com.google.gson.JsonObject;
 
 import commons.Pagination;
 import dao.BoardDAO;
+import dao.BookMarkDAO;
+import dao.MemberDAO;
 import dto.BoardDTO;
 
 @WebServlet("*.board")
@@ -33,6 +35,7 @@ public class BoardController extends HttpServlet {
 		BoardDAO dao = BoardDAO.getInstance();
 		Pagination pagination = new Pagination();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
+		// reponse writer 변수 저장
 		PrintWriter pw = response.getWriter();
 		try {
 			if (cmd.equals("/list.board")) {
@@ -138,6 +141,44 @@ public class BoardController extends HttpServlet {
 						cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage - 1),
 						cpage * pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
+				
+			} else if (cmd.equals("/user/detail.board")) {
+				// 게시글 상세 페이지
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				request.setAttribute("dto", dao.selectBySeq(board_seq));
+				String loginID = (String)request.getSession().getAttribute("loginID");
+				// 해당 게시글의 북마크 수
+				request.setAttribute("bookmark", BookMarkDAO.getInstance().selectByBoardSeq(board_seq));
+				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
+				request.getRequestDispatcher("/user/crud/detail.jsp").forward(request, response);
+			} else if(cmd.equals("/likes.board")) {
+				// 게시글 좋아요
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				dao.boardLike(board_seq);
+				Gson g = new Gson();
+				response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
+			} else if(cmd.equals("/unlikes.board")) {
+				// 게시글 좋아요 취소
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				dao.boardUnLike(board_seq);
+				Gson g = new Gson();
+				response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
+			} else if(cmd.equals("/tryUpdate.board")) {
+				// 게시글 수정 페이지로 이동
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				request.setAttribute("dto", dao.selectBySeq(board_seq));
+				request.getRequestDispatcher("/user/crud/modi_board.jsp").forward(request, response);
+			} else if(cmd.equals("/update.board")) {
+				// 게시글 수정
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				System.out.println(request.getParameter("edit_content"));
+				dao.update(board_seq, request.getParameter("edit_title"), request.getParameter("edit_content"));
+				response.sendRedirect("/user/detail.board?board_seq=" + board_seq);
+			} else if(cmd.equals("/delete.board")) {
+				// 게시글 삭제
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				dao.deleteBySeq(board_seq);
+				response.sendRedirect("/list.board");
 			}
 
 		} catch (Exception e) {
