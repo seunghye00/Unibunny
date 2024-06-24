@@ -8,7 +8,6 @@ public class BoardDTO {
 	private String content;
 	private Timestamp write_date;
 	private int view_count;
-	private int thumbs_up;
 	private String delete_yn;
 	private Timestamp delete_date;
 	private int game_id;

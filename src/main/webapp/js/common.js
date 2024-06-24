@@ -598,6 +598,12 @@ function get_board_seq() {
 	return $("#board_seq").text().replace('# ', '');
 }
 
+// 게시글 상세 페이지에서 로그인된 ID의 좋아요 기록을 확인하는 메서드
+function get_likes_record(user) {
+	console.log(user);
+	//$.ajax({}).done(function(resp){});
+}
+
 // 게시글의 파일 목록을 받아오는 메서드
 function get_file_list() {
 	$.ajax({
