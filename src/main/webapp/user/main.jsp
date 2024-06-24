@@ -18,76 +18,7 @@
 <!-- 전체 틀 영역 -->
   <div class="wrapper">
     <!-- 헤더 영역 -->
-    <div class="header_area">
-      <div class="header">
-        <!-- 헤더 PC -->
-        <div class="wrap mob_hidden">
-          <h1 class="logo"><a href="javascript:;" title="메인으로 가기">
-              <img src="../image/logo.png" alt="">
-            </a>
-          </h1>
-          <div class="header_con">
-            <ul class="header_gnb">
-              <li>
-                <a href="/list.board" class="gnb_comu"><span>커뮤니티</span></a>
-              </li>
-              <li>
-                <a href="rank/rank.jsp" class="gnb_rank"><span>랭킹</span></a>
-              </li>
-              <li>
-                <a href="ourpage/ourpage.jsp" class="gnb_our"><span>OUR PAGE</span></a>
-              </li>
-              <li>
-                <a href="crud/faq.jsp" class="gnb_cs"><span>고객센터</span></a>
-              </li>
-            </ul>
-            <ul class="header_my">
-              <li class="my_01 "><a href="#" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="../image/icon/mypageW.png"
-                    alt="마이페이지 로고"></a></li>
-              <li class="my_02"><a href="javascript:;" class="btn_login"><img src="../image/icon/login.png"
-                    alt="로그인 로고"></a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- 헤더 Mobile-->
-        <div class="mob_wrap">
-
-          <h1 class="mob_logo"><a href="javascript:;" title="메인으로 가기">
-              <img src="../image/logo.png" alt="">
-            </a>
-          </h1>
-          <div class="mob_ham"></div>
-          <div onclick="history.back();" class="mob_page_cover"></div>
-          <div class="mob_menu">
-            <ul class="mob_list">
-              <li>
-                <strong><a href="/list.board">커뮤니티</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">랭킹</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">OUR PAGE</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">고객센터</a></strong>
-              </li>
-
-            </ul>
-            <div class="mob_my">
-              <ul>
-                <li><a href="javascript:;" class="mob_mypage"><img src="../image/icon/mypage.png" alt="마이페이지 로고"></a>
-                </li>
-                <li><a href="javascript:;" class="mob_login"><img src="../image/icon/login_b.png" alt="로그인 로고"></a></li>
-                <li>
-                  <div onclick="history.back();" class="mob_close"></div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <jsp:include page="../common/header.jsp" />
 
     <div class="banner_cont">
       <div class="swiper mainSwiper">
@@ -220,7 +151,7 @@
                   <p class="title">인기글</p>
                   <a href="/list.board?api=/like.board&page=1"></a>
                 </div>
-                <div class="list_table">
+                <div class="list_table main_list_table">
                   <div class="table_row table_header">
                     <div class="table_col">
                       <span>제목</span>
@@ -277,34 +208,13 @@
       </div>
     </div>
     <!-- 푸터 영역 -->
-    <div class="footer_area">
-      <div class="footer">
-        <div class="wrap">
-          <div class="footer_info">
-            <ul class="footer_link">
-              <li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
-              <li><a href="javascript:;">이용약관</a></li>
-            </ul>
-            <ul class="footer_address">
-              <li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호</li>
-              <li>Tel : 010-5482-9107</li>
-            </ul>
-          </div>
-          <div class="footer_service">
-            <strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
-            <ul class="copy_desc">
-              <li class="footer_copy">Copyright Team HoduGwaja. All Right Reserved</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+  	<jsp:include page="../common/footer.jsp" />
   </div>
 </body>
 <script>
 $(document).ready(function () {
     // 리스트 테이블을 담을 변수
-    let listContainer = $(".list_table");
+    let listContainer = $(".main_list_table");
 
     // 초기 리스트 테이블 비우기
     listContainer.empty();

@@ -26,7 +26,10 @@ public class ScoreController extends HttpServlet {
 		
 		// JSON 라이브러리
 		Gson g = new Gson();
-
+		
+		// reponse writer 변수 저장
+		PrintWriter pw = response.getWriter();
+		
 		// 접속 경로 저장
 		String cmd = request.getRequestURI();
 		// System.out.println(cmd);
@@ -34,46 +37,15 @@ public class ScoreController extends HttpServlet {
 		try {
 			if(cmd.equals("/submit.score")) {
 				String loginID = (String)request.getSession().getAttribute("loginID");
+				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
+				if(loginID == null) {
+					loginID = "user001";
+				}
 				System.out.println(request.getParameter("score"));
-				System.out.println(loginID);
-                int scoreValue = Integer.parseInt(request.getParameter("score"));
-                int gameId = Integer.parseInt(request.getParameter("gameId"));
-                String nickname = request.getParameter("nickname");
-                int logSeq = Integer.parseInt(request.getParameter("logSeq"));
-                Timestamp endTime = new Timestamp(System.currentTimeMillis());
-                if(loginID != null && !loginID.isEmpty()) {
-                    // Score 객체 생성
-                    ScoreDTO score = new ScoreDTO();
-                    score.setScore(scoreValue);
-                    score.setGame_id(gameId);
-                    score.setNickname(nickname);
-                    score.setEnd_time(endTime);
-                    score.setLog_seq(logSeq);
-
-                    // ScoreDAO를 통해 데이터베이스에 저장
-                   
-                    boolean result = dao.insertScore(score);
-
-                    if(result) {
-                        // 성공 응답
-                        response.setStatus(HttpServletResponse.SC_OK);
-                        PrintWriter out = response.getWriter();
-                        out.print(g.toJson("Score submitted successfully"));
-                        out.flush();
-                    } else {
-                        // 실패 응답
-                        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                        PrintWriter out = response.getWriter();
-                        out.print(g.toJson("Failed to submit score"));
-                        out.flush();
-                    }
-                } else {
-                    // 로그인되지 않은 경우
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    PrintWriter out = response.getWriter();
-                    out.print(g.toJson("User not logged in"));
-                    out.flush();
-                }
+				System.out.println(request.getParameter("gameId"));
+				int score = Integer.parseInt(request.getParameter("score"));
+				int gameId = Integer.parseInt(request.getParameter("gameId"));
+				pw.append(g.toJson(gameId));
             }
 		} catch(Exception e) {
 			e.printStackTrace();

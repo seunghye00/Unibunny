@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+
+import dao.BookMarkDAO;
+import dao.ScoreDAO;
+import dto.BookMarkDTO;
 
 @WebServlet("*.bookmark")
 public class BookMarkController extends HttpServlet {
@@ -23,9 +29,32 @@ public class BookMarkController extends HttpServlet {
 		// 접속 경로 저장
 		String cmd = request.getRequestURI();
 		// System.out.println(cmd);
-		
+		// reponse writer 변수 저장
+		PrintWriter pw = response.getWriter();
+		System.out.println(cmd);
+		BookMarkDAO dao = BookMarkDAO.getInstance();
 		try {
-			
+			if(cmd.equals("/save.bookmark")) {
+				String user_id = (String)request.getSession().getAttribute("loginID");
+				System.out.println(user_id);
+				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
+				if(user_id == null) {
+					user_id = "user001";
+				}
+				System.out.println(user_id);
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				int result = dao.saveBookMark(user_id, board_seq);
+				pw.append(g.toJson(result));
+			} else if(cmd.equals("/unsave.bookmark")) {
+				String user_id = (String)request.getSession().getAttribute("loginID");
+				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
+				if(user_id == null) {
+					user_id = "user001";
+				}
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				int result = dao.unsaveBookMark(user_id, board_seq);
+				pw.append(g.toJson(result));
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
