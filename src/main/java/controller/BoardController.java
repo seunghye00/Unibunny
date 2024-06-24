@@ -24,7 +24,7 @@ import dto.BoardDTO;
 
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
-	private void processRequest(HttpServletRequest request, HttpServletResponse response, String cmd, String game_id,String type)
+	private void processRequest(HttpServletRequest request, HttpServletResponse response, String cmd, String game_id, String type)
             throws ServletException, IOException {
 		// 클라이언트로부터 전송되는 문자열에 대한 인코딩을 utf8로 처리
 		// request에서 값을 꺼내기 전에 처리해야만 함!
@@ -36,7 +36,7 @@ public class BoardController extends HttpServlet {
         Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
         // writer 변수 지정
         PrintWriter pw = response.getWriter();
-
+        
         try {
             String pcpage = request.getParameter("cpage");
             String game_Id = request.getParameter("gameId");
@@ -49,17 +49,17 @@ public class BoardController extends HttpServlet {
             if ("list".equals(type)) {
                 list = dao.selectListAll(
                     cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-                    cpage * Pagination.recordCountPerPage,game_Id
+                    cpage * Pagination.recordCountPerPage, game_Id
                 );
             } else if ("like".equals(type)) {
                 list = dao.selectListLike(
                     cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-                    cpage * Pagination.recordCountPerPage,game_Id
+                    cpage * Pagination.recordCountPerPage, game_Id
                 );
             } else if ("view".equals(type)) {
                 list = dao.selectListView(
                     cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-                    cpage * Pagination.recordCountPerPage,game_Id
+                    cpage * Pagination.recordCountPerPage, game_Id
                 );
             }
 
@@ -114,10 +114,13 @@ public class BoardController extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		try {
 	        if (cmd.equals("/list.board")) {
+	        	System.out.println(game_Id);
 	            processRequest(request, response, cmd, game_Id,"list");
 	        } else if (cmd.equals("/like.board")) {
+	        	System.out.println(game_Id);
 	            processRequest(request, response, cmd, game_Id,"like");
 	        } else if (cmd.equals("/view.board")) {
+	        	System.out.println(game_Id);
 	            processRequest(request, response, cmd, game_Id,"view");
 	        } else if (cmd.equals("/mylist.board")) {
 				String pcpage = request.getParameter("cpage");
@@ -145,13 +148,13 @@ public class BoardController extends HttpServlet {
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				dao.boardLike(board_seq);
 				Gson g = new Gson();
-				response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
+				//response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
 			} else if(cmd.equals("/unlikes.board")) {
 				// 게시글 좋아요 취소
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				dao.boardUnLike(board_seq);
 				Gson g = new Gson();
-				response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
+				//response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
 			} else if(cmd.equals("/tryUpdate.board")) {
 				// 게시글 수정 페이지로 이동
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
