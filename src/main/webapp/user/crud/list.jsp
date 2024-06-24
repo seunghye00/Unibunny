@@ -101,7 +101,7 @@
 	<script>
 
 	$(document).ready(function () {
-		get_comm_list("default");
+		fetchAndRenderData(/list.board,,"default");
 	});
 	// select 요소의 변경 이벤트 처리
 	document.getElementById('sub_menu').addEventListener('change', function() {

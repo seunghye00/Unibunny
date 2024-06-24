@@ -25,7 +25,6 @@ import com.google.gson.JsonObject;
 import commons.EncryptionUitls;
 import commons.MailSender;
 import commons.PasswordGenerator;
-import dao.BoardDAO;
 import dao.Duptype;
 import dao.MemberDAO;
 import dto.MemberDTO;
@@ -63,7 +62,7 @@ public class MemberController extends HttpServlet {
 
 				try {
 					int result = mdao.insert(new MemberDTO(userid, nickname, pw, phone, reg_num, email, postcode,
-							address1, address2, null, 0));
+							address1, address2, null, 0, ""));
 					if (result > 0) {
 						response.sendRedirect("/index.jsp");
 					} else {

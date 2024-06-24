@@ -326,9 +326,33 @@ $("#views_btn").on("click", function() {
 	let apiUrl = "/view.board";
 	updateUrlAndFetchData(apiUrl, 1);
 });
-
+// game1~5 버튼 클릭 시
+$("#game1").click(function() {
+	currentGameId = 1; // 현재 게임 ID를 1로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game2").click(function() {
+	currentGameId = 2; // 현재 게임 ID를 2로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game3").click(function() {
+	currentGameId = 3; // 현재 게임 ID를 1로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game4").click(function() {
+	currentGameId = 4; // 현재 게임 ID를 2로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game5").click(function() {
+	currentGameId = 5; // 현재 게임 ID를 1로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
 // 데이터 가져오고 테이블 렌더링 함수
-function fetchAndRenderData(apiUrl, page) {
+function fetchAndRenderData(apiUrl, page, gameId) {
+	if (gameId == "default") {
+		// 정렬 기준이 dafault면 최신순으로 설정
+		gameId = "gameId";
+	}
 	$.ajax({
 		url: apiUrl,
 		method: "GET",
@@ -482,7 +506,7 @@ function updateUrl(apiUrl, page) {
 }
 
 // 초기 페이지 로드 시 실행
-$(document).ready(function() {
+function listLoad() {
 	// 초기에 URL 파라미터에 따라 데이터 불러오기
 	let urlParams = new URLSearchParams(window.location.search);
 	let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
@@ -499,7 +523,7 @@ $(document).ready(function() {
 	} else if (apiUrl === "/view.board") {
 		$("#views_btn").addClass("active");
 	}
-});
+};
 $("#views_btn").on("click", function() {
 	let apiUrl = "/view.board";
 	updateUrlAndFetchData(apiUrl, 1);
