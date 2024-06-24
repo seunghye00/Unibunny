@@ -15,7 +15,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 /* 페이지네이션 스타일 */
-.bottom_box {
+.profile_wrapper .bottom_box {
   text-align: right;
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@
   min-height: 45px;
 }
 
-.navi_box {
+.profile_wrapper .navi_box {
   width: 100%;
   font-size: 18px;
   height: 45px;
@@ -34,17 +34,17 @@
   z-index: 10;
 }
 
-.navi_box a {
+.profile_wrapper .navi_box a {
   padding: 0 20px;
 }
 
-.navi_box .arr_navi {
+.profile_wrapper .navi_box .arr_navi {
   padding: 5px 10px;
   border-radius: 5px;
   position: relative;
 }
 
-.navi_box .arr_navi::after {
+.profile_wrapper .navi_box .arr_navi::after {
   background-color: var(--color-white);
   content: "";
   display: block;
@@ -56,32 +56,30 @@
   border-radius: 5px;
 }
 
-.navi_box .cpage {
+.profile_wrapper .navi_box .cpage {
   color: var(--color-yellow);
 }
 
-.navi_box .page_navi .navi_icon {
+.profile_wrapper .navi_box .page_navi .navi_icon {
   width: 20px;
   height: 20px;
   top: 4px;
   z-index: 1;
 }
 
-.navi_box .page_navi .start_navi {
+.profile_wrapper .navi_box .page_navi .start_navi {
   rotate: 180deg;
 }
 
-.navi_box .start_arr.disabled,
-.navi_box .end_arr.disabled {
+.profile_wrapper .navi_box .start_arr.disabled,
+.profile_wrapper .navi_box .end_arr.disabled {
   opacity: 0.6;
   pointer-events: none;
 }
 
-.navi_box a.active {
+.profile_wrapper .navi_box a.active {
   color: var(--color-yellow);
 }
-	
-
 </style>
 
 </head>
@@ -89,65 +87,7 @@
 <div class="wrapper">
     <div class="header_area">
       <div class="header">
-        <div class="wrap mob_hidden">
-          <h1 class="logo"><a href="javascript:;" title="메인으로 가기">
-              <img src="../../image/logo.png" alt="">
-            </a>
-          </h1>
-          <div class="header_con">
-            <ul class="header_gnb">
-              <li>
-                <a href="javascript:;" class="gnb_comu"><span>커뮤니티</span></a>
-              </li>
-              <li>
-                <a href="javascript:;" class="gnb_rank"><span>랭킹</span></a>
-              </li>
-              <li>
-                <a href="javascript:;" class="gnb_our"><span>OUR PAGE</span></a>
-              </li>
-              <li>
-                <a href="javascript:;" class="gnb_cs"><span>고객센터</span></a>
-              </li>
-            </ul>
-            <ul class="header_my">
-              <li class="my_01 "><a href="javascript:;" class="btn_mypage"><img src="../../image/icon/mypageW.png"
-                    alt="마이페이지 로고"></a></li>
-              <li class="my_02"><a href="javascript:;" class="btn_login"><img src="../../image/icon/login.png"
-                    alt="로그인 로고"></a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="mob_wrap">
-          <h1 class="mob_logo"><a href="javascript:;" title="메인으로 가기">
-              <img src="../../../image/logo.png" alt="">
-            </a>
-          </h1>
-          <div class="mob_ham"></div>
-          <div onclick="history.back();" class="mob_page_cover"></div>
-          <div class="mob_menu">
-            <ul class="mob_list">
-              <li>
-                <strong><a href="javascript:;">커뮤니티</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">랭킹</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">OUR PAGE</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">고객센터</a></strong>
-              </li>
-            </ul>
-            <div class="mob_my">
-              <ul>
-                <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png" alt="마이페이지 로고"></a></li>
-                <li><a href="javascript:;" class="mob_login"><img src="../../image/icon/login_b.png" alt="로그인 로고"></a></li>
-                <li><div onclick="history.back();" class="mob_close"></div></li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        <!-- header content -->
       </div>
     </div>
     <div class="body_area">
@@ -166,7 +106,7 @@
                     <strong class="tab_title">MY</strong>
                     <ul role="menubar">
                       <li class="tab_item" role="none"><button id="btnMyAccount">계정관리</button></li>
-                      <li class="tab_item" role="none"><button>게임 기록 확인</button></li>
+                      <li class="tab_item" role="none"><button id="btnMyRecord">게임 기록 확인</button></li>
                     </ul>
                   </div>
                   <div class="tab_wrapper">
@@ -191,8 +131,6 @@
                 </div>
               </div>
 
-
-
               <!-- 프로필 상세내용(모바일 마이페이지 메인화면) -->
               <div class="profile_wrapper">
                 <div class="profile_contents_wrap default_contents">
@@ -209,58 +147,57 @@
                   </select>
 
                   <div class="profile_contents">
-            <form id="profileForm" action="/uploadProfile.file" method="post" enctype="multipart/form-data">
-    <div class="my_profile">
-        <div class="profile_left">
-            <div class="profile_image_container">
-                <img id="profileImage" src="${my_info.profile_img}" alt="Profile Image">
-            </div>
-            <span>${my_info.nickname}</span>
-        </div>
-        <div class="button_container">
-            <button type="button" class="profile_edit_btn">프로필 편집</button>
-            <input type="file" name="profileImage" class="real_upload" accept="image/*" style="display: none;">
-            <button type="button" class="apply_changes_btn" style="display: none;">적용</button>
-            <button type="button" class="cancel_changes_btn" style="display: none;">취소</button>
-        </div>
-    </div>
-</form>
-        </div>
+                    <form id="profileForm" action="/uploadProfile.file" method="post" enctype="multipart/form-data">
+                      <div class="my_profile">
+                        <div class="profile_left">
+                          <div class="profile_image_container">
+                            <img id="profileImage" src="${my_info.profile_img}" alt="Profile Image">
+                          </div>
+                          <span>${my_info.nickname}</span>
+                        </div>
+                        <div class="button_container">
+                          <button type="button" class="profile_edit_btn">프로필 편집</button>
+                          <input type="file" name="profileImage" class="real_upload" accept="image/*" style="display: none;">
+                          <button type="button" class="apply_changes_btn" style="display: none;">적용</button>
+                          <button type="button" class="cancel_changes_btn" style="display: none;">취소</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                   <div class="profile_contents">
                     <div class="my_history">
                       <ul>
                         <li>가입날짜 : ${my_info.join_date}</li>
-                        <li>게시물 수 : ${board_count }</li>
-                        <li>댓글 단 수 : ${reply_count }</li>
+                        <li>게시물 수 : ${board_count}</li>
+                        <li>댓글 단 수 : ${reply_count}</li>
                       </ul>
                     </div>
                   </div>
                 </div>
 
-                <!-- 계정 관리  -->
-				<form action="/edit.member" method="post">
-                <div class="profile_contents_wrap" id="myAccount">
-                
-                  <div class="profile_title">계정관리</div>
+                <!-- 계정 관리 -->
+                <form action="/edit.member" method="post">
+                  <div class="profile_contents_wrap" id="myAccount">
+                    <div class="profile_title">계정관리</div>
 
-                  <select class="tab-dropdown dropdown">
-                    <option value="">카테고리 선택.</option>
-                    <option value="내 프로필">내 프로필</option>
-                    <option value="계정관리">계정관리</option>
-                    <option value="게임 기록 확인">게임 기록 확인</option>
-                    <option value="작성한 글">작성한 글</option>
-                    <option value="작성한 댓글">작성한 댓글</option>
-                    <option value="북마크">북마크</option>
-                    <option value="1:1문의">1:1문의</option>
-                  </select>
-                  <div class="profile_contents">
-                    <div class="my_account">
+                    <select class="tab-dropdown dropdown">
+                      <option value="">카테고리 선택.</option>
+                      <option value="내 프로필">내 프로필</option>
+                      <option value="계정관리">계정관리</option>
+                      <option value="게임 기록 확인">게임 기록 확인</option>
+                      <option value="작성한 글">작성한 글</option>
+                      <option value="작성한 댓글">작성한 댓글</option>
+                      <option value="북마크">북마크</option>
+                      <option value="1:1문의">1:1문의</option>
+                    </select>
+                    <div class="profile_contents">
+                      <div class="my_account">
                         <label for="id">아이디</label>
                         <input type="text" id="id" readonly value="${my_info.userid}">
-                        
+
                         <label for="password" style="display: none">비밀번호</label>
                         <input type="password" name="pw" id="password" readonly value="${my_info.pw}" style="display: none">
-                        
+
                         <label for="nickname">닉네임</label>
                         <input type="text" name="nickname" id="nickname" readonly value="${my_info.nickname}">
                         <label for="phone">전화번호</label>
@@ -273,35 +210,32 @@
                         <input type="text" name="address2" id="address2" readonly value="${my_info.address2}">
                         <label for="postcode">우편번호</label>
                         <input type="text" name="postcode" id="postcode" readonly value="${my_info.postcode}">
+                      </div>
                     </div>
-                </div>
-                
-                <div class="profile_contents">
-                    <div class="edit_account">
+
+                    <div class="profile_contents">
+                      <div class="edit_account">
                         <ul>
-                            <li><label>계정 정보 수정</label></li>
+                          <li><label>계정 정보 수정</label></li>
                         </ul>
                         <button type="button" id="edit_button">수정</button>
                         <div id="edit_actions" style="display: none;">
-                            <button type="submit" id="apply_button">적용</button>
-                            <button type="button" id="cancel_button">취소</button>
+                          <button type="submit" id="apply_button">적용</button>
+                          <button type="button" id="cancel_button">취소</button>
                         </div>
+                      </div>
                     </div>
-                </div>
-                
-                <div class="profile_contents">
-                  <div class="delete_account">
-                      <ul>
+
+                    <div class="profile_contents">
+                      <div class="delete_account">
+                        <ul>
                           <li><label>계정 삭제하기</label></li>
-                      </ul>
-                          <button type="button" id="memberout">회원 탈퇴</button>
+                        </ul>
+                        <button type="button" id="memberout">회원 탈퇴</button>
+                      </div>
+                    </div>
                   </div>
-              </div>
-                </div>
-			</form>
-
-			
-
+                </form>
 
                 <!-- 게임 기록 확인 -->
                 <div class="profile_contents_wrap">
@@ -379,7 +313,7 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>조회수</span></div>
                         </div>
-                        
+
                         <c:forEach var="dto" items="${mylist}">
                           <div class="table_row">
                             <div class="table_col"><span>${dto.board_seq}</span></div>
@@ -421,13 +355,13 @@
                           <div class="table_col"><span>조회수</span></div>
                         </div>
                         <c:forEach var="dto" items="${myreplylist}">
-                        <div class="table_row">
+                          <div class="table_row">
                             <div class="table_col"><span>${dto.board_seq}</span></div>
                             <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
                             <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
                             <div class="table_col"><span>${dto.view_count}</span></div>
-                        </div>
-                    	</c:forEach>
+                          </div>
+                        </c:forEach>
                       </div>
                     </div>
                   </div>
@@ -458,13 +392,13 @@
                           <div class="table_col"><span>조회수</span></div>
                         </div>
                         <c:forEach var="dto" items="${mybookmark}">
-                        <div class="table_row">
+                          <div class="table_row">
                             <div class="table_col"><span>${dto.board_seq}</span></div>
                             <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
                             <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
                             <div class="table_col"><span>${dto.view_count}</span></div>
-                        </div>
-                    	</c:forEach>
+                          </div>
+                        </c:forEach>
                       </div>
                     </div>
                   </div>
@@ -495,13 +429,13 @@
                           <div class="table_col"><span>답변 여부</span></div>
                         </div>
                         <c:forEach var="dto" items="${myqna}">
-                        <div class="table_row">
+                          <div class="table_row">
                             <div class="table_col"><span>${dto.question_seq}</span></div>
                             <div class="table_col"><a href="/user/detail.board?board_seq=${dto.question_seq}">${dto.question_title}</a></div>
                             <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
                             <div class="table_col"><span>${dto.answer_yn}</span></div>
-                        </div>
-                    	</c:forEach>
+                          </div>
+                        </c:forEach>
                       </div>
                     </div>
                   </div>
@@ -510,51 +444,65 @@
               </div>
             </div>
 
-           
             <script>
-            
-            $("#logout").on("click",function(){
-				location.href="/logout.member";
-			})
-			
-			$("#memberout").on("click",function(){
-				if(confirm("정말 탈퇴 하시겠습니까?")) {
-					location.href="/memberout.member";
-				}
-				})
-            
-            document.addEventListener("DOMContentLoaded", function() {
-            	document.getElementById("btnMyProfile").addEventListener("click", function() {
-                    window.location.href = "/mypage.member";
-                });
-            	document.getElementById("btnMyAccount").addEventListener("click", function() {
-                    window.location.href = "/account.member";
-                });
-                document.getElementById("btnMyPosts").addEventListener("click", function() {
-                    window.location.href = "/myboard.board";
-                });
-                document.getElementById("btnComments").addEventListener("click", function() {
-                    window.location.href = "/myreply.board";
-                });
-                document.getElementById("btnBookmarks").addEventListener("click", function() {
-                    window.location.href = "/mybookmark.board";
-                });
-                document.getElementById("btnmyQNA").addEventListener("click", function() {
-                    window.location.href = "/myqna.qna";
-                });
+            $("#logout").on("click", function() {
+              location.href = "/logout.member";
+            });
 
-                
-                
-                
-                // 서버에서 전달된 activeTab 값을 읽어 해당 탭을 활성화
-                const activeTab = "${activeTab}";
-                if (activeTab) {
-                    document.querySelector(".default_contents").style.display = "none";
-                    document.getElementById(activeTab).style.display = "block";
-                } else {
-                    // 기본적으로 내 프로필 탭을 활성화
-                    document.querySelector(".default_contents").style.display = "block";
-                }
+            $("#memberout").on("click", function() {
+              if (confirm("정말 탈퇴 하시겠습니까?")) {
+                location.href = "/memberout.member";
+              }
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+              // select 요소와 tab item 연동
+              document.querySelectorAll('.tab-dropdown').forEach(dropdown => {
+                dropdown.addEventListener('change', function() {
+                  const value = this.value;
+                  if (value) {
+                    const tabId = {
+                      "내 프로필": "btnMyProfile",
+                      "계정관리": "btnMyAccount",
+                      "게임 기록 확인": "btnMyRecord",
+                      "작성한 글": "btnMyPosts",
+                      "작성한 댓글": "btnComments",
+                      "북마크": "btnBookmarks",
+                      "1:1문의": "btnmyQNA"
+                    }[value];
+                    if (tabId) document.getElementById(tabId).click();
+                  }
+                });
+              });
+
+              document.getElementById("btnMyProfile").addEventListener("click", function() {
+                window.location.href = "/mypage.member";
+              });
+              document.getElementById("btnMyAccount").addEventListener("click", function() {
+                window.location.href = "/account.member";
+              });
+              document.getElementById("btnMyPosts").addEventListener("click", function() {
+                window.location.href = "/myboard.board";
+              });
+              document.getElementById("btnComments").addEventListener("click", function() {
+                window.location.href = "/myreply.board";
+              });
+              document.getElementById("btnBookmarks").addEventListener("click", function() {
+                window.location.href = "/mybookmark.board";
+              });
+              document.getElementById("btnmyQNA").addEventListener("click", function() {
+                window.location.href = "/myqna.qna";
+              });
+
+              // 서버에서 전달된 activeTab 값을 읽어 해당 탭을 활성화
+              const activeTab = "${activeTab}";
+              if (activeTab) {
+                document.querySelector(".default_contents").style.display = "none";
+                document.getElementById(activeTab).style.display = "block";
+              } else {
+                // 기본적으로 내 프로필 탭을 활성화
+                document.querySelector(".default_contents").style.display = "block";
+              }
             });
             </script>
           </div>
@@ -565,32 +513,12 @@
       <div class="footer">
         <div class="wrap">
           <div class="footer_info">
-            <ul class="footer_link">
-              <li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
-              <li><a href="javascript:;">이용약관</a></li>
-            </ul>
-            <ul class="footer_address">
-              <li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호</li>
-              <li>Tel : 010-5482-9107</li>
-            </ul>
-          </div>
-          <div class="footer_service">
-            <strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
-            <ul class="copy_desc">
-              <li class="footer_copy">Copyright Team HoduSnack. All Right Reserved</li>
-            </ul>
+            <!-- footer content -->
           </div>
         </div>
       </div>
     </div>
     <script>
-    
-    
-		
-    
-    
-    
-    
       // 페이지네이션 스크립트
       let pageNation = $("#pagination");
       let cpage = ${cpage};
@@ -605,7 +533,7 @@
       let endNavi = startNavi + navi_count_per_page - 1;
 
       if (endNavi > pageTotalCount) {
-          endNavi = pageTotalCount;
+        endNavi = pageTotalCount;
       }
 
       let needNext = endNavi < pageTotalCount;
@@ -614,11 +542,11 @@
       pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/myboard.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
 
       for (let i = startNavi; i <= endNavi; i++) {
-          if (cpage == i) {
-              pageNation.append("<a class='page_navi active' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
-          } else {
-              pageNation.append("<a class='page_navi' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
-          }
+        if (cpage == i) {
+          pageNation.append("<a class='page_navi active' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
+        } else {
+          pageNation.append("<a class='page_navi' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
+        }
       }
 
       pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/myboard.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
