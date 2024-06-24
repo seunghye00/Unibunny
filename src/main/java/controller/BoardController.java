@@ -24,6 +24,81 @@ import dto.BoardDTO;
 
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
+	private void processRequest(HttpServletRequest request, HttpServletResponse response, String cmd, String game_id, String type)
+            throws ServletException, IOException {
+		// 클라이언트로부터 전송되는 문자열에 대한 인코딩을 utf8로 처리
+		// request에서 값을 꺼내기 전에 처리해야만 함!
+		request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        // boardDAO 인스턴스 지정
+        BoardDAO dao = BoardDAO.getInstance();
+        // json 데이터 타입 지정 후 ajax 전달
+        Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
+        // writer 변수 지정
+        PrintWriter pw = response.getWriter();
+        
+        try {
+            String pcpage = request.getParameter("cpage");
+            String game_Id = request.getParameter("gameId");
+            if (pcpage == null) {
+                pcpage = "1";
+            }
+            int cpage = Integer.parseInt(pcpage);
+
+            List<BoardDTO> list = null;
+            if ("list".equals(type)) {
+                list = dao.selectListAll(
+                    cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+                    cpage * Pagination.recordCountPerPage, game_Id
+                );
+            } else if ("like".equals(type)) {
+                list = dao.selectListLike(
+                    cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+                    cpage * Pagination.recordCountPerPage, game_Id
+                );
+            } else if ("view".equals(type)) {
+                list = dao.selectListView(
+                    cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+                    cpage * Pagination.recordCountPerPage, game_Id
+                );
+            }
+
+            if (list != null) {
+                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    // AJAX 요청인 경우 JSON으로 응답
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("data", list);
+                    result.put("cpage", cpage);
+                    result.put("record_count_per_page", Pagination.recordCountPerPage);
+                    result.put("navi_count_per_page", Pagination.naviCountPerPage);
+                    result.put("record_total_count", dao.getRecordCount());
+
+                    String jsonResult = gson.toJson(result);
+                    PrintWriter out = response.getWriter();
+                    out.print(jsonResult);
+                    out.flush();
+                    out.close();
+                } else {
+                    // 일반 요청인 경우 JSP로 포워딩
+                    request.setAttribute("boardlist", list);
+                    request.setAttribute("cpage", cpage);
+                    request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
+                    request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
+                    request.setAttribute("record_total_count", dao.getRecordCount());
+                    request.getRequestDispatcher("/user/crud/list.jsp").forward(request, response);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("/error.jsp");
+        } finally {
+            pw.close();
+        }
+    }
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -33,104 +108,21 @@ public class BoardController extends HttpServlet {
 		String cmd = request.getRequestURI();
 		System.out.println(cmd);
 		BoardDAO dao = BoardDAO.getInstance();
-		Pagination pagination = new Pagination();
+		String game_Id = request.getParameter("gameId");
 		Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
 		// reponse writer 변수 저장
 		PrintWriter pw = response.getWriter();
 		try {
-			if (cmd.equals("/list.board")) {
-			    String pcpage = request.getParameter("cpage");
-			    if (pcpage == null) {
-			        pcpage = "1";
-			    }
-			    int cpage = Integer.parseInt(pcpage);
-
-			    List<BoardDTO> list = dao.selectListAll(
-			        cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage - 1),
-			        cpage * pagination.recordCountPerPage
-			    );
-
-			    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-			        // AJAX 요청인 경우 JSON으로 응답
-			        response.setContentType("application/json");
-			        response.setCharacterEncoding("UTF-8");
-
-			        Map<String, Object> result = new HashMap<>();
-			        result.put("data", list);
-			        result.put("cpage", cpage);
-			        result.put("record_count_per_page", pagination.recordCountPerPage);
-			        result.put("navi_count_per_page", pagination.naviCountPerPage);
-			        result.put("record_total_count", dao.getRecordCount());
-
-			        String jsonResult = gson.toJson(result);
-			        PrintWriter out = response.getWriter();
-			        out.print(jsonResult);
-			        out.flush();
-			        out.close();
-			    } else {
-			        // 일반 요청인 경우 JSP로 포워딩
-			        request.setAttribute("boardlist", list);
-			        request.setAttribute("cpage", cpage);
-			        request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
-			        request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
-			        request.setAttribute("record_total_count", dao.getRecordCount());
-			        request.getRequestDispatcher("/user/crud/list.jsp").forward(request, response);
-			    }
-			} else if (cmd.equals("/like.board")) {
-				String pcpage = request.getParameter("cpage");
-
-		        // 페이지네이션 초기값 설정
-		        if (pcpage == null) {
-		            pcpage = "1";
-		        }
-
-		        // 문자열 숫자열로 형변환
-		        int cpage = Integer.parseInt(pcpage);
-		        int recordCountPerPage = pagination.recordCountPerPage; // 한 페이지당 레코드 수
-		        int start = cpage * recordCountPerPage - (recordCountPerPage - 1);
-		        int end = cpage * recordCountPerPage;
-
-		        List<BoardDTO> list = dao.selectListLike(start, end);
-		        // 총 레코드 수 가져오기
-		        int totalCount = dao.getRecordCount();
-		        // JSON 변환
-		        JsonObject result = new JsonObject();
-		        result.addProperty("total_count", totalCount);
-		        result.addProperty("current_page", cpage);
-		        result.add("data", gson.toJsonTree(list));
-
-		        // PrintWriter 사용하여 JSON 데이터 전송
-		        pw.write(result.toString());
-		        pw.flush();
-		        pw.close();
-			} else if (cmd.equals("/view.board")) {
-				String pcpage = request.getParameter("cpage");
-
-		        // 페이지네이션 초기값 설정
-		        if (pcpage == null) {
-		            pcpage = "1";
-		        }
-
-		        // 문자열 숫자열로 형변환
-		        int cpage = Integer.parseInt(pcpage);
-		        int recordCountPerPage = pagination.recordCountPerPage; // 한 페이지당 레코드 수
-		        int start = cpage * recordCountPerPage - (recordCountPerPage - 1);
-		        int end = cpage * recordCountPerPage;
-
-		        List<BoardDTO> list = dao.selectListView(start, end);
-		        // 총 레코드 수 가져오기
-		        int totalCount = dao.getRecordCount();
-		        // JSON 변환
-		        JsonObject result = new JsonObject();
-		        result.addProperty("total_count", totalCount);
-		        result.addProperty("current_page", cpage);
-		        result.add("data", gson.toJsonTree(list));
-
-		        // PrintWriter 사용하여 JSON 데이터 전송
-		        pw.write(result.toString());
-		        pw.flush();
-		        pw.close();
-			} else if (cmd.equals("/mylist.board")) {
+	        if (cmd.equals("/list.board")) {
+	        	System.out.println(game_Id);
+	            processRequest(request, response, cmd, game_Id,"list");
+	        } else if (cmd.equals("/like.board")) {
+	        	System.out.println(game_Id);
+	            processRequest(request, response, cmd, game_Id,"like");
+	        } else if (cmd.equals("/view.board")) {
+	        	System.out.println(game_Id);
+	            processRequest(request, response, cmd, game_Id,"view");
+	        } else if (cmd.equals("/mylist.board")) {
 				String pcpage = request.getParameter("cpage");
 				if (pcpage == null) {
 					pcpage = "1";
@@ -138,8 +130,8 @@ public class BoardController extends HttpServlet {
 				int cpage = Integer.parseInt(pcpage);
 
 				List<BoardDTO> list = dao.selectListAll(
-						cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage - 1),
-						cpage * pagination.recordCountPerPage);
+						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+						cpage * Pagination.recordCountPerPage, game_Id);
 				request.setAttribute("boardlist", list);
 				
 			} else if (cmd.equals("/user/detail.board")) {
@@ -156,13 +148,13 @@ public class BoardController extends HttpServlet {
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				dao.boardLike(board_seq);
 				Gson g = new Gson();
-				response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
+				//response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
 			} else if(cmd.equals("/unlikes.board")) {
 				// 게시글 좋아요 취소
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				dao.boardUnLike(board_seq);
 				Gson g = new Gson();
-				response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
+				//response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
 			} else if(cmd.equals("/tryUpdate.board")) {
 				// 게시글 수정 페이지로 이동
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));

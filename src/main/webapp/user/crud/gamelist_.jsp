@@ -40,12 +40,12 @@
 										<div style="padding: 5px;"></div>
 										<ul>
 											<li class="sub_title not_link">게시글</li>
-											<li><a href="/list.board" id ="board_all">전체 게시글</a></li>
-											<li><a href="javascript:;" id ="game1">게임1</a></li>
-											<li><a href="javascript:;" id ="game2">게임2</a></li>
-											<li><a href="javascript:;" id ="game3">게임3</a></li>
-											<li><a href="javascript:;" id ="game4">게임4</a></li>
-											<li><a href="javascript:;" id ="game5">게임5</a></li>
+											<li><a href="/list.board" id="board_all">전체 게시글</a></li>
+											<li><a href="javascript:;" id="game1">게임1</a></li>
+											<li><a href="javascript:;" id="game2">게임2</a></li>
+											<li><a href="javascript:;" id="game3">게임3</a></li>
+											<li><a href="javascript:;" id="game4">게임4</a></li>
+											<li><a href="javascript:;" id="game5">게임5</a></li>
 										</ul>
 									</div>
 								</div>
@@ -99,10 +99,6 @@
 		</div>
 	</div>
 	<script>
-
-	$(document).ready(function () {
-		fetchAndRenderData(/list.board,,"default");
-	});
 	// select 요소의 변경 이벤트 처리
 	document.getElementById('sub_menu').addEventListener('change', function() {
 		// 선택된 옵션의 값 가져오기
@@ -117,7 +113,7 @@
 			window.location.href = '/list.notice';
 		} else {
 			window.location.href = '/list.board';
-		} 
+		}
 	});
 	</script>
 </body>

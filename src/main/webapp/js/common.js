@@ -326,15 +326,40 @@ $("#views_btn").on("click", function() {
 	let apiUrl = "/view.board";
 	updateUrlAndFetchData(apiUrl, 1);
 });
-
+// game1~5 버튼 클릭 시
+$("#game1").click(function() {
+	currentGameId = 1; // 현재 게임 ID를 1로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game2").click(function() {
+	currentGameId = 2; // 현재 게임 ID를 2로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game3").click(function() {
+	currentGameId = 3; // 현재 게임 ID를 1로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game4").click(function() {
+	currentGameId = 4; // 현재 게임 ID를 2로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
+$("#game5").click(function() {
+	currentGameId = 5; // 현재 게임 ID를 1로 설정
+	fetchAndRenderData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+});
 // 데이터 가져오고 테이블 렌더링 함수
-function fetchAndRenderData(apiUrl, page) {
+function fetchAndRenderData(apiUrl, page, gameId) {
+	if (gameId == "default") {
+		// 정렬 기준이 dafault면 최신순으로 설정
+		gameId = "gameId";
+	}
 	$.ajax({
 		url: apiUrl,
 		method: "GET",
 		dataType: "json",
-		data: { cpage: page, recordCountPerPage: record_count_per_page }, // 페이지 번호를 쿼리 파라미터로 전달
+		data: { cpage: page, recordCountPerPage: record_count_per_page, gameId : gameId }, // 페이지 번호를 쿼리 파라미터로 전달
 	}).done(function(resp) {
+
 		console.log(resp); // 받은 데이터 확인
 
 		// 페이지네이션 변수 초기화
@@ -470,9 +495,9 @@ function getCurrentApiUrl() {
 }
 
 // URL 업데이트 및 데이터 가져오는 함수
-function updateUrlAndFetchData(apiUrl, page) {
-	updateUrl(apiUrl, page);
-	fetchAndRenderData(apiUrl, page);
+function updateUrlAndFetchData(apiUrl, page, gameId) {
+	updateUrl(apiUrl, page, gameId);
+	fetchAndRenderData(apiUrl, page, gameId);
 }
 
 // URL 업데이트 함수
@@ -481,13 +506,13 @@ function updateUrl(apiUrl, page) {
 }
 
 // 초기 페이지 로드 시 실행
-$(document).ready(function() {
+function listLoad() {
 	// 초기에 URL 파라미터에 따라 데이터 불러오기
 	let urlParams = new URLSearchParams(window.location.search);
 	let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
 	let page = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
 
-	fetchAndRenderData(apiUrl, page); // 초기에는 최신순 데이터를 가져오도록 설정
+	fetchAndRenderData(apiUrl, page, gameId); // 초기에는 최신순 데이터를 가져오도록 설정
 
 	// 버튼의 active 클래스 설정
 	$("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
@@ -498,7 +523,7 @@ $(document).ready(function() {
 	} else if (apiUrl === "/view.board") {
 		$("#views_btn").addClass("active");
 	}
-});
+};
 $("#views_btn").on("click", function() {
 	let apiUrl = "/view.board";
 	updateUrlAndFetchData(apiUrl, 1);
@@ -571,6 +596,12 @@ $('#del_btn').on('click', function() {
 // 게시글의 seq 값을 반환하는 메서드
 function get_board_seq() {
 	return $("#board_seq").text().replace('# ', '');
+}
+
+// 게시글 상세 페이지에서 로그인된 ID의 좋아요 기록을 확인하는 메서드
+function get_likes_record(user) {
+	console.log(user);
+	//$.ajax({}).done(function(resp){});
 }
 
 // 게시글의 파일 목록을 받아오는 메서드

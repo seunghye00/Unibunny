@@ -35,13 +35,14 @@ public class BoardDAO {
 	};
 
 	// 게시판 게시글 조회
-	public List<BoardDTO> selectListAll(int startNum, int endNum) throws Exception {
+	public List<BoardDTO> selectListAll(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown from board) where rown between ? and ?";
+		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown from board) where (rown between ? and ?) and game_id = ? and delete_yn = 'N'";
 		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			List<BoardDTO> list = new ArrayList<>();
 			pstat.setInt(1, startNum);
 			pstat.setInt(2, endNum);
+			pstat.setString(3, game_num);
 			try (ResultSet rs = pstat.executeQuery();) {
 				while (rs.next()) {
 					int board_seq = rs.getInt("board_seq");
@@ -49,21 +50,20 @@ public class BoardDAO {
 					String content = rs.getString("content");
 					Timestamp write_date = rs.getTimestamp("write_date");
 					int view_count = rs.getInt("view_count");
-					int thumbs_up = rs.getInt("thumbs_up");
 					String delete_yn = rs.getString("delete_yn");
 					Timestamp delete_date = rs.getTimestamp("delete_date");
 					int game_id = rs.getInt("game_id");
 					String nickname = rs.getString("nickname");
-					list.add(new BoardDTO(board_seq, title, content, write_date, view_count, thumbs_up, delete_yn,
+					list.add(new BoardDTO(board_seq, title, content, write_date, view_count, delete_yn,
 							delete_date, game_id, nickname));
 				}
 				return list;
 			}
 		}
  	}
-	public List<BoardDTO> selectListView(int startNum, int endNum) throws Exception {
+	public List<BoardDTO> selectListView(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "select * from (select board.*, row_number() over(order by view_count desc) rown from board) where rown between ? and ?";
+		String sql = "select * from (select board.*, row_number() over(order by view_count desc) rown from board) where (rown between ? and ?) and game_id = ? and delete_yn = 'N'";
 		try (
 				Connection con = this.getconnection();
 				PreparedStatement pstat = con.prepareStatement(sql);	
@@ -71,6 +71,7 @@ public class BoardDAO {
 			List<BoardDTO> list = new ArrayList<>();
 			pstat.setInt(1, startNum);
 			pstat.setInt(2, endNum);
+			pstat.setString(3, game_num);
 			try (	
 					ResultSet rs= pstat.executeQuery();
 					){
@@ -80,22 +81,21 @@ public class BoardDAO {
 					String content = rs.getString("content");
 					Timestamp write_date = rs.getTimestamp("write_date");
 					int view_count = rs.getInt("view_count");
-					int thumbs_up = rs.getInt("thumbs_up");
 					String delete_yn = rs.getString("delete_yn");
 					Timestamp delete_date = rs.getTimestamp("delete_date");
 					int game_id = rs.getInt("game_id");
 					String nickname = rs.getString("nickname");
 					list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-							,thumbs_up,delete_yn,delete_date,game_id,nickname));
+							,delete_yn,delete_date,game_id,nickname));
 				}
 				return list;
 			}
 		}
 	}
 	
-	public List<BoardDTO> selectListLike(int startNum, int endNum) throws Exception {
+	public List<BoardDTO> selectListLike(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "select * from (select board.*, row_number() over(order by thumbs_up desc) rown from board) where rown between ? and ?";
+		String sql = "select * from (select board.*, row_number() over(order by thumbs_up desc) rown from board) where (rown between ? and ?) and game_id = ? and delete_yn = 'N'";
 		try (
 				Connection con = this.getconnection();
 				PreparedStatement pstat = con.prepareStatement(sql);	
@@ -103,6 +103,7 @@ public class BoardDAO {
 			List<BoardDTO> list = new ArrayList<>();
 			pstat.setInt(1, startNum);
 			pstat.setInt(2, endNum);
+			pstat.setString(3, game_num);
 			try (	
 					ResultSet rs= pstat.executeQuery();
 					){
@@ -112,13 +113,12 @@ public class BoardDAO {
 					String content = rs.getString("content");
 					Timestamp write_date = rs.getTimestamp("write_date");
 					int view_count = rs.getInt("view_count");
-					int thumbs_up = rs.getInt("thumbs_up");
 					String delete_yn = rs.getString("delete_yn");
 					Timestamp delete_date = rs.getTimestamp("delete_date");
 					int game_id = rs.getInt("game_id");
 					String nickname = rs.getString("nickname");
 					list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-							,thumbs_up,delete_yn,delete_date,game_id,nickname));
+							,delete_yn,delete_date,game_id,nickname));
 				}
 				return list;
 			}
@@ -170,9 +170,8 @@ public class BoardDAO {
 					dto.setContent(rs.getString(3));
 					dto.setWrite_date(rs.getTimestamp(4));
 					dto.setView_count(rs.getInt(5));
-					dto.setThumbs_up(rs.getInt(6));
-					dto.setGame_id(rs.getInt(9));
-					dto.setNickname(rs.getString(10));
+					dto.setGame_id(rs.getInt(8));
+					dto.setNickname(rs.getString(9));
 				}
 				return dto;
 			}
