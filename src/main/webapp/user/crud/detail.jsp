@@ -199,7 +199,7 @@
 				</div>
 				<script>
 					$(document).ready(function () {
-						get_comm_list("default");
+						fetchAndRenderData("/list.board", 1, "default");
 					});
 				</script>
 			</body>

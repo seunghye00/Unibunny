@@ -35,13 +35,14 @@ public class BoardDAO {
 	};
 
 	// 게시판 게시글 조회
-	public List<BoardDTO> selectListAll(int startNum, int endNum) throws Exception {
+	public List<BoardDTO> selectListAll(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown from board) where rown between ? and ?";
+		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown from board) where (rown between ? and ?) and game_id = ? and delete_yn = 'N'";
 		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			List<BoardDTO> list = new ArrayList<>();
 			pstat.setInt(1, startNum);
 			pstat.setInt(2, endNum);
+			pstat.setString(3, game_num);
 			try (ResultSet rs = pstat.executeQuery();) {
 				while (rs.next()) {
 					int board_seq = rs.getInt("board_seq");
@@ -61,9 +62,9 @@ public class BoardDAO {
 			}
 		}
  	}
-	public List<BoardDTO> selectListView(int startNum, int endNum) throws Exception {
+	public List<BoardDTO> selectListView(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "select * from (select board.*, row_number() over(order by view_count desc) rown from board) where rown between ? and ?";
+		String sql = "select * from (select board.*, row_number() over(order by view_count desc) rown from board) where (rown between ? and ?) and game_id = ? and delete_yn = 'N'";
 		try (
 				Connection con = this.getconnection();
 				PreparedStatement pstat = con.prepareStatement(sql);	
@@ -71,6 +72,7 @@ public class BoardDAO {
 			List<BoardDTO> list = new ArrayList<>();
 			pstat.setInt(1, startNum);
 			pstat.setInt(2, endNum);
+			pstat.setString(3, game_num);
 			try (	
 					ResultSet rs= pstat.executeQuery();
 					){
@@ -93,9 +95,9 @@ public class BoardDAO {
 		}
 	}
 	
-	public List<BoardDTO> selectListLike(int startNum, int endNum) throws Exception {
+	public List<BoardDTO> selectListLike(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "select * from (select board.*, row_number() over(order by thumbs_up desc) rown from board) where rown between ? and ?";
+		String sql = "select * from (select board.*, row_number() over(order by thumbs_up desc) rown from board) where (rown between ? and ?) and game_id = ? and delete_yn = 'N'";
 		try (
 				Connection con = this.getconnection();
 				PreparedStatement pstat = con.prepareStatement(sql);	
@@ -103,6 +105,7 @@ public class BoardDAO {
 			List<BoardDTO> list = new ArrayList<>();
 			pstat.setInt(1, startNum);
 			pstat.setInt(2, endNum);
+			pstat.setString(3, game_num);
 			try (	
 					ResultSet rs= pstat.executeQuery();
 					){

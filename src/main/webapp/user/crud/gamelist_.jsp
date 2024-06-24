@@ -40,21 +40,12 @@
 										<div style="padding: 5px;"></div>
 										<ul>
 											<li class="sub_title not_link">게시글</li>
-<<<<<<< Updated upstream
-											<li><a href="/list.board">전체 게시글</a></li>
-											<li><a href="javascript:;">게임1</a></li>
-											<li><a href="javascript:;">게임2</a></li>
-											<li><a href="javascript:;">게임3</a></li>
-											<li><a href="javascript:;">게임4</a></li>
-											<li><a href="javascript:;">게임5</a></li>
-=======
-											<li><a href="/list.board" id ="board_all">전체 게시글</a></li>
-											<li><a href="javascript:;" id ="game1">게임1</a></li>
-											<li><a href="javascript:;" id ="game2">게임2</a></li>
-											<li><a href="javascript:;" id ="game3">게임3</a></li>
-											<li><a href="javascript:;" id ="game4">게임4</a></li>
-											<li><a href="javascript:;" id ="game5">게임5</a></li>
->>>>>>> Stashed changes
+											<li><a href="/list.board" id="board_all">전체 게시글</a></li>
+											<li><a href="javascript:;" id="game1">게임1</a></li>
+											<li><a href="javascript:;" id="game2">게임2</a></li>
+											<li><a href="javascript:;" id="game3">게임3</a></li>
+											<li><a href="javascript:;" id="game4">게임4</a></li>
+											<li><a href="javascript:;" id="game5">게임5</a></li>
 										</ul>
 									</div>
 								</div>
@@ -108,12 +99,6 @@
 		</div>
 	</div>
 	<script>
-<<<<<<< Updated upstream
-=======
-	$(document).ready(function () {
-		get_comm_list("default");
-	});
->>>>>>> Stashed changes
 	// select 요소의 변경 이벤트 처리
 	document.getElementById('sub_menu').addEventListener('change', function() {
 		// 선택된 옵션의 값 가져오기
@@ -126,13 +111,8 @@
 		} else if (selectedValue === 'notice') {
 			// 다른 옵션을 선택한 경우, 해당 페이지로 이동
 			window.location.href = '/list.notice';
-<<<<<<< Updated upstream
 		} else {
 			window.location.href = '/list.board';
-=======
-		} else if (selectedValue === 'game1') {
-			window.location.href = '/gamelist.board';
->>>>>>> Stashed changes
 		}
 	});
 	</script>

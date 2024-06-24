@@ -13,7 +13,11 @@
 			<div class="header">
 				<div class="wrap mob_hidden">
 					<h1 class="logo">
+<<<<<<< Updated upstream
 						<a href="main.jsp" title="메인으로 가기"> <img
+=======
+						<a href="/user/main.jsp" title="메인으로 가기"> <img
+>>>>>>> Stashed changes
 							src="../../image/logo.png" alt="">
 						</a>
 					</h1>
@@ -38,7 +42,11 @@
 				</div>
 				<div class="mob_wrap">
 					<h1 class="mob_logo">
+<<<<<<< Updated upstream
 						<a href="main.jsp" title="메인으로 가기"> <img
+=======
+						<a href="/user/main.jsp" title="메인으로 가기"> <img
+>>>>>>> Stashed changes
 							src="../../image/logo.png" alt="">
 						</a>
 					</h1>

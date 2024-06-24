@@ -56,7 +56,11 @@ public class NoticeDAO {
 	 	}
 		// 전체 게시글 카운트 조회 
 		public int getRecordCount() throws Exception {
+<<<<<<< Updated upstream
 			String sql = "select count(*) from board";
+=======
+			String sql = "select count(*) from notice";
+>>>>>>> Stashed changes
 			try (Connection con = this.getConnection();
 					PreparedStatement pstat = con.prepareStatement(sql);
 					ResultSet rs = pstat.executeQuery();) {
@@ -78,7 +82,11 @@ public class NoticeDAO {
 //	    try (Connection con = DriverManager.getConnection(url, id, pw);
 //	         PreparedStatement pstat = con.prepareStatement(sql)) {
 //
+<<<<<<< Updated upstream
 //	        for (int i = 1; i <= 50; i++) {
+=======
+//	        for (int i = 1; i <= 10; i++) {
+>>>>>>> Stashed changes
 //	            pstat.setString(1, "Title " + i); // TITLE
 //	            pstat.setString(2, "Content " + i); // CONTENT
 //	            pstat.setInt(3, (int) (Math.random() * 100)); // VIEW_COUNT
