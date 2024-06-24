@@ -53,13 +53,12 @@ public class BoardDAO {
 					 String content = rs.getString("content");
 					 Timestamp write_date = rs.getTimestamp("write_date");
 					 int view_count = rs.getInt("view_count");
-					 int thumbs_up = rs.getInt("thumbs_up");
 					 String delete_yn = rs.getString("delete_yn");
 					 Timestamp delete_date = rs.getTimestamp("delete_date");
 					 int game_id = rs.getInt("game_id");
 					 String nickname = rs.getString("nickname");
 					 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-							 ,thumbs_up,delete_yn,delete_date,game_id,nickname));
+							 ,delete_yn,delete_date,game_id,nickname));
 				 }
 				 return list;
 			}
@@ -129,13 +128,12 @@ public class BoardDAO {
 				 String content = rs.getString("content");
 				 Timestamp write_date = rs.getTimestamp("write_date");
 				 int view_count = rs.getInt("view_count");
-				 int thumbs_up = rs.getInt("thumbs_up");
 				 String delete_yn = rs.getString("delete_yn");
 				 Timestamp delete_date = rs.getTimestamp("delete_date");
 				 int game_id = rs.getInt("game_id");
 				 String nickname = rs.getString("nickname");
 				 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-						 ,thumbs_up,delete_yn,delete_date,game_id,nickname));
+						 ,delete_yn,delete_date,game_id,nickname));
 			 }
 			 return list;
 		}
@@ -170,12 +168,11 @@ public class BoardDAO {
                 String content = rs.getString("content");
                 Timestamp write_date = rs.getTimestamp("write_date");
                 int view_count = rs.getInt("view_count");
-                int thumbs_up = rs.getInt("thumbs_up");
                 String delete_yn = rs.getString("delete_yn");
                 Timestamp delete_date = rs.getTimestamp("delete_date");
                 int game_id = rs.getInt("game_id");
                 String nickname = rs.getString("nickname");
-                list.add(new BoardDTO(board_seq, title, content, write_date, view_count, thumbs_up, delete_yn, delete_date, game_id, nickname));
+                list.add(new BoardDTO(board_seq, title, content, write_date, view_count, delete_yn, delete_date, game_id, nickname));
             }
             return list;
         }
@@ -209,18 +206,49 @@ public class BoardDAO {
 	                String content = rs.getString("content");
 	                Timestamp write_date = rs.getTimestamp("write_date");
 	                int view_count = rs.getInt("view_count");
-	                int thumbs_up = rs.getInt("thumbs_up");
 	                String delete_yn = rs.getString("delete_yn");
 	                Timestamp delete_date = rs.getTimestamp("delete_date");
 	                int game_id = rs.getInt("game_id");
 	                String nickname = rs.getString("nickname");
-	                list.add(new BoardDTO(board_seq, title, content, write_date, view_count, thumbs_up, delete_yn, delete_date, game_id, nickname));
+	                list.add(new BoardDTO(board_seq, title, content, write_date, view_count, delete_yn, delete_date, game_id, nickname));
 	            }
 	            return list;
 	        }
 	    }
 	}
 
+	
+//	관리자가 deleteYN = Y인 삭제된게시물(임시 보관 게시물)을 조회하는 메서드
+	public List<BoardDTO> searchDeletedList() throws Exception {
+		// 내부 조인으로 desc 순으로 번호 출력
+		System.out.println("board_seq");
+		String sql = "select * from board where delete_YN = 'Y'";
+		try (
+				Connection con = this.getconnection();
+				PreparedStatement pstat = con.prepareStatement(sql);	
+				) {
+			List<BoardDTO> list = new ArrayList<>();
+			
+			try (	
+					ResultSet rs= pstat.executeQuery();
+					){
+				 while(rs.next()) {
+					 int board_seq = rs.getInt("board_seq");
+					 String title = rs.getString("title");
+					 String content = rs.getString("content");
+					 Timestamp write_date = rs.getTimestamp("write_date");
+					 int view_count = rs.getInt("view_count");
+					 String delete_yn = rs.getString("delete_yn");
+					 Timestamp delete_date = rs.getTimestamp("delete_date");
+					 int game_id = rs.getInt("game_id");
+					 String nickname = rs.getString("nickname");
+					 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
+							 ,delete_yn,delete_date,game_id,nickname));
+				 }
+				 return list;
+			}
+		}
+ 	}
 	
 	
 	

@@ -159,6 +159,18 @@
                     <div class="table_col"><span>작성일</span></div>
                     <div class="table_col"><span>되돌리기</span></div>
                   </div>
+                  <c:forEach var="dto" items="${deletedlist}">
+                  	<div class="table_row">
+                    	<div class="table_col"><span>${dto.board_seq}</span></div>
+                    	<div class="table_col"><a href="javascript:;">${dto.content}</a></div>
+                    	<div class="table_col"><span>${dto.nickname}</span></div>
+                   	 	<div class="table_col"><span>${dto.delete_date}</span></div>
+                    	<div class="table_col"><button class="restore_btn">복구</button></div>
+                  	</div>
+                  
+                  </c:forEach>
+                  
+                  <!-- 
                   <div class="table_row">
                     <div class="table_col"><span>1</span></div>
                     <div class="table_col"><a href="javascript:;">임시 삭제된 글이에오</a></div>
@@ -182,7 +194,7 @@
                   </div>
 
                 </div>
-
+ -->
                 <!-- 임시 보관 댓글 리스트 -->
 
                 <div class="list_table draft-comments hidden">
@@ -258,35 +270,42 @@
       </div>
     </div>
     <script>
+    
+    
+    
+    function loadContent(target) {
+        let url;
+        if (target === 'all-posts') {
+          url = '/list.board';
+        } else if (target === 'draft-posts') {
+          url = '/deletedboard.board';
+        } else if (target === 'draft-comments') {
+          url = '/deletedcomments.board';
+        }
+        $.ajax({
+          url: url,
+          method: 'GET',
+          success: function(response) {
+            $('.' + target).html($(response).find('.' + target).html());
+            $('.list_table').removeClass('active').addClass('hidden');
+            $('.' + target).removeClass('hidden').addClass('active');
+          },
+          error: function() {
+            alert('Failed to load content.');
+          }
+        });
+      }
+
       $(document).ready(function () {
         $('.toggle-btn').on('click', function () {
           var target = $(this).data('target');
-          $('.list_table').removeClass('active').addClass('hidden');
-          $('.' + target).removeClass('hidden').addClass('active');
-        });
-      });
-
-
-      // 토글
-
-
-      $(document).ready(function () {
-        $('.toggle-btn').on('click', function () {
-          var target = $(this).data('target');
-          $('.list_table').removeClass('active').addClass('hidden');
-          $('.' + target).removeClass('hidden').addClass('active');
+          loadContent(target);
         });
 
-        // 게시물 토글 스크립트
         $('.post-toggle').on('click', function () {
           $(this).closest('.post').toggleClass('active');
         });
       });
-
-
-
-
-
     </script>
 </body>
 </html>
