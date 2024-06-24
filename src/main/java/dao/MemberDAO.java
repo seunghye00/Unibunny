@@ -30,7 +30,7 @@ public class MemberDAO {
 		return ds.getConnection();
 	}
 
-	//회원가입
+	// 회원가입
 	public int insert(MemberDTO dto) throws Exception {
 		String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -54,7 +54,7 @@ public class MemberDAO {
 		}
 	}
 
-	//로그인 
+	// 로그인
 	public boolean login(String userid, String pw) throws Exception {
 		String sql = "select * from  member where  userid=? and pw=? ";
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -66,7 +66,7 @@ public class MemberDAO {
 		}
 	}
 
-	//회원가입 정규표현식
+	// 회원가입 정규표현식
 	public boolean isExist(Duptype dup, String value) throws Exception {
 		String sql = "SELECT * FROM member WHERE ";
 		String column = "";
@@ -92,79 +92,79 @@ public class MemberDAO {
 	}
 //아이디 찾기
 	public String findAccount(String reg_num, String email, String phone) throws Exception {
-	    String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
-	    
-	    try (Connection con = this.getConnection();
-	         PreparedStatement pst = con.prepareStatement(sql)) {
-	        pst.setString(1, reg_num);
-	        pst.setString(2, email);
-	        pst.setString(3, phone);
+		String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
+		String regNum = reg_num;
 
-	        try (ResultSet rs = pst.executeQuery()) {
-	            if(rs.next()) {
-	            	return rs.getString("USERID");
-	            }
-	            else {
-	            	return "";
-	            }
-	        }
-	        catch(SQLException e) {
-	        	e.printStackTrace();
-	        	return "";
-	        }
-	    }
+		// '-' 이후의 부분을 제거하고 앞 6자리까지만 사용
+		if (regNum.indexOf("-") != -1) {
+			regNum = regNum.substring(0, regNum.indexOf("-"));
+		}
+
+		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setString(1, regNum);
+			pst.setString(2, email);
+			pst.setString(3, phone);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("userid");
+				} else {
+					return "";
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return "";
+			}
+		}
 	}
-	//비밀번호 찾기
-	   public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
-	        String sql = "SELECT reg_num FROM member WHERE userid = ? AND email = ?";
-	        String regNum = reg_num;
-	        try (Connection con = this.getConnection();
-		             PreparedStatement pst = con.prepareStatement(sql)) {
-		            pst.setString(1, userid);
-		            pst.setString(2, email);
-		            
-		            try (ResultSet rs = pst.executeQuery()) {
-						if(rs.next()) {
-							String db_value = rs.getString("REG_NUM");
-							if(regNum.indexOf("-") != -1) {
-								regNum = regNum.substring(regNum.indexOf("-"));
-							}
-							String substr_dbVal = db_value.substring(0,db_value.indexOf("-"));
-							if(substr_dbVal.equals(regNum)) {
-								regNum = db_value;
-							}
-							else {
-								return false;
-							}
-						}
-						else {
-							return false;
-						}
+
+	// 비밀번호 찾기
+	public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
+		String sql = "SELECT reg_num FROM member WHERE userid = ? AND email = ?";
+		String regNum = reg_num;
+		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setString(1, userid);
+			pst.setString(2, email);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					String db_value = rs.getString("REG_NUM");
+					if (regNum.indexOf("-") != -1) {
+						regNum = regNum.substring(regNum.indexOf("-"));
 					}
-		            
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		            return false;
-		        }
-		   
-		    sql = "UPDATE member SET pw = ? WHERE userid = ? AND email = ? AND reg_num = ?";
-	        
-	        try (Connection con = this.getConnection();
-	             PreparedStatement pst = con.prepareStatement(sql)) {
-	            pst.setString(1, newPassword);
-	            pst.setString(2, userid);
-	            pst.setString(3, email);
-	            pst.setString(4, regNum);
+					String substr_dbVal = db_value.substring(0, db_value.indexOf("-"));
+					if (substr_dbVal.equals(regNum)) {
+						regNum = db_value;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
 
-	            int rowsUpdated = pst.executeUpdate();
-	            return rowsUpdated > 0; // 업데이트가 성공적으로 수행되었는지 여부 반환
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            return false;
-	        }
-	    }
-	   
+		sql = "UPDATE member SET pw = ? WHERE userid = ? AND email = ? AND reg_num = ?";
+
+		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setString(1, newPassword);
+			pst.setString(2, userid);
+			pst.setString(3, email);
+			pst.setString(4, regNum);
+
+			int rowsUpdated = pst.executeUpdate();
+			return rowsUpdated > 0; // 업데이트가 성공적으로 수행되었는지 여부 반환
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 //	   public void kakaoLogin(MemberDTO dto) throws SQLException {
 //	        String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
 //
