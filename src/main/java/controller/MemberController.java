@@ -25,7 +25,6 @@ import com.google.gson.JsonObject;
 import commons.EncryptionUitls;
 import commons.MailSender;
 import commons.PasswordGenerator;
-import dao.BoardDAO;
 import dao.Duptype;
 import dao.MemberDAO;
 import dto.MemberDTO;
