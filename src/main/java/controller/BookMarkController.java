@@ -54,6 +54,11 @@ public class BookMarkController extends HttpServlet {
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				int result = dao.unsaveBookMark(user_id, board_seq);
 				pw.append(g.toJson(result));
+			} else if(cmd.equals("/count.bookmark")) {
+				// 해당 게시글의 북마크 수
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				System.out.println((dao.selectByBoardSeq(board_seq)));
+				pw.append(g.toJson(dao.selectByBoardSeq(board_seq)));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

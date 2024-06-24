@@ -76,7 +76,7 @@
 								<div class="select_subject">
 									<ul>
 										<li><a href="/list.faq?userType=manager">FAQ</a></li>
-										<li><a href="../manager/qa.html">Q&A</a></li>
+										<li><a href="../manager/qna.jsp">Q&A</a></li>
 									</ul>
 								</div>
 								<div style="padding: 20px;"></div>
