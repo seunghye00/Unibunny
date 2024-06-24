@@ -199,6 +199,7 @@
 				</div>
 				<script>
 					$(document).ready(function () {
+						get_likes_record("${loginID}");
 						get_comm_list("default");
 					});
 				</script>
