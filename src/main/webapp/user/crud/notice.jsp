@@ -93,7 +93,7 @@
 			</div>
 			
 		</div>
-		<jsp:include page="../../common/header.jsp" />
+		<jsp:include page="../../common/footer.jsp" />
 	</div>
 	<script>
 	// select 요소의 변경 이벤트 처리

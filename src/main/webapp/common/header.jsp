@@ -13,19 +13,19 @@
 			<div class="header">
 				<div class="wrap mob_hidden">
 					<h1 class="logo">
-						<a href="user/main.jsp" title="메인으로 가기"> <img
+						<a href="main.jsp" title="메인으로 가기"> <img
 							src="../../image/logo.png" alt="">
 						</a>
 					</h1>
 					<div class="header_con">
 						<ul class="header_gnb">
-							<li><a href="/list.board" class="gnb_comu"><span>커뮤니티</span></a>
+							<li><a href="../list.board" class="gnb_comu"><span>커뮤니티</span></a>
 							</li>
-							<li><a href="user/rank/rank.jsp" class="gnb_rank"><span>랭킹</span></a>
+							<li><a href="/user/rank/rank.jsp" class="gnb_rank"><span>랭킹</span></a>
 							</li>
-							<li><a href="user/ourpage/ourpage.jsp" class="gnb_our"><span>OUR
+							<li><a href="/user/ourpage/ourpage.jsp" class="gnb_our"><span>OUR
 										PAGE</span></a></li>
-							<li><a href="user/crud/faq.jsp" class="gnb_cs"><span>고객센터</span></a>
+							<li><a href="/user/crud/faq.jsp" class="gnb_cs"><span>고객센터</span></a>
 							</li>
 						</ul>
 						<ul class="header_my">
@@ -38,7 +38,7 @@
 				</div>
 				<div class="mob_wrap">
 					<h1 class="mob_logo">
-						<a href="user/main.jsp" title="메인으로 가기"> <img
+						<a href="main.jsp" title="메인으로 가기"> <img
 							src="../../image/logo.png" alt="">
 						</a>
 					</h1>
@@ -47,9 +47,9 @@
 					<div class="mob_menu">
 						<ul class="mob_list">
 							<li><strong><a href="/list.board">커뮤니티</a></strong></li>
-							<li><strong><a href="user/rank/rank.jsp">랭킹</a></strong></li>
-							<li><strong><a href="user/ourpage/ourpage.jsp">OUR PAGE</a></strong></li>
-							<li><strong><a href="user/crud/faq.jsp">고객센터</a></strong></li>
+							<li><strong><a href="/user/rank/rank.jsp">랭킹</a></strong></li>
+							<li><strong><a href="/user/ourpage/ourpage.jsp">OUR PAGE</a></strong></li>
+							<li><strong><a href="/user/crud/faq.jsp">고객센터</a></strong></li>
 						</ul>
 						<div class="mob_my">
 							<ul>
