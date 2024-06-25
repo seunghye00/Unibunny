@@ -691,6 +691,12 @@
   flex-wrap: wrap;
 }
 
+.cont_box .notice_cont .board_head .board_info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .cont_box .cont_body .board_head .board_info::after {
   width: 100%;
   content: "";
