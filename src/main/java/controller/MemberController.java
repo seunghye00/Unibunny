@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -40,6 +41,7 @@ public class MemberController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String cmd = request.getRequestURI();
 		MemberDAO mdao = MemberDAO.getInstance();
+		MemberDTO mdto = new MemberDTO();
 		Gson g = new Gson();
 		JsonObject js = new JsonObject();
 
@@ -49,7 +51,8 @@ public class MemberController extends HttpServlet {
 			if(cmd.equals("/signup.member")) {
 				String userid = request.getParameter("userid");
 				String nickname = request.getParameter("nickname");
-				String pw = EncryptionUitls.getSHA512(request.getParameter("pw"));
+				String pw = request.getParameter("pw");
+				String pwsha512 =EncryptionUitls.getSHA512(pw);
 				String phone = request.getParameter("phone");
 				String reg_num_first = request.getParameter("reg_num_first");
 				String reg_num_second = request.getParameter("reg_num_second");
@@ -61,11 +64,12 @@ public class MemberController extends HttpServlet {
 				String reg_num = reg_num_first + "-" + reg_num_second + "******";
 
 				try {
-					int result = mdao.insert(new MemberDTO(userid, nickname, pw, phone, reg_num, email, postcode,
+					int result = mdao.insert(new MemberDTO(userid, nickname, pwsha512, phone, reg_num, email, postcode,
 							address1, address2, null, 0, ""));
 					if (result > 0) {
-						response.sendRedirect("/index.jsp");
+						response.sendRedirect("/login/login.jsp");
 					} else {
+
 						response.sendRedirect("/error.jsp");
 					}
 				} catch (Exception e) {
@@ -75,24 +79,36 @@ public class MemberController extends HttpServlet {
 			}
 //			로그인 
 			else if (cmd.equals("/login.member")) {
-			    String userid = request.getParameter("userid");
-			    String pw = request.getParameter("pw");
+				String userid = request.getParameter("userid");
+				String pw = request.getParameter("pw");
+				String ipAddress = request.getRemoteAddr();
+				System.out.println("Client IP Address: " + ipAddress); // IP 주소 출력
 
-			    String ipAddress = request.getRemoteAddr();
-			    System.out.println("Client IP Address: " + ipAddress); // IP 주소 출력
+				boolean result = mdao.login(userid, pw);
+				System.out.println("Login Result : " + result);
 
-			    boolean result = mdao.login(userid, pw);
-			    System.out.println("Login Result : " + result);
+				response.setContentType("application/json"); // JSON 형식으로 응답 설정
 
-			    if (result) {
-			        HttpSession session = request.getSession();
-			        session.setAttribute("loginID", userid);
-			        System.out.println(userid);
-			        response.sendRedirect("/index.jsp"); // 로그인 성공 시 리다이렉트
-			    } else {
-			        response.sendRedirect("/login/login.jsp?error=invalid"); // 로그인 실패 시 리다이렉트
-			    }
-	
+				JSONObject json = new JSONObject();
+				if (result) {
+					// 로그인 성공 시
+					HttpSession session = request.getSession();
+					session.setAttribute("loginID", userid);
+					session.setAttribute("nickName", mdto.getNickname());
+					json.put("success", true);
+					response.sendRedirect("user/main.jsp");
+				} else {
+					// 로그인 실패 시
+					json.put("message", "아이디 또는 비밀번호가 일치 하지않습니다 다시 확인 하여주세요");
+					response.sendRedirect("login/login.jsp");
+				}
+
+				try (PrintWriter out = response.getWriter()) {
+					out.print(json.toString());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
 //				회원가입 ajax 정규표현식 코드
 			} else if (cmd.equals("/check.member")) {
 				response.setContentType("application/json; charset=UTF-8");

@@ -26,10 +26,10 @@
 					<input type="text" placeholder="Id" name="userid">
 				</div>
 				<div class="pw_Input">
-					<input type="text" placeholder="Password" name="pw">
+					<input type="password" placeholder="Password" name="pw">
 				</div>
 				<div class="login_Btn">
-					<button type="submit">Login</button>
+					<button id="login_form_btn" type="submit">Login</button>
 				</div>
 				</form>
 				<div class="api_Login">

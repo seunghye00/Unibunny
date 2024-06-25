@@ -139,7 +139,7 @@ $(document).ready(function() {
 
 	// 전화번호 유효성 검사
 	$("#input_phone").keyup(function() {
-		const phone_pattern = /^01\d{8,9}$/;
+		const phone_pattern = /^010\d{8}$/;
 		let phone_number = $(this).val();
 		phone_number = phone_number.replace(/[^0-9]/g, ""); // 숫자 이외의 문자 제거
 
@@ -182,14 +182,33 @@ $(document).ready(function() {
 		}
 	});
 
-	// 입력 필드의 색상 변경
-	$("#input_identify").keyup(function() {
-		if ($(this).val().length == 0) {
+	$("#input_identify").on('input', function() {
+		var value = $(this).val();
+		var filteredValue = value.replace(/[^1234]/g, ''); // 1234 외의 모든 문자를 제거
+
+		$(this).val(filteredValue);
+
+		// 입력값이 없을 때 색상 설정
+		if (filteredValue.length == 0) {
 			$(this)[0].style.color = "#b3b3b3";
 		} else {
 			$(this)[0].style.color = "black";
 		}
 	});
+
+
+
+
+
+	// 입력 필드의 색상 변경
+	// $("#input_identify").keyup(function() {
+	//
+	// 	if ($(this).val().length == 0) {
+	// 		$(this)[0].style.color = "#b3b3b3";
+	// 	} else {
+	// 		$(this)[0].style.color = "black";
+	// 	}
+	// });
 
 	// 숫자 입력만 허용
 	$("#input_first, #input_identify").on("keydown", function(event) {
@@ -222,6 +241,7 @@ $(document).ready(function() {
 
 		$(this).val(firstPart);
 	});
+
 
 	$("#input_identify").on("input", function() {
 		let identifyPart = $(this).val().trim();
@@ -348,10 +368,9 @@ function findId() {
 		success: function(response) {
 			if (response.userId !== "") {
 				alert("찾은 아이디는 " + response.userId + " 입니다.");
-				location.href = "/index.jsp"; // 성공 시 페이지 이동
+				location.href = "/login/login.jsp"; // 성공 시 페이지 이동
 			} else {
 				alert("입력하신 정보로 등록된 계정을 찾을 수 없습니다.");
-				return;
 				// 페이지 이동 없음
 			}
 		},
@@ -359,9 +378,9 @@ function findId() {
 			console.error("아이디 찾기 중 오류 발생:", error);
 			alert("서버에 오류가 발생했습니다");
 			// 페이지 이동 없음
-		},
+		}
 	});
-}
+
 
 $("#find_email_form").on("click", function() {
 	const find_input_reg = $("input[name='find_input_reg']").val();
@@ -379,7 +398,7 @@ $("#find_email_form").on("click", function() {
 		dataType: "json",
 		success: function(response) {
 			alert(response.message);
-			location.href = "/index.jsp"; // 성공 시 페이지 이동
+			location.href = "/login/login.jsp"; // 성공 시 페이지 이동
 		},
 		error: function(xhr, status, error) {
 			console.error("아이디 찾기 중 오류 발생:", error);
@@ -397,29 +416,60 @@ $("button.kakao_Login").click(function(){
 
 // 서버로부터 JSON 데이터 받기
 function getKakaoUserInfo() {
-    $.ajax({
-        url: '/kakaoauth.member', // 서버 측 URL
-        type: 'GET',
-        success: function(response) {
-            // 성공적으로 JSON 데이터를 받았을 때 처리
-            var nickname = response.nickname;
-            var email = response.email;
-            var gender = response.gender;
-            var ageRange = response.age_range;
-            var birthday = response.birthday;
+	$.ajax({
+		url: '/kakaoauth.member', // 서버 측 URL
+		type: 'GET',
+		success: function (response) {
+			// 성공적으로 JSON 데이터를 받았을 때 처리
+			var nickname = response.nickname;
+			var email = response.email;
+			var gender = response.gender;
+			var ageRange = response.age_range;
+			var birthday = response.birthday;
 
-            console.log("닉네임: " + nickname);
-            console.log("이메일: " + email);
-            console.log("성별: " + gender);
-            console.log("연령대: " + ageRange);
-            console.log("생일: " + birthday);
+			console.log("닉네임: " + nickname);
+			console.log("이메일: " + email);
+			console.log("성별: " + gender);
+			console.log("연령대: " + ageRange);
+			console.log("생일: " + birthday);
 
-            // 원하는 방식으로 받은 데이터 활용
-        },
-        error: function(xhr, status, error) {
-            // 에러 처리
-            console.error("에러 발생: " + error);
-        }
-    });
-    
+			// 원하는 방식으로 받은 데이터 활용
+		},
+		error: function (xhr, status, error) {
+			// 에러 처리
+			console.error("에러 발생: " + error);
+		}
+	});
+}
+	$("#login_form_btn").submit(function(event) {
+		event.preventDefault(); // 폼 기본 제출 동작 방지
+
+		var userid = $("#userid").val();
+		var pw = $("#pw").val();
+
+		$.ajax({
+			url: "/login.member",
+			type: "POST",
+			data: {
+				userid: userid,
+				pw: pw
+			},
+			dataType: "json", // 서버에서 받을 데이터 타입 지정
+			success: function(response) {
+				if (response.success) {
+					// 로그인 성공 시 리다이렉트
+					location.href = "/user/main.jsp";
+				} else {
+					// 로그인 실패 시 메시지 출력
+					alert("아이디 또는 비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error("AJAX 요청 중 오류 발생:", error);
+				alert("서버에 오류가 발생했습니다");
+			}
+		});
+	});
+
+
 }

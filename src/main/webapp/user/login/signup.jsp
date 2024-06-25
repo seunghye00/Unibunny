@@ -13,7 +13,7 @@
 <link rel="stylesheet"
 	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="../css/common.css">
-<link rel="stylesheet" href="../css/sub.css">
+<link rel="stylesheet" href="../css/sub.css">Z
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/login.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

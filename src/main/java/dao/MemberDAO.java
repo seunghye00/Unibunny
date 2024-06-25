@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import dto.MemberDTO;
 
+
 public class MemberDAO {
 	public static MemberDAO instance;
 
@@ -35,7 +36,6 @@ public class MemberDAO {
 		String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, dto.getUserid());
-			System.out.println("aa");
 			pst.setString(2, dto.getNickname());
 			pst.setString(3, dto.getPw());
 			pst.setString(4, dto.getPhone());
@@ -90,29 +90,34 @@ public class MemberDAO {
 			}
 		}
 	}
-//아이디 찾기
+	//아이디 찾기
 	public String findAccount(String reg_num, String email, String phone) throws Exception {
-	    String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
-	    
-	    try (Connection con = this.getConnection();
-	         PreparedStatement pst = con.prepareStatement(sql)) {
-	        pst.setString(1, reg_num);
-	        pst.setString(2, email);
-	        pst.setString(3, phone);
+		String sql = "SELECT userid FROM member WHERE reg_num LIKE ? AND email = ? AND phone = ?";
 
-	        try (ResultSet rs = pst.executeQuery()) {
-	            if(rs.next()) {
-	            	return rs.getString("USERID");
-	            }
-	            else {
-	            	return "";
-	            }
-	        }
-	        catch(SQLException e) {
-	        	e.printStackTrace();
-	        	return "";
-	        }
-	    }
+		// '-' 이후 문자 제거
+		if (reg_num.indexOf("-") != -1) {
+			reg_num = reg_num.substring(0, reg_num.indexOf("-"));
+		}
+
+		try (Connection con = this.getConnection();
+			 PreparedStatement pst = con.prepareStatement(sql)) {
+			// 와일드카드 문자 추가
+			pst.setString(1, reg_num + "-%");
+			pst.setString(2, email);
+			pst.setString(3, phone);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("userid");
+				} else {
+					return "";
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return "";
+			}
+		}
+
 	}
 	//비밀번호 찾기
 	   public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
@@ -145,7 +150,8 @@ public class MemberDAO {
 		        } catch (Exception e) {
 		            e.printStackTrace();
 		            return false;
-		        }
+			}
+
 		   
 		    sql = "UPDATE member SET pw = ? WHERE userid = ? AND email = ? AND reg_num = ?";
 	        

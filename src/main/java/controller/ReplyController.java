@@ -52,8 +52,8 @@ public class ReplyController extends HttpServlet {
 					user_id = "user000";
 				}
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-				String nickname = MemberDAO.getInstance().getNickname(user_id);
-				dao.insert(new ReplyDTO(0, nickname, request.getParameter("content"), null, 0, board_seq));
+//				String nickname = MemberDAO.getInstance().getNickname(user_id);
+//				dao.insert(new ReplyDTO(0, nickname, request.getParameter("content"), null, 0, board_seq));
 			
 			} else if(cmd.equals("/like.reply")) {
 				// 댓글 좋아요
