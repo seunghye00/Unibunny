@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Enumeration;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -89,12 +91,41 @@ public class QNAController extends HttpServlet {
                 } else {
                     response.sendRedirect("/write_qna.jsp");
                 }
+            } else if (cmd.equals("/list.qna")) {
+                List<QNADTO> qnaList = dao.selectAllQnA();
+                request.setAttribute("qnaList", qnaList);
+                request.getRequestDispatcher("/manager/qna.jsp").forward(request, response);
+            } else if (cmd.equals("/detail.qna")) {
+                int question_seq = Integer.parseInt(request.getParameter("question_seq"));
+                QNADTO qna = dao.selectQnABySeq(question_seq);
+                QNAFilesDTO file = filesDao.selectFileByQuestionSeq(question_seq);
+                
+                request.setAttribute("qna", qna);
+                request.setAttribute("file", file);
+                request.getRequestDispatcher("/manager/qna_detail.jsp").forward(request, response);
+            } else if (cmd.equals("/answer.qna")) {
+                int question_seq = Integer.parseInt(request.getParameter("question_seq"));
+                String answer_content = request.getParameter("answer_content");
+
+                QNADTO dto = new QNADTO();
+                dto.setQuestion_seq(question_seq);
+                dto.setAnswer_content(answer_content);
+                dto.setAnswer_yn("Y");
+                dto.setAnswer_date(new Timestamp(System.currentTimeMillis()));
+
+                int result = dao.insertAnswer(dto);
+                if (result > 0) {
+                    response.sendRedirect("/detail.qna?question_seq=" + question_seq);
+                } else {
+                    response.sendRedirect("/index.jsp");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("/index.jsp");
         }
     }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

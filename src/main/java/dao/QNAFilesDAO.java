@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -34,6 +36,25 @@ public class QNAFilesDAO {
             ps.setString(2, dto.getSysname());
             ps.setInt(3, dto.getQuestion_seq());
             return ps.executeUpdate();
+        }
+    }
+    
+    public QNAFilesDTO selectFileByQuestionSeq(int question_seq) throws Exception {
+        String sql = "SELECT * FROM qna_files WHERE question_seq = ?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, question_seq);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    QNAFilesDTO fileDto = new QNAFilesDTO();
+                    fileDto.setQna_file_SEQ(rs.getInt("qna_file_seq"));
+                    fileDto.setOriname(rs.getString("oriname"));
+                    fileDto.setSysname(rs.getString("sysname"));
+                    fileDto.setQuestion_seq(rs.getInt("question_seq"));
+                    return fileDto;
+                }
+                return null;
+            }
         }
     }
 }
