@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 
@@ -70,7 +70,7 @@
                     <div class="wrap">
                         <div class="header_con">
                             <div class="titlebox">
-                                <span>전체 게시물</span>
+                                <span>공지사항</span>
                             </div>
                             <div class="header_my">
                                 <ul>
@@ -97,7 +97,7 @@
                     <div class="wrap">
                         <!-- 메인 콘텐츠 영역 -->
                         <div class="con_wrap">
-                            <div class="con">
+                            <div class="con ntc_con">
                                 <div class="ntc select_subject">
                                     <ul>
                                         <li><a href="../manager/notice.jsp">공지사항</a></li>
@@ -109,7 +109,7 @@
 
                                 <div style="padding: 10px;"></div>
                                 <div class="ntc list_table">
-                                    <div class="table_row table_header">
+                                    <div class="ntc table_row table_header">
                                         <div class="table_col">
                                             <span>번호</span>
                                         </div>
@@ -189,6 +189,11 @@
                                             <div class="table_col"><span>1</span></div>
                                         </div>
                                     </a>
+                                </div>
+                                <div class="ntc">
+                                    <div class="ntc btn">
+                                        <button class="ntc write_btn" onclick="location.href='ntc_write.jsp'">작성하기</button>
+                                    </div>
                                 </div>
                                 <div class="pagination">
                                     <a href="javascript:;" class="btn_prev btn_disabled"></a>
