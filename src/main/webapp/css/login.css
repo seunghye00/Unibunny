@@ -278,7 +278,7 @@ input[type="password"]::placeholder {
   display: inline-block;
   position: relative;
   content: "";
-  background: url("../image/login/naver_logo.svg") no-repeat 0px 4px;
+  background: url("../image/login/kakao_logo.svg") no-repeat 0px 4px;
   background-size: 15px;
   width: 17px;
   height: 17px;

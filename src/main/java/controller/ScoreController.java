@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Timestamp;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+
+import dao.ScoreDAO;
+import dto.ScoreDTO;
 
 
 @WebServlet("*.score")
@@ -20,13 +26,27 @@ public class ScoreController extends HttpServlet {
 		
 		// JSON 라이브러리
 		Gson g = new Gson();
-
+		
+		// reponse writer 변수 저장
+		PrintWriter pw = response.getWriter();
+		
 		// 접속 경로 저장
 		String cmd = request.getRequestURI();
 		// System.out.println(cmd);
-		
+		ScoreDAO dao = ScoreDAO.getInstance();
 		try {
-			
+			if(cmd.equals("/submit.score")) {
+				String loginID = (String)request.getSession().getAttribute("loginID");
+				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
+				if(loginID == null) {
+					loginID = "user001";
+				}
+				System.out.println(request.getParameter("score"));
+				System.out.println(request.getParameter("gameId"));
+				int score = Integer.parseInt(request.getParameter("score"));
+				int gameId = Integer.parseInt(request.getParameter("gameId"));
+				pw.append(g.toJson(gameId));
+            }
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

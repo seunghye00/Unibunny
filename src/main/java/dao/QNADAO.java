@@ -1,15 +1,20 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+import dto.QNADTO;
 
 public class QNADAO {
 
 	private static QNADAO instance;
-	
+
 	public static synchronized QNADAO getInstance() {
 		if (instance == null) {
 			instance = new QNADAO();
@@ -17,11 +22,93 @@ public class QNADAO {
 		return instance;
 	}
 
-	private QNADAO() {}
+	private QNADAO() {
+	}
 
 	private Connection getConnection() throws Exception {
 		Context ctx = new InitialContext();
 		DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/oracle");
 		return ds.getConnection();
 	}
+
+	public int insertQnA(QNADTO dto) throws Exception {
+		String sql = "INSERT INTO QNA (QUESTION_SEQ, QUESTION_TITLE, QUESTION_CONTENT, WRITE_DATE, USERID, ANSWER_CONTENT) VALUES (QUESTION_SEQ.NEXTVAL, ?, ?, ?, ?, '')";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, dto.getQuestion_title());
+			ps.setString(2, dto.getQuestion_content());
+			ps.setTimestamp(3, dto.getWrite_date());
+			ps.setString(4, dto.getId());
+			return ps.executeUpdate();
+		}
+	}
+	
+    public int getLastInsertedId() throws Exception {
+        String sql = "SELECT QUESTION_SEQ.CURRVAL FROM DUAL";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            } else {
+                throw new Exception("Failed to retrieve last inserted ID.");
+            }
+        }
+    }
+    public List<QNADTO> selectAllQnA() throws Exception {
+    	String sql = "SELECT * FROM QNA ORDER BY answer_yn ASC, write_date ASC";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<QNADTO> list = new ArrayList<>();
+            while (rs.next()) {
+                QNADTO dto = new QNADTO();
+                dto.setQuestion_seq(rs.getInt("QUESTION_SEQ"));
+                dto.setQuestion_title(rs.getString("QUESTION_TITLE"));
+                dto.setQuestion_content(rs.getString("QUESTION_CONTENT"));
+                dto.setWrite_date(rs.getTimestamp("WRITE_DATE"));
+                dto.setAnswer_yn(rs.getString("ANSWER_YN"));
+                dto.setAnswer_content(rs.getString("ANSWER_CONTENT"));
+                dto.setAnswer_date(rs.getTimestamp("ANSWER_DATE"));
+                dto.setId(rs.getString("USERID"));
+                list.add(dto);
+            }
+            return list;
+        }
+    }
+    
+    public QNADTO selectQnABySeq(int question_seq) throws Exception {
+        String sql = "SELECT * FROM QNA WHERE QUESTION_SEQ = ?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, question_seq);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    QNADTO dto = new QNADTO();
+                    dto.setQuestion_seq(rs.getInt("QUESTION_SEQ"));
+                    dto.setQuestion_title(rs.getString("QUESTION_TITLE"));
+                    dto.setQuestion_content(rs.getString("QUESTION_CONTENT"));
+                    dto.setWrite_date(rs.getTimestamp("WRITE_DATE"));
+                    dto.setAnswer_yn(rs.getString("ANSWER_YN"));
+                    dto.setAnswer_content(rs.getString("ANSWER_CONTENT"));
+                    dto.setAnswer_date(rs.getTimestamp("ANSWER_DATE"));
+                    dto.setId(rs.getString("USERID"));
+                    return dto;
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+    
+    public int insertAnswer(QNADTO dto) throws Exception {
+        String sql = "UPDATE QNA SET ANSWER_CONTENT = ?, ANSWER_YN = ?, ANSWER_DATE = ? WHERE QUESTION_SEQ = ?";
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, dto.getAnswer_content());
+            ps.setString(2, dto.getAnswer_yn());
+            ps.setTimestamp(3, dto.getAnswer_date());
+            ps.setInt(4, dto.getQuestion_seq());
+            return ps.executeUpdate();
+        }
+    }
 }
+

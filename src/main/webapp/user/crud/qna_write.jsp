@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>Q&A</title>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../../../css/common.css">
 <link rel="stylesheet" href="../../../css/sub.css">
 <link rel="stylesheet" href="../../../css/layout.css">
@@ -15,10 +14,11 @@
 <script defer src="../../../js/common.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </head>
 <body>
-    <div class="wrapper">
+<div class="wrapper">
     <div class="header_area">
       <div class="header">
         <div class="wrap mob_hidden">
@@ -51,7 +51,7 @@
         </div>
         <div class="mob_wrap">
           <h1 class="mob_logo"><a href="javascript:;" title="메인으로 가기">
-              <img src="../../../image/logo.png" alt="">
+              <img src="../../image/logo.png" alt="">
             </a>
           </h1>
           <div class="mob_ham"></div>
@@ -74,10 +74,9 @@
             </ul>
             <div class="mob_my">
               <ul>
-                <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png" alt="마이페이지 로고"></a>
+                <li><a href="javascript:;" class="mob_mypage"><img src="../image/icon/mypage.png" alt="마이페이지 로고"></a>
                 </li>
-                <li><a href="javascript:;" class="mob_login"><img src="../../image/icon/login_b.png" alt="로그인 로고"></a>
-                </li>
+                <li><a href="javascript:;" class="mob_login"><img src="../image/icon/login.png" alt="로그인 로고"></a></li>
                 <li>
                   <div onclick="history.back();" class="mob_close"></div>
                 </li>
@@ -91,32 +90,37 @@
       <div class="body for_pc">
         <div class="wrap">
           <div class="con_wrap">
-            <div class="con qa_write_con">
+            <div class="con write_con">
               <div class="title_box">
                 <p class="title">Q&A 작성하기</p>
               </div>
-              <div class="list_table">
-                <div class="table_row table_header">
-                  <span>제목</span>
-                  <div style="padding: 5px;"></div>
-                  <input type="text">
-                </div>
-                <div style="padding: 10px;"></div>
-                <div id="addfile">
-                  <span>파일첨부</span>
-                  <div style="padding: 5px;"></div>
-                  <button type="button" id="file">+</button>
-                </div>
-                <div id="filebox"></div>
-                <div style="padding: 10px;"></div>
-                <div class="write">
-                  <textarea id="summernote"></textarea>
-                </div>
-              </div>
-              <div class="btns">
-                <button class="write_btn">작성하기</button>
-                <button class="list_btn" onclick="location.href='qa.html'">돌아가기</button>
-              </div>
+                     <form id="qnaForm" action="/write.qna" method="post"
+                        enctype="multipart/form-data">
+                        <div class="list_table">
+                           <div class="table_row table_header">
+                              <span>제목</span>
+                              <div style="padding: 5px;"></div>
+                              <input type="text" name="question_title">
+                           </div>
+                           <div style="padding: 10px;"></div>
+                           <input type="hidden" name="userId" value="user1234">
+                           <div id="addfile">
+                              <span>파일첨부</span>
+                              <div style="padding: 5px;"></div>
+                              <button type="button" id="file" name="files[]">+</button>
+                           </div>
+                           <div id="filebox"></div>
+                           <div style="padding: 10px;"></div>
+                           <div class="write">
+                              <textarea id="summernote" name="question_content"></textarea>
+                           </div>
+                        </div>
+                        <div class="btns">
+                           <button class="write_btn" type="submit">작성하기</button>
+                           <button class="list_btn" type="button"
+                              onclick="location.href='/list.faq'">돌아가기</button>
+                        </div>
+                     </form>
             </div>
           </div>
         </div>
@@ -144,28 +148,27 @@
         </div>
       </div>
     </div>
-  </div>
-  <script>
-    $(document).ready(function () {
-      $('#summernote').summernote({
-        height: 500,                 // 에디터 높이 설정
-        minHeight: null,             // 최소 높이 설정
-        maxHeight: null,             // 최대 높이 설정
-        focus: true                  // 초기 포커스 설정
-      });
+    <script>
+      $(document).ready(function () {
+        $('#summernote').summernote({
+          height: 500,                 // 에디터 높이 설정
+          minHeight: null,             // 최소 높이 설정
+          maxHeight: null,             // 최대 높이 설정
+          focus: true                  // 초기 포커스 설정
+        });
 
-      $('#file').on('click', function () {
-        var fileInputWrapper = $('<div class="file-input-wrapper">' +
-          '<input type="file" name="file">' +
-          '<button type="button" class="removeFileInput">-</button>' +
-          '</div>');
-        $('#filebox').append(fileInputWrapper);
-      });
+        $('#file').on('click', function () {
+          var fileInputWrapper = $('<div class="file-input-wrapper">' +
+            '<input type="file" name="file">' +
+            '<button type="button" class="removeFileInput">-</button>' +
+            '</div>');
+          $('#filebox').append(fileInputWrapper);
+        });
 
-      $('#filebox').on('click', '.removeFileInput', function () {
-        $(this).closest('.file-input-wrapper').remove();
+        $('#filebox').on('click', '.removeFileInput', function () {
+          $(this).closest('.file-input-wrapper').remove();
+        });
       });
-    });
-  </script>
+    </script>
 </body>
 </html>

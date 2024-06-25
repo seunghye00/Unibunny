@@ -8,21 +8,18 @@ public class BoardDTO {
 	private String content;
 	private Timestamp write_date;
 	private int view_count;
-	private int thumbs_up;
 	private String delete_yn;
 	private Timestamp delete_date;
 	private int game_id;
-	private int nickname;
+	private String nickname;
 	
-	public BoardDTO(int board_seq, String title, String content, Timestamp write_date, int view_count, int thumbs_up,
-			String delete_yn, Timestamp delete_date, int game_id, int nickname) {
+	public BoardDTO(int board_seq, String title, String content, Timestamp write_date, int view_count, String delete_yn, Timestamp delete_date, int game_id, String  nickname) {
 		super();
 		this.board_seq = board_seq;
 		this.title = title;
 		this.content = content;
 		this.write_date = write_date;
 		this.view_count = view_count;
-		this.thumbs_up = thumbs_up;
 		this.delete_yn = delete_yn;
 		this.delete_date = delete_date;
 		this.game_id = game_id;
@@ -73,14 +70,6 @@ public class BoardDTO {
 		this.view_count = view_count;
 	}
 	
-	public int getThumbs_up() {
-		return thumbs_up;
-	}
-	
-	public void setThumbs_up(int thumbs_up) {
-		this.thumbs_up = thumbs_up;
-	}
-	
 	public String getDelete_yn() {
 		return delete_yn;
 	}
@@ -105,11 +94,11 @@ public class BoardDTO {
 		this.game_id = game_id;
 	}
 	
-	public int getNickname() {
+	public String getNickname() {
 		return nickname;
 	}
 	
-	public void setNickname(int nickname) {
+	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
 }
