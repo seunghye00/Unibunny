@@ -149,7 +149,7 @@
                 <!-- 타이틀 박스 공통 -->
                 <div class="title_box">
                   <p class="title">인기글</p>
-                  <a href="/list.board?api=/like.board&page=1"></a>
+                  <a href="/list.board?api=/view.board&page=1&gameId=game_id"></a>
                 </div>
                 <div class="list_table main_list_table">
                   <div class="table_row table_header">
@@ -213,25 +213,28 @@
 </body>
 <script>
 $(document).ready(function () {
-    // 리스트 테이블을 담을 변수
+	mainList('/view.board', 1 ,'gameId');
+});
+function mainList (page, gameId) {
+	// 리스트 테이블을 담을 변수
     let listContainer = $(".main_list_table");
 
     // 초기 리스트 테이블 비우기
     listContainer.empty();
-
+	
     // AJAX로 데이터 받아오기
     $.ajax({
-        url: "/like.board",
-        method: "GET",
+        url: "/view.board",
+        method: "POST",
         dataType: "json",
-        data: { cpage: 1 }, // 페이지 번호를 쿼리 파라미터로 전달
+        data: { cpage: 1, gameId : gameId }, // 페이지 번호를 쿼리 파라미터로 전달
     }).done(function (resp) {
         console.log(resp); // 받은 데이터 확인
 
         // 테이블의 헤더 부분 생성
         let headerRow = $("<div>").addClass("table_row table_header");
         let headerCol1 = $("<div>").addClass("table_col").append($("<span>").text("제목"));
-        let headerCol2 = $("<div>").addClass("table_col").append($("<span>").text("추천수"));
+        let headerCol2 = $("<div>").addClass("table_col").append($("<span>").text("조회수"));
         headerRow.append(headerCol1, headerCol2);
         listContainer.append(headerRow);
 
@@ -242,7 +245,7 @@ $(document).ready(function () {
             let row = $("<div>").addClass("table_row");
             let link = $("<a>").attr("href", "/user/detail.board?board_seq=" + data.board_seq).text(data.title);
             let col1 = $("<div>").addClass("table_col").append(link);
-            let col2 = $("<div>").addClass("table_col").append($("<span>").text(data.thumbs_up));
+            let col2 = $("<div>").addClass("table_col").append($("<span>").text(data.view_count));
             row.append(col1, col2);
             listContainer.append(row);
         }
@@ -250,7 +253,7 @@ $(document).ready(function () {
         // AJAX 호출이 실패했을 경우 처리할 내용
         console.error("AJAX 호출 실패: ", textStatus, errorThrown);
     });
-});
+};
 
 </script>
 </html>

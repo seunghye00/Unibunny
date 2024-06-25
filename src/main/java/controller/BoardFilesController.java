@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import dao.FilesDAO;
+import dao.BoardFilesDAO;
 
 
-@WebServlet("*.file")
-public class FilesController extends HttpServlet {
+@WebServlet("*.boardfile")
+public class BoardFilesController extends HttpServlet {
    
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       // 인코딩 설정
@@ -33,10 +33,10 @@ public class FilesController extends HttpServlet {
       System.out.println(cmd);
       
       //FilesDAO 인스턴스 생성
-      FilesDAO dao = FilesDAO.getInstance();
+      BoardFilesDAO dao = BoardFilesDAO.getInstance();
       
       try {
-         if(cmd.equals("/list.file")) {
+         if(cmd.equals("/list.boardfile")) {
             // 파일 목록 조회
             int board_seq = Integer.parseInt(request.getParameter("board_seq")); 
             
@@ -45,7 +45,7 @@ public class FilesController extends HttpServlet {
             // 직렬화한 데이터 전송
             response.getWriter().append(file_list);
             
-         } else if (cmd.equals("/download.file")) {
+         } else if (cmd.equals("/download.boardfile")) {
             // 파일 다운로드 (추후 수정 작업 필요)
             String filepath = request.getServletContext().getRealPath("files"); // 파일이 저장되어 있는 위치
             String sysname = request.getParameter("sysname");                // 다운 받을 파일이 하드디스크에 저장된 이름
