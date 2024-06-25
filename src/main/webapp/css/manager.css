@@ -1030,3 +1030,90 @@
 .faq .cancel_btn:hover {
   background-color: var(--color-space-click);
 }
+
+/* 관리자 공지사항 */
+.body_area .con .ntc.select_subject::after {
+  width: 75%;
+}
+
+.ntc .table_col:nth-child(1) {
+  width: 10%;
+}
+
+.ntc .table_col:nth-child(2) {
+  width: 60%;
+  text-align: center;
+}
+
+.ntc .table_header .table_col:nth-child(2) {
+  width: 60%;
+  text-align: center;
+}
+
+.ntc .table_col:nth-child(3) {
+  width: 10%;
+}
+
+.ntc .table_col:nth-child(4) {
+  width: 10%;
+}
+
+.ntc .table_col:nth-child(5) {
+  width: 10%;
+}
+
+.ntc .btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.ntc .write_btn {
+  padding: 10px 20px;
+  background-color: var(--color-space);
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.ntc .write_btn:hover {
+  background-color: var(--color-space-click);
+}
+
+.ntc a:last-child .table_row {
+  border-bottom: 1px solid var(--color-line) !important;
+}
+.ntc a .table_row:last-child {
+  border-bottom: none;
+}
+
+/* 임시 보관 댓글 */
+.keep .table_col:nth-child(1) {
+  width: 10%;
+}
+
+.keep .table_col:nth-child(2) {
+  width: 35%;
+  text-align: center;
+}
+
+.keep .table_header .table_col:nth-child(2) {
+  width: 35%;
+  text-align: center;
+}
+
+.keep .table_col:nth-child(3) {
+  width: 35%;
+}
+
+.keep .table_col:nth-child(4) {
+  width: 10%;
+}
+
+.keep .table_col:nth-child(5) {
+  width: 10%;
+}
+
