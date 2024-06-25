@@ -39,7 +39,7 @@ public class ReplyDAO {
 
 		if (order_by.equals("write_date") || order_by.equals("thumbs_up")) {
 			// SQL 인젝션 방지를 위해 허용된 매개 변수 값인지 검사 후 코드 실행
-			String sql = "select * from reply where board_seq = ? order by " + order_by + " desc";
+			String sql = "select r.*, coalesce(like_count, 0) thumbs_up from reply r left join (select reply_seq, count(*) like_count from reply_like group by reply_seq) rl on r.reply_seq = rl.reply_seq where board_seq = ? and delete_yn = 'N' order by " + order_by + " desc";
 			try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 				pstat.setInt(1, board_seq);
 				List<ReplyDTO> list = new ArrayList<>();
@@ -49,9 +49,10 @@ public class ReplyDAO {
 						String writer = rs.getString(2);
 						String content = rs.getString(3);
 						Timestamp write_date = rs.getTimestamp(4);
-						int thumbs_up = rs.getInt(5);
-						list.add(new ReplyDTO(seq, writer, content, write_date, thumbs_up, board_seq));
+						String delete_yn = rs.getString(6);
+						list.add(new ReplyDTO(seq, writer, content, write_date, board_seq, delete_yn));
 					}
+					System.out.println(list);
 					return list;
 				}
 			}
@@ -63,12 +64,13 @@ public class ReplyDAO {
 	// 댓글 작성
 	public boolean insert(ReplyDTO dto) throws Exception {
 
-		String sql = "insert into reply values (reply_seq.nextval, ?, ?, sysdate, 0, ?)";
+		String sql = "insert into reply values (reply_seq.nextval, ?, ?, sysdate, ?, ?)";
 
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			pstat.setString(1, dto.getNickname());
 			pstat.setString(2, dto.getContent());
 			pstat.setInt(3, dto.getBoard_seq());
+			pstat.setString(4, dto.getDelete_yn());
 			if (pstat.executeUpdate() > 0)
 				return true;
 		}

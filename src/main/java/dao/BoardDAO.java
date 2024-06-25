@@ -279,24 +279,6 @@ public class BoardDAO {
 		}
 	}
 
-	// 게시글 좋아요 기능을 수행할 메서드
-	public int boardLike(int board_seq) throws Exception {
-		String sql = "update board set thumbs_up = thumbs_up + 1 where board_seq = ?";
-		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
-			pstat.setInt(1, board_seq);
-			return pstat.executeUpdate();
-		}
-	}
-
-	// 게시글 좋아요 취소 기능을 수행할 메서드
-	public int boardUnLike(int board_seq) throws Exception {
-		String sql = "update board set thumbs_up = thumbs_up - 1 where board_seq = ?";
-		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
-			pstat.setInt(1, board_seq);
-			return pstat.executeUpdate();
-		}
-	}
-
 	// 게시글 삭제 메서드
 	public int deleteBySeq(int board_seq) throws Exception {
 		String sql = "delete from board where board_seq = ?";

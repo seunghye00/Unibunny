@@ -312,246 +312,246 @@ function initPaginationVariables(cpageParam, recordTotalCount) {
 
 // 최신순 버튼 클릭 시
 $("#recent_btn").on("click", function() {
-    let apiUrl = "/list.board";
-    updateUrlAndFetchData(apiUrl, 1, currentGameId);
-    $("#recent_btn, #likes_btn, #views_btn").removeClass("active");
-    $(this).addClass("active");
+	let apiUrl = "/list.board";
+	updateUrlAndFetchData(apiUrl, 1, currentGameId);
+	$("#recent_btn, #likes_btn, #views_btn").removeClass("active");
+	$(this).addClass("active");
 });
 
 // 좋아요 버튼 클릭 시
 $("#likes_btn").on("click", function() {
-    let apiUrl = "/like.board";
-    updateUrlAndFetchData(apiUrl, 1, currentGameId);
-    $("#recent_btn, #likes_btn, #views_btn").removeClass("active");
-    $(this).addClass("active");
+	let apiUrl = "/like.board";
+	updateUrlAndFetchData(apiUrl, 1, currentGameId);
+	$("#recent_btn, #likes_btn, #views_btn").removeClass("active");
+	$(this).addClass("active");
 });
 
 // 조회수 버튼 클릭 시
 $("#views_btn").on("click", function() {
-    let apiUrl = "/view.board";
-    updateUrlAndFetchData(apiUrl, 1, currentGameId);
-    $("#recent_btn, #likes_btn, #views_btn").removeClass("active");
-    $(this).addClass("active");
+	let apiUrl = "/view.board";
+	updateUrlAndFetchData(apiUrl, 1, currentGameId);
+	$("#recent_btn, #likes_btn, #views_btn").removeClass("active");
+	$(this).addClass("active");
 });
 
 // 게임 선택 및 전체 보기 버튼 클릭 시 이벤트 처리
 $("#board_all").click(function() {
-    currentGameId = 'game_id';
-    updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+	currentGameId = 'game_id';
+	updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
 });
 $("#game1").click(function() {
-    currentGameId = 1; // 현재 게임 ID를 1로 설정
-    updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+	currentGameId = 1; // 현재 게임 ID를 1로 설정
+	updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
 });
 $("#game2").click(function() {
-    currentGameId = 2; // 현재 게임 ID를 2로 설정
-    updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+	currentGameId = 2; // 현재 게임 ID를 2로 설정
+	updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
 });
 $("#game3").click(function() {
-    currentGameId = 3; // 현재 게임 ID를 3로 설정
-    updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+	currentGameId = 3; // 현재 게임 ID를 3로 설정
+	updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
 });
 $("#game4").click(function() {
-    currentGameId = 4; // 현재 게임 ID를 4로 설정
-    updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+	currentGameId = 4; // 현재 게임 ID를 4로 설정
+	updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
 });
 $("#game5").click(function() {
-    currentGameId = 5; // 현재 게임 ID를 5로 설정
-    updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
+	currentGameId = 5; // 현재 게임 ID를 5로 설정
+	updateUrlAndFetchData("/list.board", 1, currentGameId); // 최신순 목록 불러오기
 });
 // 데이터 가져오고 테이블 렌더링 함수
 function fetchAndRenderData(apiUrl, page, gameId) {
-    if (gameId == 'default') {
-        // 정렬 기준이 dafault면 최신순으로 설정
-        gameId = 'gameId';
-    }
-    $.ajax({
-        url: apiUrl,
-        method: "POST",
-        dataType: "json",
-        data: { cpage: page, recordCountPerPage: record_count_per_page, gameId: gameId }, // 페이지 번호를 쿼리 파라미터로 전달
-    }).done(function(resp) {
+	if (gameId == 'default') {
+		// 정렬 기준이 dafault면 최신순으로 설정
+		gameId = 'gameId';
+	}
+	$.ajax({
+		url: apiUrl,
+		method: "POST",
+		dataType: "json",
+		data: { cpage: page, recordCountPerPage: record_count_per_page, gameId: gameId }, // 페이지 번호를 쿼리 파라미터로 전달
+	}).done(function(resp) {
 
-        console.log(resp); // 받은 데이터 확인
+		console.log(resp); // 받은 데이터 확인
 
-        // 페이지네이션 변수 초기화
-        initPaginationVariables(page, resp.record_total_count);
+		// 페이지네이션 변수 초기화
+		initPaginationVariables(page, resp.record_total_count);
 
-        // 기존의 목록 컨테이너를 비웁니다.
-        listContainer.empty();
+		// 기존의 목록 컨테이너를 비웁니다.
+		listContainer.empty();
 
-        // 테이블의 헤더 부분 생성
-        let headerRow = $("<div>").addClass("table_row table_header");
-        let headerCol1 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("번호"));
-        let headerCol2 = $("<div>").addClass("table_col").append($("<span>").text("제목"));
-        let headerCol3 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성자"));
-        let headerCol4 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성일"));
-        let headerCol5 = null;
-        let headerCol6 = null;
+		// 테이블의 헤더 부분 생성
+		let headerRow = $("<div>").addClass("table_row table_header");
+		let headerCol1 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("번호"));
+		let headerCol2 = $("<div>").addClass("table_col").append($("<span>").text("제목"));
+		let headerCol3 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성자"));
+		let headerCol4 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성일"));
+		let headerCol5 = null;
+		let headerCol6 = null;
 
-        // 버튼에 따라 추가되는 열 처리
-        if (apiUrl === "/list.board") {
-            headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
-        } else if (apiUrl === "/like.board") {
-            headerCol5 = $("<div>").addClass("table_col mob_hidden likes_column").append($("<span>").text("추천수"));
-        } else if (apiUrl === "/view.board") {
-            headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
-        }
+		// 버튼에 따라 추가되는 열 처리
+		if (apiUrl === "/list.board") {
+			headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
+		} else if (apiUrl === "/like.board") {
+			headerCol5 = $("<div>").addClass("table_col mob_hidden likes_column").append($("<span>").text("추천수"));
+		} else if (apiUrl === "/view.board") {
+			headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
+		}
 
-        headerRow.append(headerCol1, headerCol2, headerCol3, headerCol4, headerCol5, headerCol6);
-        listContainer.append(headerRow);
+		headerRow.append(headerCol1, headerCol2, headerCol3, headerCol4, headerCol5, headerCol6);
+		listContainer.append(headerRow);
 
-        // 데이터 반복 처리
-        if (Array.isArray(resp.data)) {
-            let startNumber = (page - 1) * record_count_per_page + 1; // 시작 번호 계산
+		// 데이터 반복 처리
+		if (Array.isArray(resp.data)) {
+			let startNumber = (page - 1) * record_count_per_page + 1; // 시작 번호 계산
 
-            for (let i = 0; i < resp.data.length; i++) {
-                let dto = resp.data[i];
-                let row = $("<div>").addClass("table_row");
-                let link = $("<a>").attr("href", "/user/detail.board?board_seq=" + dto.board_seq);
-                let col1 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text(startNumber + i));
-                let col2 = $("<div>").addClass("table_col").append($("<span>").text(dto.title));
-                let col3 = $("<div>").addClass("table_col").append($("<span>").text(dto.nickname));
-                let col4 = $("<div>").addClass("table_col").append($("<span>").text(dto.write_date));
-                let col5 = null;
-                let col6 = null;
+			for (let i = 0; i < resp.data.length; i++) {
+				let dto = resp.data[i];
+				let row = $("<div>").addClass("table_row");
+				let link = $("<a>").attr("href", "/user/detail.board?board_seq=" + dto.board_seq);
+				let col1 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text(startNumber + i));
+				let col2 = $("<div>").addClass("table_col").append($("<span>").text(dto.title));
+				let col3 = $("<div>").addClass("table_col").append($("<span>").text(dto.nickname));
+				let col4 = $("<div>").addClass("table_col").append($("<span>").text(dto.write_date));
+				let col5 = null;
+				let col6 = null;
 
-                // 버튼에 따라 추가되는 열 처리
-                if (apiUrl === "/list.board") {
-                    col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
-                } else if (apiUrl === "/like.board") {
-                    col5 = $("<div>").addClass("table_col mob_hidden likes_column").append($("<span>").text(dto.thumbs_up));
-                } else if (apiUrl === "/view.board") {
-                    col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
-                }
+				// 버튼에 따라 추가되는 열 처리
+				if (apiUrl === "/list.board") {
+					col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
+				} else if (apiUrl === "/like.board") {
+					col5 = $("<div>").addClass("table_col mob_hidden likes_column").append($("<span>").text(dto.thumbs_up));
+				} else if (apiUrl === "/view.board") {
+					col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
+				}
 
-                link.append(col1, col2, col3, col4, col5, col6);
-                row.append(link);
-                listContainer.append(row);
-            }
-        } else {
-            console.error("데이터 형식이 올바르지 않습니다. 데이터가 배열이 아닙니다.");
-        }
+				link.append(col1, col2, col3, col4, col5, col6);
+				row.append(link);
+				listContainer.append(row);
+			}
+		} else {
+			console.error("데이터 형식이 올바르지 않습니다. 데이터가 배열이 아닙니다.");
+		}
 
-        // 페이지네이션 생성
-        renderPagination(apiUrl, page);
+		// 페이지네이션 생성
+		renderPagination(apiUrl, page);
 
-        // URL 업데이트
-        updateUrl(apiUrl, page);
+		// URL 업데이트
+		updateUrl(apiUrl, page);
 
-        // 버튼의 active 클래스 설정
-        $("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
-        if (apiUrl === "/list.board") {
-            $("#recent_btn").addClass("active");
-        } else if (apiUrl === "/like.board") {
-            $("#likes_btn").addClass("active");
-        } else if (apiUrl === "/view.board") {
-            $("#views_btn").addClass("active");
-        }
+		// 버튼의 active 클래스 설정
+		$("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
+		if (apiUrl === "/list.board") {
+			$("#recent_btn").addClass("active");
+		} else if (apiUrl === "/like.board") {
+			$("#likes_btn").addClass("active");
+		} else if (apiUrl === "/view.board") {
+			$("#views_btn").addClass("active");
+		}
 
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-        // AJAX 호출이 실패했을 경우 처리할 내용
-        console.error("AJAX 호출 실패: ", textStatus, errorThrown);
-    });
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		// AJAX 호출이 실패했을 경우 처리할 내용
+		console.error("AJAX 호출 실패: ", textStatus, errorThrown);
+	});
 }
 
 // 페이지네이션 생성 함수
 function renderPagination(apiUrl, currentPage) {
-    // 페이지네이션 초기 설정
-    let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
-    let startNavi = Math.floor((currentPage - 1) / navi_count_per_page) * navi_count_per_page + 1;
-    let endNavi = startNavi + navi_count_per_page - 1;
+	// 페이지네이션 초기 설정
+	let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+	let startNavi = Math.floor((currentPage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+	let endNavi = startNavi + navi_count_per_page - 1;
 
-    if (endNavi > pageTotalCount) {
-        endNavi = pageTotalCount;
-    }
+	if (endNavi > pageTotalCount) {
+		endNavi = pageTotalCount;
+	}
 
-    let needNext = endNavi < pageTotalCount;
-    let needPrev = startNavi > 1;
+	let needNext = endNavi < pageTotalCount;
+	let needPrev = startNavi > 1;
 
-    // 페이지네이션 HTML 생성
-    let pageNation = $("#pagination");
-    pageNation.empty();
+	// 페이지네이션 HTML 생성
+	let pageNation = $("#pagination");
+	pageNation.empty();
 
-    // '첫 페이지로' 버튼
-    pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='" + (needPrev ? "#" : "javascript:void(0);") + "' data-page='" + (needPrev ? (startNavi - 1) : "") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+	// '첫 페이지로' 버튼
+	pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='" + (needPrev ? "#" : "javascript:void(0);") + "' data-page='" + (needPrev ? (startNavi - 1) : "") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
 
-    // 페이지 번호
-    for (let i = startNavi; i <= endNavi; i++) {
-        if (currentPage === i) {
-            pageNation.append("<a class='page_navi active' href='javascript:void(0);' data-page='" + i + "'>" + i + "</a> ");
-        } else {
-            pageNation.append("<a class='page_navi' href='#' data-page='" + i + "'>" + i + "</a> ");
-        }
-    }
+	// 페이지 번호
+	for (let i = startNavi; i <= endNavi; i++) {
+		if (currentPage === i) {
+			pageNation.append("<a class='page_navi active' href='javascript:void(0);' data-page='" + i + "'>" + i + "</a> ");
+		} else {
+			pageNation.append("<a class='page_navi' href='#' data-page='" + i + "'>" + i + "</a> ");
+		}
+	}
 
-    // '마지막 페이지로' 버튼
-    pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='" + (needNext ? "#" : "javascript:void(0);") + "' data-page='" + (needNext ? (endNavi + 1) : "") + "'><img class='navi_icon end_navi' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
+	// '마지막 페이지로' 버튼
+	pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='" + (needNext ? "#" : "javascript:void(0);") + "' data-page='" + (needNext ? (endNavi + 1) : "") + "'><img class='navi_icon end_navi' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
 }
 
 
 // 페이지네이션 클릭 이벤트 처리
 $(document).on("click", ".page_navi:not(.disabled)", function(event) {
-    event.preventDefault(); // 기본 동작 방지
-    let nextPage = $(this).data("page");
-    let currentApiUrl = getCurrentApiUrl();
-    let gameId = getCurrentGameId();
-    updateUrlAndFetchData(currentApiUrl, nextPage, gameId);
+	event.preventDefault(); // 기본 동작 방지
+	let nextPage = $(this).data("page");
+	let currentApiUrl = getCurrentApiUrl();
+	let gameId = getCurrentGameId();
+	updateUrlAndFetchData(currentApiUrl, nextPage, gameId);
 });
 
 // 현재 선택된 API 경로 반환 함수
 function getCurrentApiUrl() {
-    if ($("#recent_btn").hasClass("active")) {
-        return "/list.board";
-    } else if ($("#likes_btn").hasClass("active")) {
-        return "/like.board";
-    } else if ($("#views_btn").hasClass("active")) {
-        return "/view.board";
-    }
-    // 기본적으로 최신순으로 설정
-    return "/list.board";
+	if ($("#recent_btn").hasClass("active")) {
+		return "/list.board";
+	} else if ($("#likes_btn").hasClass("active")) {
+		return "/like.board";
+	} else if ($("#views_btn").hasClass("active")) {
+		return "/view.board";
+	}
+	// 기본적으로 최신순으로 설정
+	return "/list.board";
 }
 
 // 현재 선택된 게임 ID 반환 함수
 function getCurrentGameId() {
-    return currentGameId;
+	return currentGameId;
 }
 
 // URL 업데이트 및 데이터 가져오는 함수
 function updateUrlAndFetchData(apiUrl, page, gameId) {
-    updateUrl(apiUrl, page, gameId);
-    fetchAndRenderData(apiUrl, page, gameId);
+	updateUrl(apiUrl, page, gameId);
+	fetchAndRenderData(apiUrl, page, gameId);
 }
 // URL 업데이트 함수
 function updateUrl(apiUrl, page) {
-    history.pushState(null, null, "?api=" + apiUrl + "&page=" + page);
+	history.pushState(null, null, "?api=" + apiUrl + "&page=" + page);
 }
 
 // 초기 페이지 로드 시 실행
 function listLoad() {
-    // 초기에 URL 파라미터에 따라 데이터 불러오기
-    let urlParams = new URLSearchParams(window.location.search);
-    let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
-    let page = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
-    currentGameId = urlParams.has('gameId') ? urlParams.get('gameId') : 'game_id';
+	// 초기에 URL 파라미터에 따라 데이터 불러오기
+	let urlParams = new URLSearchParams(window.location.search);
+	let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
+	let page = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
+	currentGameId = urlParams.has('gameId') ? urlParams.get('gameId') : 'game_id';
 
-    fetchAndRenderData(apiUrl, page, currentGameId); // 초기에는 최신순 데이터를 가져오도록 설정
+	fetchAndRenderData(apiUrl, page, currentGameId); // 초기에는 최신순 데이터를 가져오도록 설정
 
-    // 버튼의 active 클래스 설정
-    $("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
-    if (apiUrl === "/list.board") {
-        $("#recent_btn").addClass("active");
-    } else if (apiUrl === "/like.board") {
-        $("#likes_btn").addClass("active");
-    } else if (apiUrl === "/view.board") {
-        $("#views_btn").addClass("active");
-    }
+	// 버튼의 active 클래스 설정
+	$("#recent_btn, #likes_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
+	if (apiUrl === "/list.board") {
+		$("#recent_btn").addClass("active");
+	} else if (apiUrl === "/like.board") {
+		$("#likes_btn").addClass("active");
+	} else if (apiUrl === "/view.board") {
+		$("#views_btn").addClass("active");
+	}
 }
 
 // 문서 로드 시 listLoad 함수 실행
-$(document).ready(function() {
-    listLoad();
-});
+// $(document).ready(function() {
+//   listLoad();
+// });
 
 
 // 최신순 버튼 클릭 시
@@ -622,10 +622,67 @@ function get_board_seq() {
 	return $("#board_seq").text().replace('# ', '');
 }
 
-// 게시글 상세 페이지에서 로그인된 ID의 좋아요 기록을 확인하는 메서드
-function get_likes_record(user) {
-	console.log(user);
-	//$.ajax({}).done(function(resp){});
+// 게시글 상세 페이지에서 로그인된 ID의 좋아요 및 북마크 기록을 확인하는 메서드
+function get_user_record() {
+	// 게시글 북마크 기록
+	$.ajax({
+		url: "/check.bookmark",
+		dataType: "json",
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp) {
+		if (resp) {
+			$(".fa-regular.fa-bookmark").hide();
+			$(".fa-solid.fa-bookmark").show();
+		}
+	});
+
+	// 게시글 좋아요 기록
+	$.ajax({
+		url: "/check.boardLike",
+		dataType: "json",
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp) {
+		if (resp) {
+			$(".fa-regular.fa-thumbs-up").hide();
+			$(".fa-solid.fa-thumbs-up").show();
+		}
+	});
+}
+
+// 해당 게시글의 북마크 수와 좋아요 수를 받아오는 메서드
+function get_options_record() {
+	// 북마크 수
+	$.ajax({
+		url: "/count.bookmark",
+		dataType: "json",
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp) {
+		$(".bookmark").text("스크랩 수 : " + resp);
+	});
+	// 좋아요 수
+	$.ajax({
+		url: "/count.boardLike",
+		dataType: "json",
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp) {
+		$("#board_like").text(resp);
+	});
+}
+
+// 해당 댓글의 좋아요 수를 받아오기 위한 메서드
+function get_reply_likes(reply_seq) {
+	$.ajax({
+		url: "/count.replyLike",
+		dataType: "json",
+		data: { reply_seq: reply_seq },
+	}).done(function(resp) {
+		// reply_seq와 일치하는 .comm_seq 요소 선택
+		let comm_seq = $(".comm_seq").filter(function() {
+			return $(this).text() == reply_seq;
+		});
+		// .comm_seq 요소의 가장 가까운 .comm 요소를 찾고, 그 하위에 있는 <p> 요소의 텍스트를 업데이트
+		comm_seq.closest(".comm").find("p").text(resp);
+	});
 }
 
 // 게시글의 파일 목록을 받아오는 메서드
@@ -680,23 +737,19 @@ function click_option(element) {
 			if ($(element).hasClass("board_like")) {
 				// 게시글 좋아요 취소
 				$.ajax({
-					url: "/unlikes.board",
+					url: "/delete.boardLike",
 					data: { board_seq: get_board_seq() }
-				}).done(function(resp) {
-					// 게시글 좋아요 수 변경
-					console.log(resp);
-					$(".board_like").children("p").text(resp);
 				});
 			} else {
 				// 댓글 좋아요 취소
 				let comm = $(element);
 				let reply_seq = comm.closest(".comm").find(".comm_seq").text();
 				$.ajax({
-					url: "/unlike.reply",
+					url: "/delete.replyLike",
 					data: { reply_seq: reply_seq }
-				}).done(function(resp) {
-					// 댓글 좋아요 수 변경
-					comm.children("p").text(resp);
+				}).done(function() {
+					console.log("좋아요 취소");
+					get_reply_likes(reply_seq);
 				});
 			}
 		} else if ($(element).hasClass("mark_option")) {
@@ -706,7 +759,7 @@ function click_option(element) {
 				url: "/unsave.bookmark",
 				data: { board_seq: get_board_seq() },
 				type: 'POST',
-			}).done(function(resp) {
+			}).done(function() {
 				// 북마크 취소 완료 후 처리
 				$(element).removeClass('active');
 			});
@@ -723,23 +776,18 @@ function click_option(element) {
 			if ($(element).hasClass("board_like")) {
 				// 게시글 좋아요
 				$.ajax({
-					url: "/likes.board",
+					url: "/insert.boardLike",
 					data: { board_seq: get_board_seq() }
-				}).done(function(resp) {
-					// 게시글 좋아요 수 변경
-					console.log(resp);
-					$(".board_like").children("p").text(resp);
 				});
 			} else {
 				// 댓글 좋아요
 				let comm = $(element);
 				let reply_seq = comm.closest(".comm").find(".comm_seq").text();
 				$.ajax({
-					url: "/like.reply",
+					url: "/insert.replyLike",
 					data: { reply_seq: reply_seq }
-				}).done(function(resp) {
-					// 댓글 좋아요 수 변경
-					comm.children("p").text(resp);
+				}).done(function() {
+					get_reply_likes(reply_seq);
 				});
 			}
 		} else if ($(element).hasClass("mark_option")) {
@@ -763,6 +811,7 @@ function click_option(element) {
 		$(element).children('.fa-regular').hide();
 		$(element).children('.fa-solid').show();
 	}
+	get_options_record();
 };
 
 // 추천 or 북마크 or 파일 버튼 클릭 시 
@@ -789,12 +838,11 @@ function get_comm_list(order_by) {
 			order_by: order_by
 		}
 	}).done(function(resp) {
-
 		// console.log("${loginID}");
 
 		let comm_list = $(".comm_list");
 		comm_list.empty();
-
+		console.log(resp);
 		if (resp.length == 0) {
 			// 댓글이 존재하지 않는 경우
 			let no_comm = $("<div>", { "class": "no_comm" });
@@ -802,6 +850,7 @@ function get_comm_list(order_by) {
 			comm_list.append(no_comm);
 			return;
 		}
+
 		for (let i of resp) {
 			let comm = $("<div>", { "class": "comm" });
 
@@ -838,10 +887,13 @@ function get_comm_list(order_by) {
 
 			let btn_box3 = $("<div>", { "class": "btn_box" });
 			let option_btn = $("<button>", { "class": "option_btn likes_option", "type": "button" });
+
 			let icon1 = $("<i>", { "class": "fa-regular fa-thumbs-up fa-xs option_icon" });
-			let icon2 = $("<i>", { "class": "fa-solid fa-thumbs-up fa-xs option_icon", "style": "display:none" });
+			let icon2 = $("<i>", { "class": "fa-solid fa-thumbs-up fa-xs option_icon"});
 			let likes_num = $("<p>");
-			likes_num.text(i.thumbs_up);
+			
+			likes_num.text(get_reply_likes(i.reply_seq));
+
 			option_btn.append(icon1, icon2, likes_num);
 			btn_box3.append(option_btn);
 
@@ -849,6 +901,20 @@ function get_comm_list(order_by) {
 
 			comm.append(comm_info, comm_cont, edit_box);
 			comm_list.append(comm);
+
+			$.ajax({
+				url: "/check.replyLike",
+				dataType: "json",
+				data: { reply_seq: i.reply_seq }
+			}).done(function(resp) {
+				if (resp) {
+					icon1.hide();
+					icon2.show();
+				} else{
+					icon1.show();
+					icon2.hide();
+				}
+			});
 
 			$(".option_btn").off().on('click', function() {
 				click_option(this);
@@ -911,6 +977,7 @@ $('#write_comm').on('click', function() {
 	// 작성한 댓글 내용 ajax로 전달 
 	$.ajax({
 		url: "/write.reply",
+		method: "post",
 		data: {
 			content: $('.input_box').html(),
 			board_seq: get_board_seq()

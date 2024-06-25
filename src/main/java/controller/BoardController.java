@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 
 import commons.Pagination;
 import dao.BoardDAO;
+import dao.BoardLikeDAO;
 import dao.BookMarkDAO;
 import dao.MemberDAO;
 import dto.BoardDTO;
@@ -174,23 +175,9 @@ public class BoardController extends HttpServlet {
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
 				String loginID = (String)request.getSession().getAttribute("loginID");
-				// 해당 게시글의 북마크 수
-				request.setAttribute("bookmark", BookMarkDAO.getInstance().selectByBoardSeq(board_seq));
 				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
 				request.getRequestDispatcher("/user/crud/detail.jsp").forward(request, response);
-			} else if(cmd.equals("/likes.board")) {
-				// 게시글 좋아요
-				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-				dao.boardLike(board_seq);
-				Gson g = new Gson();
-				//response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
-			} else if(cmd.equals("/unlikes.board")) {
-				// 게시글 좋아요 취소
-				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-				dao.boardUnLike(board_seq);
-				Gson g = new Gson();
-				//response.getWriter().append(g.toJson(dao.selectBySeq(board_seq).getThumbs_up()));
-			} else if(cmd.equals("/tryUpdate.board")) {
+			}  else if(cmd.equals("/tryUpdate.board")) {
 				// 게시글 수정 페이지로 이동
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
