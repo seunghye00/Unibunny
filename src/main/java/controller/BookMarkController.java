@@ -28,11 +28,12 @@ public class BookMarkController extends HttpServlet {
 
 		// 접속 경로 저장
 		String cmd = request.getRequestURI();
-		// System.out.println(cmd);
+		System.out.println(cmd);
+		
 		// reponse writer 변수 저장
 		PrintWriter pw = response.getWriter();
-		System.out.println(cmd);
 		BookMarkDAO dao = BookMarkDAO.getInstance();
+		
 		try {
 			if(cmd.equals("/save.bookmark")) {
 				String user_id = (String)request.getSession().getAttribute("loginID");
@@ -57,8 +58,15 @@ public class BookMarkController extends HttpServlet {
 			} else if(cmd.equals("/count.bookmark")) {
 				// 해당 게시글의 북마크 수
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-				System.out.println((dao.selectByBoardSeq(board_seq)));
 				pw.append(g.toJson(dao.selectByBoardSeq(board_seq)));
+			} else if(cmd.equals("/check.bookmark")) {
+				// 로그인한 ID로 해당 게시글의 북마크 여부 조회
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				String user_id = (String)request.getSession().getAttribute("loginID");
+				// 임시 데이터 추후 삭제 !!!!
+				user_id = "user001";
+				System.out.println((dao.checkLog(board_seq, user_id)));
+				pw.append(g.toJson(dao.checkLog(board_seq, user_id)));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

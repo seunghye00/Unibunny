@@ -123,8 +123,8 @@
 				<script>
 					$(document).ready(function () {
 						get_options_record();
-						get_user_record("test_user");
 						get_comm_list("default");
+						get_user_record();
 					});
 				</script>
 			</body>

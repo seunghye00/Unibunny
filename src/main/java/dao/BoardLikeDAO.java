@@ -8,6 +8,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.google.gson.JsonElement;
+
 public class BoardLikeDAO {
 
 	private static BoardLikeDAO instance;
@@ -45,25 +47,40 @@ public class BoardLikeDAO {
 	}
 
 	// 해당 게시글 좋아요 기능
-	public int insertRecord(int board_seq, String loginID) throws Exception {
+	public int insertRecord(int board_seq, String user_id) throws Exception {
 
 		String sql = "insert into board_like values (board_like_seq.nextval, ?, ?)";
 
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
-			pstat.setString(1, loginID);
+			pstat.setString(1, user_id);
 			pstat.setInt(2, board_seq);
 			return pstat.executeUpdate();
 		}
 	}
 
 	// 해당 게시글 좋아요 취소 기능
-	public int deleteRecord(int board_seq) throws Exception {
-		
-		String sql = "delete from board_like where board_seq = ?";
+	public int deleteRecord(int board_seq, String user_id) throws Exception {
+
+		String sql = "delete from board_like where board_seq = ? and userid = ?";
 
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			pstat.setInt(1, board_seq);
+			pstat.setString(2, user_id);
 			return pstat.executeUpdate();
+		}
+	}
+
+	// 유저가 해당 게시글 좋아요 기능을 사용했는 지 여부 확인 메서드
+	public boolean checkLog(int board_seq, String user_id) throws Exception {
+
+		String sql = "select * from board_like where board_seq = ? and userid = ?";
+
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setInt(1, board_seq);
+			pstat.setString(2, user_id);
+			try (ResultSet rs = pstat.executeQuery();) {
+				return rs.next();
+			}
 		}
 	}
 }
