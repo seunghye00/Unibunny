@@ -1,10 +1,12 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,45 +114,53 @@ public class MemberDAO {
     
 
     
-public MemberDTO searchProfileInfo(String id) throws Exception{
-//  마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임,가입날짜 등)
-	
-		String sql = "select * from member where userid = ?";
-	
-			
-		try(
-				Connection con = this.getConnection();	
-				PreparedStatement pstat = con.prepareStatement(sql);
-				
-				){
-			pstat.setString(1,id);
-			
-			
-			try(ResultSet rs = pstat.executeQuery();){
+    public MemberDTO searchProfileInfo(String id) throws Exception {
+        // 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
+        String sql = "select * from member where userid = ?";
 
-			while(rs.next()) {
-				
-				String userid = rs.getString("userid");
-				String nickname = rs.getString("nickname");
-				String pw = rs.getString("pw");
-				String phone = rs.getString("phone");
-				String reg_num = rs.getString("reg_num");
-				String email = rs.getString("email");
-				String postcode= rs.getString("postcode");
-				String address1 = rs.getString("address1");
-				String address2 = rs.getString("address2");
-				Timestamp join_date = rs.getTimestamp("join_date");
-				int memcode = rs.getInt("memcode");
-				String profile_img = rs.getString("profile_img");
-				
-				MemberDTO dto = new MemberDTO(userid,nickname,pw,phone,reg_num,email,postcode,address1,address2,join_date,memcode,profile_img);
-				return dto;		
-			}
-		
-			}
-		}
-		return null;
-	}
+        try (
+            Connection con = this.getConnection();
+            PreparedStatement pstat = con.prepareStatement(sql);
+        ) {
+            pstat.setString(1, id);
+
+            try (ResultSet rs = pstat.executeQuery();) {
+
+                while (rs.next()) {
+                    String userid = rs.getString("userid");
+                    String nickname = rs.getString("nickname");
+                    String pw = rs.getString("pw");
+                    String phone = rs.getString("phone");
+                    String reg_num = rs.getString("reg_num");
+                    String email = rs.getString("email");
+                    String postcode = rs.getString("postcode");
+                    String address1 = rs.getString("address1");
+                    String address2 = rs.getString("address2");
+                    Timestamp join_date = rs.getTimestamp("join_date");
+                    int memcode = rs.getInt("memcode");
+                    String profile_img = rs.getString("profile_img");
+
+                    MemberDTO dto = new MemberDTO(userid, nickname, pw, phone, reg_num, email, postcode, address1, address2, join_date, memcode, profile_img);
+                    return dto;
+                }
+
+            }
+        }
+        return null;
+    }
+
+    // 가입날짜를 원하는 형식으로 변환하여 출력하는 메서드
+    public String getFormattedJoinDate(MemberDTO dto) {
+        Timestamp join_date = dto.getJoin_date();
+        return formatTimestamp(join_date);
+    }
+
+    // Timestamp를 원하는 형식의 문자열로 변환하는 메서드
+    private String formatTimestamp(Timestamp timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+        Date date = new Date(timestamp.getTime());
+        return sdf.format(date);
+    }
     
 
 	public int updateUserInfo(MemberDTO dto) throws Exception {
@@ -194,6 +204,18 @@ public MemberDTO searchProfileInfo(String id) throws Exception{
 	}
 	
 
+	public void updateProfileImage(String userid, String sysName) throws Exception {
+//		회원이 선택한 프로필 이미지 정보를 DB의 회원 테이블에 저장함
+		
+		String sql = "UPDATE member SET profile_img = ? WHERE userid = ?";
+		try (Connection con = this.getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql)) {
+			pstat.setString(1, "/image/mypage_image/" + sysName);
+            pstat.setString(2, userid);
+            pstat.executeUpdate();
+		}
+	}
+	
     
     
     

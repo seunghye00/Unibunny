@@ -167,7 +167,7 @@
                   <div class="profile_contents">
                     <div class="my_history">
                       <ul>
-                        <li>가입날짜 : ${my_info.join_date}</li>
+                        <li>가입날짜 : ${formattedJoinDate}</li>
                         <li>게시물 수 : ${board_count}</li>
                         <li>댓글 단 수 : ${reply_count}</li>
                       </ul>

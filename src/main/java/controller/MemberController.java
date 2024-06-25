@@ -21,7 +21,6 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import dao.BoardDAO;
 import dao.Duptype;
-import dao.FilesDAO;
 import dao.MemberDAO;
 import dao.ReplyDAO;
 import dto.BoardDTO;
@@ -98,6 +97,11 @@ public class MemberController extends HttpServlet {
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
 				System.out.println("회원정보 가져오기완료");
+				
+				// 가입 날짜 변환
+				String formattedJoinDate = MemberDAO.getInstance().getFormattedJoinDate(mdto);
+				
+				// 게시물 작성 수와 댓글 작성 수 가져오기
 				int board_count = BoardDAO.getInstance().searchBoardCount(id);
 				int reply_count = ReplyDAO.getInstance().searchReplyCount(id);
 //				my_info : 해당 멤버의 칼럼들
@@ -105,6 +109,7 @@ public class MemberController extends HttpServlet {
 //				board_count : 해당 멤버의 게시물 작성 수
 				request.setAttribute("board_count", board_count );
 				request.setAttribute("reply_count", reply_count );
+				request.setAttribute("formattedJoinDate", formattedJoinDate); // 형식화된 가입 날짜
 				
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 				
@@ -201,7 +206,7 @@ public class MemberController extends HttpServlet {
 			    // 파일이 정상적으로 업로드된 경우 (원본 이름이 null이 아닌 경우)
 			    if (oriName != null) {
 			        // DB에 저장된 회원 테이블의 프로필 이미지 정보를 업데이트
-			        FilesDAO.getInstance().updateProfileImage(userid, sysName);
+			        MemberDAO.getInstance().updateProfileImage(userid, sysName);
 			    }
 			    
 			    // 파일 업로드 완료 후 마이페이지로 리디렉션
