@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import dao.MemberDAO;
 import dao.ReplyDAO;
@@ -25,7 +26,8 @@ public class ReplyController extends HttpServlet {
 		
 		// JSON 라이브러리
 		Gson g = new Gson();
-
+		Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
+		
 		// 접속 경로 저장
 		String cmd = request.getRequestURI();
 		System.out.println(cmd);
@@ -39,7 +41,7 @@ public class ReplyController extends HttpServlet {
 				int board_seq = Integer.parseInt(request.getParameter("board_seq")); 
 				String order_by = request.getParameter("order_by");
 				// 댓글 목록을 담은 데이터 직렬화
-				String reply_list = g.toJson(dao.selectByBoardSeq(board_seq, order_by));
+				String reply_list = gson.toJson(dao.selectByBoardSeq(board_seq, order_by));
 				// 직렬화한 데이터 전송
 				response.getWriter().append(reply_list);
 			
@@ -53,7 +55,7 @@ public class ReplyController extends HttpServlet {
 				}
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				String nickname = MemberDAO.getInstance().getNickname(user_id);
-				dao.insert(new ReplyDTO(0, nickname, request.getParameter("content"), null, 0, board_seq));
+				dao.insert(new ReplyDTO(0, nickname, request.getParameter("content"), null, board_seq, "N"));
 			} else if(cmd.equals("/like.reply")) {
 				// 댓글 좋아요
 				int reply_seq = Integer.parseInt(request.getParameter("reply_seq"));
