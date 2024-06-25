@@ -31,11 +31,11 @@ public class BookMarkDAO {
 	}
 
 	// board_seq 값으로 해당 글의 북마크 수를 조회하는 메서드
-	public int selectByBoardSeq(int board_Seq) throws Exception {
+	public int selectByBoardSeq(int board_seq) throws Exception {
 
 		String sql = "select count(*) from bookmark where board_seq = ?";
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
-			pstat.setInt(1, board_Seq);
+			pstat.setInt(1, board_seq);
 			try (ResultSet rs = pstat.executeQuery();) {
 				if (rs.next())
 					return rs.getInt(1);
@@ -64,6 +64,19 @@ public class BookMarkDAO {
 			pstat.setInt(2, board_seq);
 			int result = pstat.executeUpdate();
 			return result;
+		}
+	}
+
+	// 유저가 해당 게시글 북마크 기능을 사용했는 지 여부 확인 메서드
+	public boolean checkLog(int board_seq, String user_id) throws Exception {
+
+		String sql = "select * from bookmark where board_seq = ? and userid = ?";
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setInt(1, board_seq);
+			pstat.setString(2, user_id);
+			try (ResultSet rs = pstat.executeQuery();) {
+				return rs.next();
+			}
 		}
 	}
 }
