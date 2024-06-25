@@ -147,7 +147,7 @@
                   </select>
 
                   <div class="profile_contents">
-                    <form id="profileForm" action="/uploadProfile.file" method="post" enctype="multipart/form-data">
+                    <form id="profileForm" action="/uploadProfile.member" method="post" enctype="multipart/form-data">
                       <div class="my_profile">
                         <div class="profile_left">
                           <div class="profile_image_container">
