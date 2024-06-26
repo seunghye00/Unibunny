@@ -54,7 +54,7 @@
                 </li>
                 <li class="snb_cate">
                     <a href="javascript:;">
-                        <span>공지사항</span>
+                        <span>공지사항 관리</span>
                     </a>
                 </li>
                 <li class="snb_cate">

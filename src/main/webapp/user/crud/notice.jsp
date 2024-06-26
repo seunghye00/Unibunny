@@ -50,7 +50,7 @@
 								</div>
 								<select name="sub_menu" id="sub_menu" class="sub_menu">
 									<option value="notice">공지사항</option>
-									<option value="board_all" selected>전체 게시글</option>
+									<option value="board_all">전체 게시글</option>
 									<option value="game1">게임1</option>
 									<option value="game2">게임2</option>
 									<option value="game3">게임3</option>

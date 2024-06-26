@@ -1,6 +1,8 @@
 package dto;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoardDTO {
 	private int board_seq;
@@ -25,7 +27,6 @@ public class BoardDTO {
 		this.game_id = game_id;
 		this.nickname = nickname;
 	}
-	
 	public BoardDTO() {
 		super();
 	}
@@ -101,4 +102,18 @@ public class BoardDTO {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	// BoardDTO에 JSON 변환을 위한 메서드 추가
+	public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("board_seq", board_seq);
+        map.put("title", title);
+        map.put("content", content);
+        map.put("write_date", write_date);
+        map.put("view_count", view_count);
+        map.put("delete_yn", delete_yn);
+        map.put("delete_date", delete_date);
+        map.put("game_id", game_id);
+        map.put("nickname", nickname);
+        return map;
+    }
 }

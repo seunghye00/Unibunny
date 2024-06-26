@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,17 +67,12 @@
               <li>
                 <strong><a href="javascript:;">고객센터</a></strong>
               </li>
-
             </ul>
             <div class="mob_my">
               <ul>
-                <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png" alt="마이페이지 로고"></a>
-                </li>
-                <li><a href="javascript:;" class="mob_login"><img src="../../image/icon/login_b.png" alt="로그인 로고"></a>
-                </li>
-                <li>
-                  <div onclick="history.back();" class="mob_close"></div>
-                </li>
+                <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png" alt="마이페이지 로고"></a></li>
+                <li><a href="javascript:;" class="mob_login"><img src="../../image/icon/login_b.png" alt="로그인 로고"></a></li>
+                <li><div onclick="history.back();" class="mob_close"></div></li>
               </ul>
             </div>
           </div>
@@ -87,37 +83,27 @@
       <div class="body for_pc">
         <div class="wrap">
           <div class="con_wrap">
-
-            <!--  -->
-
-            <!-- profile -->
             <div class="profile_container">
-
-              <!-- 프로필 카테고리탭을 담고있음(모바일에서는 사이드바로 대체) -->
               <div class="profile_aside">
                 <div class="tab_container">
                   <ul role="menubar">
                     <li class="tab_item" role="none">
-
-                      <button>
-                        <i class="fi fi-rr-user"></i>
-                        내 프로필
-                      </button>
+                      <button id="btnMyProfile"><i class="fi fi-rr-user"></i> 내 프로필</button>
                     </li>
                   </ul>
                   <div class="tab_wrapper">
                     <strong class="tab_title">MY</strong>
                     <ul role="menubar">
-                      <li class="tab_item" role="none"><button>계정관리</button></li>
+                      <li class="tab_item" role="none"><button id="btnMyAccount">계정관리</button></li>
                       <li class="tab_item" role="none"><button>게임 기록 확인</button></li>
                     </ul>
                   </div>
                   <div class="tab_wrapper">
                     <strong class="tab_title">커뮤니티</strong>
                     <ul role="menubar">
-                      <li class="tab_item" role="none"><button>작성한 글</button></li>
-                      <li class="tab_item" role="none"><button>작성한 댓글</button></li>
-                      <li class="tab_item" role="none"><button>북마크</button></li>
+                      <li class="tab_item" role="none"><button id="btnMyPosts">작성한 글</button></li>
+                      <li class="tab_item" role="none"><button id="btnComments">작성한 댓글</button></li>
+                      <li class="tab_item" role="none"><button id="btnBookmarks">북마크</button></li>
                     </ul>
                   </div>
                   <div class="tab_wrapper">
@@ -128,26 +114,16 @@
                   </div>
                   <ul role="menubar">
                     <li class="tab_item" role="none">
-
-                      <button>
-                        로그아웃
-                      </button>
+                      <button>로그아웃</button>
                     </li>
                   </ul>
-
-
                 </div>
               </div>
 
               <!-- 프로필 상세내용(모바일 마이페이지 메인화면) -->
               <div class="profile_wrapper">
-
-
                 <div class="profile_contents_wrap default_contents">
-                  <div class="profile_title">
-                    내 프로필
-                  </div>
-
+                  <div class="profile_title">내 프로필</div>
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
                     <option value="내 프로필">내 프로필</option>
@@ -158,7 +134,6 @@
                     <option value="북마크">북마크</option>
                     <option value="1:1문의">1:1문의</option>
                   </select>
-
 
                   <div class="profile_contents">
                     <div class="my_profile">
@@ -188,13 +163,11 @@
                   </div>
                 </div>
 
-
                 <!-- 계정 관리  -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    계정관리
-                  </div>
+				<form action="/edit.member" method="post">
+                <div class="profile_contents_wrap" id="myAccount">
+                
+                  <div class="profile_title">계정관리</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -206,29 +179,26 @@
                     <option value="북마크">북마크</option>
                     <option value="1:1문의">1:1문의</option>
                   </select>
-
-
                   <div class="profile_contents">
                     <div class="my_account">
                         <label for="id">아이디</label>
-                        <input type="text" id="id" readonly value="회원의 아이디">
+                        <input type="text" id="id" readonly value="${my_info.userid}">
                         
                         <label for="password" style="display: none">비밀번호</label>
-                        <input type="password" id="password" readonly value="password" style="display: none">
+                        <input type="password" name="pw" id="password" readonly value="${my_info.pw}" style="display: none">
                         
                         <label for="nickname">닉네임</label>
-                        <input type="text" id="nickname" readonly value="회원의 닉네임">
+                        <input type="text" name="nickname" id="nickname" readonly value="${my_info.nickname}">
                         <label for="phone">전화번호</label>
-                        <input type="text" id="phone" readonly value="회원의 전화번호">
+                        <input type="text" name="phone" id="phone" readonly value="${my_info.phone}">
                         <label for="email">이메일</label>
-                        <input type="text" id="email" readonly value="a01000000000@gmail.com">
-                        
+                        <input type="text" name="email" id="email" readonly value="${my_info.email}">
                         <label for="address1">주소</label>
-                        <input type="text" id="address1" readonly value="회원의 주소">
+                        <input type="text" name="address1" id="address1" readonly value="${my_info.address1}">
                         <label for="address2">상세주소</label>
-                        <input type="text" id="address2" readonly value="회원의 상세 주소">
+                        <input type="text" name="address2" id="address2" readonly value="${my_info.address2}">
                         <label for="postcode">우편번호</label>
-                        <input type="text" id="postcode" readonly value="우편번호">
+                        <input type="text" name="postcode" id="postcode" readonly value="${my_info.postcode}">
                     </div>
                 </div>
                 
@@ -237,10 +207,10 @@
                         <ul>
                             <li><label>계정 정보 수정</label></li>
                         </ul>
-                        <button id="edit_button">수정</button>
+                        <button type="button" id="edit_button">수정</button>
                         <div id="edit_actions" style="display: none;">
-                            <button id="apply_button">적용</button>
-                            <button id="cancel_button">취소</button>
+                            <button type="submit" id="apply_button">적용</button>
+                            <button type="button" id="cancel_button">취소</button>
                         </div>
                     </div>
                 </div>
@@ -253,21 +223,12 @@
                           <button>회원 탈퇴</button>
                   </div>
               </div>
-              
-                
-                
-
-                  
-
                 </div>
-
+			</form>
 
                 <!-- 게임 기록 확인 -->
-
                 <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    게임 기록 확인
-                  </div>
+                  <div class="profile_title">게임 기록 확인</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -280,11 +241,9 @@
                     <option value="1:1문의">1:1문의</option>
                   </select>
 
-
                   <div class="profile_contents">
                     <div class="my_score">
                       <div class="dropdown-container">
-                        <!-- <label for="dropdown">GAME</label> -->
                         <select id="dropdown" class="dropdown">
                           <option value="">게임을 선택하세요.</option>
                           <option value="option1">Game 1</option>
@@ -294,9 +253,6 @@
                           <option value="option5">Game 5</option>
                         </select>
                       </div>
-
-
-
 
                       <div class="list_table">
                         <div class="table_row table_header">
@@ -320,18 +276,11 @@
                       </div>
                     </div>
                   </div>
-
-
-
                 </div>
 
-
                 <!-- 작성한 글 -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    작성한 글
-                  </div>
+                <div class="profile_contents_wrap" id="myPosts">
+                  <div class="profile_title">작성한 글</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -344,11 +293,8 @@
                     <option value="1:1문의">1:1문의</option>
                   </select>
 
-
                   <div class="profile_contents">
                     <div class="my_post">
-
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -356,31 +302,26 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>조회수</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">첫번째 작성 글</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">두번째 작성 글</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
+                        
+                        <c:forEach var="dto" items="${mylist}">
+                          <div class="table_row">
+                            <div class="table_col"><span>${dto.board_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.view_count}</span></div>
+                          </div>
+                        </c:forEach>
+                      </div>
+                      <div class="bottom_box">
+                        <div class="navi_box" id="pagination"></div>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-
                 <!-- 작성한 댓글 -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    작성한 댓글
-                  </div>
+                <div class="profile_contents_wrap" id="comments">
+                  <div class="profile_title">작성한 댓글</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -393,10 +334,8 @@
                     <option value="1:1문의">1:1문의</option>
                   </select>
 
-
                   <div class="profile_contents">
                     <div class="my_comment">
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -419,17 +358,11 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-
-
                 <!-- 북마크 -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    북마크
-                  </div>
+                <div class="profile_contents_wrap" id="bookmarks">
+                  <div class="profile_title">북마크</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -442,11 +375,8 @@
                     <option value="1:1문의">1:1문의</option>
                   </select>
 
-
                   <div class="profile_contents">
                     <div class="my_bookmark">
-
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -469,15 +399,11 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-
                 <!-- 1:1문의 -->
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    1:1문의
-                  </div>
+                <div class="profile_contents_wrap" id="questions">
+                  <div class="profile_title">1:1문의</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -490,11 +416,8 @@
                     <option value="1:1문의">1:1문의</option>
                   </select>
 
-
                   <div class="profile_contents">
                     <div class="my_question">
-
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -517,22 +440,41 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
 
               </div>
-
             </div>
 
-
+            <!-- JavaScript 추가 -->
             <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            	document.getElementById("btnMyProfile").addEventListener("click", function() {
+                    window.location.href = "/mypage.member";
+                });
+            	document.getElementById("btnMyAccount").addEventListener("click", function() {
+                    window.location.href = "/account.member";
+                });
+                document.getElementById("btnMyPosts").addEventListener("click", function() {
+                    window.location.href = "/myboard.board";
+                });
+                document.getElementById("btnComments").addEventListener("click", function() {
+                    window.location.href = "/mycomments.board";
+                });
+                document.getElementById("btnBookmarks").addEventListener("click", function() {
+                    window.location.href = "/mybookmarks.board";
+                });
 
-
-
+                // 서버에서 전달된 activeTab 값을 읽어 해당 탭을 활성화
+                const activeTab = "${activeTab}";
+                if (activeTab) {
+                    document.querySelector(".default_contents").style.display = "none";
+                    document.getElementById(activeTab).style.display = "block";
+                } else {
+                    // 기본적으로 내 프로필 탭을 활성화
+                    document.querySelector(".default_contents").style.display = "block";
+                }
+            });
             </script>
-
-            <!--  -->
-
           </div>
         </div>
       </div>
@@ -559,6 +501,39 @@
         </div>
       </div>
     </div>
-  </div>
+    <script>
+      // 페이지네이션 스크립트
+      let pageNation = $("#pagination");
+      let cpage = ${cpage};
+      let record_total_count = ${record_total_count};
+      let record_count_per_page = ${record_count_per_page};
+      let navi_count_per_page = ${navi_count_per_page};
+      let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+
+      // 네비게이터의 시작 값
+      let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+      // 네비게이터의 끝 값 
+      let endNavi = startNavi + navi_count_per_page - 1;
+
+      if (endNavi > pageTotalCount) {
+          endNavi = pageTotalCount;
+      }
+
+      let needNext = endNavi < pageTotalCount;
+      let needPrev = startNavi > 1;
+
+      pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/list.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+
+      for (let i = startNavi; i <= endNavi; i++) {
+          if (cpage == i) {
+              pageNation.append("<a class='page_navi active' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+          } else {
+              pageNation.append("<a class='page_navi' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+          }
+      }
+
+      pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/list.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
+    </script>
+</div>
 </body>
 </html>
