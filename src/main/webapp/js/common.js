@@ -686,9 +686,9 @@ function get_reply_likes(reply_seq) {
 }
 
 // 게시글의 파일 목록을 받아오는 메서드
-function get_file_list() {
+function get_file_list(page) {
 	$.ajax({
-		url: "/list.file",
+		url: "/list." + page + "file",
 		dataType: "json",
 		data: { board_seq: get_board_seq() }
 	}).done(function(resp) {
