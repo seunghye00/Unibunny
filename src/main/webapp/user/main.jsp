@@ -85,7 +85,7 @@
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/gameimg2.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
