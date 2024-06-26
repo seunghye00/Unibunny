@@ -28,16 +28,12 @@
 											<p class="title" id="board_seq"># ${dto.board_seq}</p>
 										</div>
 										<div class="cont_box">
-											<div class="cont_body">
+											<div class="cont_body notice_cont">
 												<div class="board_box">
 													<div class="board_head">
 														<div class="title">
-															<div id="board_title">${dto.title }</div>
+															<div id="board_title"></div>
 															<div class="btn_box">
-																<button class="option_btn mark_option" id="bookmark_btn" type="button">
-																	<i class="fa-regular fa-bookmark option_icon"></i>
-																	<i class="fa-solid fa-bookmark option_icon"></i>
-																</button>
 																<button class="option_btn file_option" type="button">
 																	<i class="fa-regular fa-folder option_icon"></i>
 																	<i class="fa-solid fa-folder option_icon"></i>
@@ -46,14 +42,14 @@
 															</div>
 														</div>
 														<div class="board_info">
-															<div class="writer">작성자 : ${dto.nickname}</div>
+															<div class="writer">작성자 : </div>
 															<div class="write_date">
 																작성날짜 :
-																<fmt:formatDate value="${dto.write_date}"
+																<fmt:formatDate value=""
 																	pattern="yyyy.MM.dd HH:mm" />
 															</div>
-															<div class="views">조회수 : ${dto.view_count}</div>
-															<div class="bookmark"></div>
+															<div class="views">조회수 : </div>
+															
 															<div class="edit_box">
 
 																<div class="btn_box">
@@ -73,43 +69,10 @@
 														</div>
 													</div>
 													<div class="board_body">
-														<div class="board_cont" id="board_cont">${dto.content}</div>
+														<div class="board_cont" id="board_cont"></div>
 													</div>
 												</div>
-												<div class="option_box">
-													<div class="btn_box">
-														<button class="option_btn likes_option board_like"
-															type="button">
-															<i class="fa-regular fa-thumbs-up option_icon"></i> <i
-																class="fa-solid fa-thumbs-up option_icon"></i>
-															<p id="board_like"></p>
-														</button>
-													</div>
-												</div>
-												<div style="padding: 10px;"></div>
-												<div class="comm_box">
-													<div class="write_comm">
-														<div class="input_comm">
-															<div class="input_box" contenteditable="true"></div>
-														</div>
-														<div class="btn_box">
-															<button class="write_btn" id="write_comm">작성</button>
-														</div>
-													</div>
-													<div style="padding: 10px;"></div>
-													<div class="choi_box">
-														<div class="btn_box">
-															<button class="write_btn choi_btn" type="button"
-																id="comm_recent_btn">최신순</button>
-														</div>
-														<div class="btn_box">
-															<button class="write_btn choi_btn" type="button"
-																id="comm_likes_btn">추천순</button>
-														</div>
-														<div class="flex_space mob_hidden"></div>
-													</div>
-													<div class="comm_list"></div>
-												</div>
+												
 											</div>
 										</div>
 									</div>
@@ -119,14 +82,6 @@
 					</div>
 					<jsp:include page="../../common/footer.jsp" />
 				</div>
-				
-				<script>
-					$(document).ready(function () {
-						get_options_record();
-						get_comm_list("default");
-						get_user_record();
-					});
-				</script>
 			</body>
 
 			</html>

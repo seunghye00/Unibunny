@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -65,7 +64,33 @@ public class NoticeDAO {
 				return rs.getInt(1);
 			}
 		}
+		
+		// 관리자 공지사항 게시물 등록
+		public int insertNotice(NoticeDTO dto) throws Exception {
+		    String sql = "INSERT INTO notice (NOTICE_SEQ, TITLE, CONTENT, WRITE_DATE, VIEW_COUNT, NICKNAME) VALUES (NOTICE_SEQ.NEXTVAL, ?, ?, SYSDATE, 0, ?)";
+		    try (Connection con = getConnection();
+		         PreparedStatement ps = con.prepareStatement(sql)) {
+		        ps.setString(1, dto.getTitle());
+		        ps.setString(2, dto.getContent());
+		        ps.setString(3, dto.getNickname());
+		        return ps.executeUpdate();
+		    }
+		}
+		
+		// 시퀸스 가져오기
+	    public int getLastInsertedId() throws Exception {
+	        String sql = "SELECT NOTICE_SEQ.CURRVAL FROM dual";
+	        try (Connection con = getConnection();
+	             PreparedStatement ps = con.prepareStatement(sql);
+	             ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);
+	            }
+	            return -1;
+	        }
+	    }
 
+	
 	// 더미데이터 생성
 //	public static void main(String[] args) {
 //	    String url = "jdbc:oracle:thin:@localhost:1521:xe";

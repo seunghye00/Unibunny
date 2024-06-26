@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,27 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-import dao.QNAFilesDAO;
-import dto.QNAFilesDTO;
+import dao.NoticeFilesDAO;
+import dto.NoticeFilesDTO;
 
-@WebServlet("*.qnafile")
-public class QNAFilesController extends HttpServlet {
+@WebServlet("*.noticefile")
+public class NoticeFilesController extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        // 인코딩 설정
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
 
-        // 접속 경로 저장
         String cmd = request.getRequestURI();
         System.out.println(cmd);
 
-        QNAFilesDAO filesDao = QNAFilesDAO.getInstance();
+        NoticeFilesDAO filesDao = NoticeFilesDAO.getInstance();
 
         try {
-            if (cmd.equals("/upload.qnafile")) {
+            if (cmd.equals("/upload.noticefile")) {
                 int maxSize = 1024 * 1024 * 10; // 10MB 사이즈 제한
                 String realPath = request.getServletContext().getRealPath("files");
                 File uploadPath = new File(realPath);
@@ -43,7 +37,7 @@ public class QNAFilesController extends HttpServlet {
                 MultipartRequest multi = new MultipartRequest(request, realPath, maxSize, "UTF-8",
                         new DefaultFileRenamePolicy());
 
-                int question_seq = Integer.parseInt(request.getParameter("question_seq"));
+                int notice_seq = Integer.parseInt(request.getParameter("notice_seq"));
                 Enumeration<String> fileNames = multi.getFileNames();
 
                 while (fileNames.hasMoreElements()) {
@@ -55,34 +49,15 @@ public class QNAFilesController extends HttpServlet {
                     System.out.println("System File Name: " + sysname);
 
                     if (oriname != null && sysname != null) {
-                        QNAFilesDTO fileDto = new QNAFilesDTO();
+                        NoticeFilesDTO fileDto = new NoticeFilesDTO();
                         fileDto.setOriname(oriname);
                         fileDto.setSysname(sysname);
-                        fileDto.setQuestion_seq(question_seq);
+                        fileDto.setNotice_seq(notice_seq);
                         filesDao.insertFile(fileDto);
                     }
                 }
 
-                response.sendRedirect("/list.faq");
-            } else if (cmd.equals("/download.qnafile")) {
-                // 파일 다운로드 처리
-                String fileName = request.getParameter("fileName");
-                String filePath = getServletContext().getRealPath("files") + File.separator + fileName;
-                File file = new File(filePath);
-
-                if (file.exists()) {
-                    response.setContentType("application/octet-stream");
-                    response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("UTF-8"), "ISO8859_1"));
-                    try (FileInputStream in = new FileInputStream(file); OutputStream out = response.getOutputStream()) {
-                        byte[] buffer = new byte[1024];
-                        int bytesRead;
-                        while ((bytesRead = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, bytesRead);
-                        }
-                    }
-                } else {
-                    response.getWriter().write("Requested file not found.");
-                }
+                response.sendRedirect("/list.notice");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,8 +65,7 @@ public class QNAFilesController extends HttpServlet {
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         doGet(request, response);
     }

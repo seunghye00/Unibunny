@@ -36,10 +36,10 @@
 				<li class="snb_cate"><a href="javascript:;"> <span>회원
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>게시물
+				<li class="snb_cate"><a href="javascript:;"> <span>게시판
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>댓글
+				<li class="snb_cate"><a href="javascript:;"> <span>공지사항
 							관리</span>
 				</a></li>
 				<li class="snb_cate"><a href="javascript:;"> <span>고객센터</span>
@@ -76,7 +76,7 @@
 								<div class="select_subject">
 									<ul>
 										<li><a href="/list.faq?userType=manager">FAQ</a></li>
-										<li><a href="../manager/qna.jsp">Q&A</a></li>
+										<li><a href="/list.qna">Q&A</a></li>
 									</ul>
 								</div>
 								<div style="padding: 20px;"></div>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 
@@ -70,7 +70,7 @@
                     <div class="wrap">
                         <div class="header_con">
                             <div class="titlebox">
-                                <span>전체 게시물</span>
+                                <span>임시 보관 게시물</span>
                             </div>
                             <div class="header_my">
                                 <ul>
@@ -111,84 +111,70 @@
                                 <div class="ntc list_table">
                                     <div class="table_row table_header">
                                         <div class="table_col">
-                                            <span>번호</span>
+                                            <span>게시물 번호</span>
                                         </div>
                                         <div class="table_col">
-                                            <span>제목</span>
+                                            <span>게시물 제목</span>
                                         </div>
                                         <div class="table_col">
                                             <span>작성자</span>
                                         </div>
                                         <div class="table_col">
-                                            <span>작성일</span>
+                                            <span>보관날짜</span>
                                         </div>
                                         <div class="table_col">
-                                            <span>조회수</span>
+                                            <span>되돌리기</span>
                                         </div>
                                     </div>
-                                    <a href="index.html" class="table_row_link">
                                         <div class="table_row">
                                             <div class="table_col"><span>1</span></div>
-                                            <div class="table_col"><span>블랙알리오</span></div>
+                                            <div class="table_col"><span>임시 게시물</span></div>
                                             <div class="table_col"><span>관리자</span></div>
                                             <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
+                                            <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
                                         <div class="table_row">
                                             <div class="table_col"><span>2</span></div>
-                                            <div class="table_col"><span>고추마요</span></div>
+                                            <div class="table_col"><span>임시 게시물</span></div>
                                             <div class="table_col"><span>관리자</span></div>
                                             <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
+                                            <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
                                         <div class="table_row">
                                             <div class="table_col"><span>3</span></div>
-                                            <div class="table_col"><span>콘소메이징</span></div>
+                                            <div class="table_col"><span>임시 게시물</span></div>
                                             <div class="table_col"><span>관리자</span></div>
                                             <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
+                                            <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
                                         <div class="table_row">
                                             <div class="table_col"><span>4</span></div>
-                                            <div class="table_col"><span>크크크</span></div>
+                                            <div class="table_col"><span>임시 게시물</span></div>
                                             <div class="table_col"><span>관리자</span></div>
                                             <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
+                                            <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
                                         <div class="table_row">
                                             <div class="table_col"><span>5</span></div>
-                                            <div class="table_col"><span>크랑이</span></div>
+                                            <div class="table_col"><span>임시 게시물</span></div>
                                             <div class="table_col"><span>관리자</span></div>
                                             <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
+                                            <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
                                         <div class="table_row">
                                             <div class="table_col"><span>6</span></div>
-                                            <div class="table_col"><span>하하핫</span></div>
+                                            <div class="table_col"><span>임시 게시물</span></div>
                                             <div class="table_col"><span>관리자</span></div>
                                             <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
+                                            <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
                                         <div class="table_row">
                                             <div class="table_col"><span>7</span></div>
-                                            <div class="table_col"><span>푸하핫</span></div>
+                                            <div class="table_col"><span>임시 게시물</span></div>
                                             <div class="table_col"><span>관리자</span></div>
                                             <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
+                                            <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                    </a>
                                 </div>
                                 <div class="pagination">
                                     <a href="javascript:;" class="btn_prev btn_disabled"></a>

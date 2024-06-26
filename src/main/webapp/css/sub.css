@@ -497,30 +497,36 @@
 /* 테이블 공통 */
 .qa_write_con .list_table,
 .write_con .list_table,
-.list_table.faq_table {
+.list_table.faq_table,
+.ntc .list_table {
   border: none;
 }
 
 .qa_write_con .list_table::after,
 .write_con .list_table::after,
-.list_table.faq_table::after {
+.list_table.faq_table::after,
+.ntc .list_table::after {
   content: none;
 }
 
 .qa_write_con .table_row,
-.write_con .table_row {
+.write_con .table_row,
+.ntc .table_row {
   display: block;
 }
 
 .qa_write_con .table_row.table_header span,
 .write_con .table_row.table_header span,
 .qa_write_con #addfile span,
-.write_con #addfile span {
+.write_con #addfile span,
+.ntc .table_row.table_header span,
+.ntc .contents span {
   color: #fff;
   font-size: 20px;
 }
 
-.write_con.con .list_table .table_header input {
+.write_con.con .list_table .table_header input,
+.ntc .list_table .table_header input {
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -683,6 +689,12 @@
 .cont_box .cont_body .board_head .board_info {
   display: flex;
   flex-wrap: wrap;
+}
+
+.cont_box .notice_cont .board_head .board_info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .cont_box .cont_body .board_head .board_info::after {
@@ -980,6 +992,7 @@
 .sub_box {
   position: relative;
   height: 100%;
+  min-height: 600px;
 }
 
 .sub_box::after {
@@ -1785,6 +1798,22 @@
   border-color: #000;
   outline: none;
 }
+
+/* 관리자 공지사항 작성폼 */
+.ntc.list_table::after {
+  content: none;
+}
+
+.ntc.list_table {
+  border-top: none;
+}
+
+.ntc_write_con.con .list_table .table_header input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 
 /* 모바일 */
 @media (hover: hover) {
@@ -2727,3 +2756,7 @@
 
 
 }
+
+
+
+
