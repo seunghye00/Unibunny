@@ -68,12 +68,13 @@ public class BoardController extends HttpServlet {
                             cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
                             cpage * Pagination.recordCountPerPage
                         );
-            	} else  {
             		System.out.println(list);
+            	} else  {
             		list = dao.selectListLikeGame(
                             cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
                             cpage * Pagination.recordCountPerPage, game_Id
                         );
+            		System.out.println(list);
             	}
             } else if ("view".equals(type)) {
             	// 조회수 리스트 정렬 if통해서 분기 처리 
@@ -170,7 +171,6 @@ public class BoardController extends HttpServlet {
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
-
 			} else if (cmd.equals("/user/detail.board")) {
 				// 게시글 상세 페이지
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));

@@ -188,9 +188,9 @@ public class BoardDAO {
 				PreparedStatement pstat = con.prepareStatement(sql);	
 				) {
 			List<BoardDTO> list = new ArrayList<>();
-			pstat.setInt(1, startNum);
-			pstat.setInt(2, endNum);
-			pstat.setString(3, game_num);
+			pstat.setString(1, game_num);
+			pstat.setInt(2, startNum);
+			pstat.setInt(3, endNum);
 			try (	
 					ResultSet rs= pstat.executeQuery();
 					){
