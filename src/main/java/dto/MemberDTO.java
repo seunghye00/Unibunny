@@ -31,6 +31,12 @@ public class MemberDTO {
 		this.memcode = memcode;
 		this.profile_img = profile_img;
 	}
+	public MemberDTO(String userid, String nickname, Timestamp join_date) {
+		super();
+		this.userid = userid;
+		this.nickname = nickname;
+		this.join_date = join_date;
+	}
 	public MemberDTO() {
 		super();
 	}

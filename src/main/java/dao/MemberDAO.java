@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -92,7 +94,7 @@ public class MemberDAO {
 		}
 	}
 
-	//아이디 찾기
+	// 아이디 찾기
 	public String findAccount(String reg_num, String email, String phone) throws Exception {
 		String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
 
@@ -212,6 +214,41 @@ public class MemberDAO {
 				}
 				// 임시 데이터 리턴
 				return "test_user";
+			}
+		}
+	}
+
+	// 회원 or 블랙리스트 목록 중 범위 내의 관리자 계정을 제외한 테이터 중 id, 닉네임, 가입 날짜를 반환하는 메서드
+	public List<MemberDTO> selectNtoM(int start_num, int end_num, String grade) throws Exception {
+
+		String sql = "select userid, nickname, join_date from (select m.userid, m.nickname, m.join_date,rownum rn from member m join memcode mc on m.memcode = mc.memcode where mc.grade = ?) where rn between ? and ?";
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setString(1, grade);
+			pstat.setInt(2, start_num);
+			pstat.setInt(3, end_num);
+			try (ResultSet rs = pstat.executeQuery();) {
+				List<MemberDTO> list = new ArrayList<>();
+				while (rs.next()) {
+					String userid = rs.getString(1);
+					String nickname = rs.getString(2);
+					Timestamp join_date = rs.getTimestamp(3);
+					list.add(new MemberDTO(userid, nickname, join_date));
+				}
+				return list;
+			}
+		}
+	}
+
+	// 일반 회원 or 블랙리스트 목록의 전체 데이터 갯수를 반환하는 메서드
+	public int selectAll(String grade) throws Exception {
+
+		String sql = "select count(*) from member where memcode = (select memcode from memcode where grade = ?)";
+
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setString(1, grade);
+			try (ResultSet rs = pstat.executeQuery();) {
+				rs.next();
+				return rs.getInt(1);
 			}
 		}
 	}
