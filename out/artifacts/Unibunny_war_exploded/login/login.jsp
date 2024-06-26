@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+	String profileImg = (String) session.getAttribute("profileImg");
+	String nickName = (String) session.getAttribute("nickName");
+	if (profileImg != null && nickName != null) {
+		response.sendRedirect("/user/main.jsp");
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 

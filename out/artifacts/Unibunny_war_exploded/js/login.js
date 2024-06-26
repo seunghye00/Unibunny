@@ -408,11 +408,7 @@ $("#find_email_form").on("click", function() {
 	});
 });
 
-// 카카오 로그인 버튼 클릭 시
-$("button.kakao_Login").click(function(){
-    // 카카오 로그인 페이지로 리다이렉트
-    location.href = "https://kauth.kakao.com/oauth/authorize?client_id=e8b67c7e40531e53edced251340dbb25&redirect_uri=http://localhost/kakaoauth.member&response_type=code";
-});
+
 
 // 서버로부터 JSON 데이터 받기
 function getKakaoUserInfo() {
@@ -473,3 +469,9 @@ function getKakaoUserInfo() {
 
 
 }
+
+// 카카오 로그인 버튼 클릭 시
+$("button.kakao_Login").click(function(){
+	// 카카오 로그인 페이지로 리다이렉트
+	location.href = "https://kauth.kakao.com/oauth/authorize?client_id=e8b67c7e40531e53edced251340dbb25&redirect_uri=http://localhost/kakaoauth.member&response_type=code";
+});

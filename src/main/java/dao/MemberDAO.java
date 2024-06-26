@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,6 +16,7 @@ import dto.MemberDTO;
 
 public class MemberDAO {
 	public static MemberDAO instance;
+	public static MemberDTO mdto = new MemberDTO();
 
 	public synchronized static MemberDAO getInstance() {
 		if (instance == null) {
@@ -54,14 +57,46 @@ public class MemberDAO {
 		}
 	}
 
-	//로그인 
+	//로그인 했을때 메인페이지
 	public boolean login(String userid, String pw) throws Exception {
 		String sql = "select * from  member where  userid=? and pw=? ";
+		boolean result = false;
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, userid);
 			pst.setString(2, pw);
 			try (ResultSet rs = pst.executeQuery();) {
-				return rs.next();
+				if(rs.next()) {
+					result = true;
+					mdto.setUserid(rs.getString("USERID"));
+					mdto.setNickname(rs.getString("NICKNAME"));
+					mdto.setProfile_img(rs.getString("PROFILE_IMG"));
+				}
+				return result;
+			}
+		}
+	}
+
+	//계정 정보를 간략히 Map 형식으로 가져옴.
+	public Map<String, String> getAccount(String userid) throws Exception {
+
+		//Map 초기화
+		Map<String, String> map = new HashMap<String, String>();
+
+		//userid로 닉네임, 프로필이미지, 멤버코드 가져오는 쿼리
+		String sql = "select userid, nickname, profile_img, MEMCODE from member where userid=?";
+		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setString(1, userid);
+			try (ResultSet rs = pst.executeQuery();) {
+				if(rs.next()) {
+
+					//Map에 Key, Value 형식으로 값을 삽입.
+					map.put("userid", rs.getString("USERID"));
+					map.put("nickname", rs.getString("NICKNAME"));
+					map.put("profile_img", rs.getString("PROFILE_IMG"));
+					map.put("memcode", rs.getString("MEMCODE"));
+				}
+				//map 변수 반환.
+				return map;
 			}
 		}
 	}
