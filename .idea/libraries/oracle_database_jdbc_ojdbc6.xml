@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="oracle.database.jdbc.ojdbc6" type="repository">
+    <properties maven-id="com.oracle.database.jdbc:ojdbc6:11.2.0.4" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/oracle/database/jdbc/ojdbc6/11.2.0.4/ojdbc6-11.2.0.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/oracle/database/jdbc/ucp/11.2.0.4/ucp-11.2.0.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/oracle/database/security/oraclepki/11.2.0.4/oraclepki-11.2.0.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/oracle/database/security/osdt_cert/11.2.0.4/osdt_cert-11.2.0.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/oracle/database/security/osdt_core/11.2.0.4/osdt_core-11.2.0.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/oracle/database/ha/simplefan/11.2.0.4/simplefan-11.2.0.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/oracle/database/ha/ons/11.2.0.4/ons-11.2.0.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
