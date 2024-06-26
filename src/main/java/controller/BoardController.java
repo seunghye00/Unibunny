@@ -14,12 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import commons.Pagination;
 import dao.BoardDAO;
-import dao.BoardLikeDAO;
-import dao.BookMarkDAO;
 import dao.MemberDAO;
 import dto.BoardDTO;
 
@@ -46,6 +43,8 @@ public class BoardController extends HttpServlet {
             int cpage = Integer.parseInt(pcpage);
 
             List<BoardDTO> list = null;
+            // 추천수 전달을 위한 파라미터 생성
+            Map<BoardDTO, Integer> thumb_list = null;
             if ("list".equals(type)) {
             	System.out.println(game_Id);
             	// 리스트 정렬 if통해서 분기 처리 
@@ -64,17 +63,15 @@ public class BoardController extends HttpServlet {
             } else if ("like".equals(type)) {
             	// 추천수 리스트 정렬 if통해서 분기 처리 
             	if (game_Id == null || game_Id.equals("game_id")) {
-            		list = dao.selectListLike(
+            		thumb_list = dao.selectListLike(
                             cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
                             cpage * Pagination.recordCountPerPage
                         );
-            		System.out.println(list);
             	} else  {
-            		list = dao.selectListLikeGame(
+            		thumb_list = dao.selectListLikeGame(
                             cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
                             cpage * Pagination.recordCountPerPage, game_Id
                         );
-            		System.out.println(list);
             	}
             } else if ("view".equals(type)) {
             	// 조회수 리스트 정렬 if통해서 분기 처리 
@@ -90,30 +87,41 @@ public class BoardController extends HttpServlet {
                         );
             	}
             }
-
-            if (list != null) {
+            // 리스트 출력 하기 전 null값 검사
+            if (list != null || thumb_list != null) {
                 if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
                     // AJAX 요청인 경우 JSON으로 응답
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
 
-                    Map<String, Object> result = new HashMap<>();
-                    result.put("data", list);
-                    result.put("cpage", cpage);
-                    result.put("record_count_per_page", Pagination.recordCountPerPage);
-                    result.put("navi_count_per_page", Pagination.naviCountPerPage);
-                    
-                    if (game_Id == null || game_Id.equals("game_id")) {
-                    	result.put("record_total_count", dao.getRecordCount());
-                    } else {
-                    	result.put("record_total_count", dao.getRecordCountGame(game_Id));
-                    }
+                    if (thumb_list != null) {
+                    	// 추천순으로 정렬 시 로직
+                    	// jsonReadyList json전달 하기 전 map은 데이터 받아오는 형식이 일반 리스트와 달라서 변환 하는 메서드 호출
+                        List<Map<String, Object>> jsonReadyList = dao.convertToJSONReadyList(thumb_list);
+                        Map<String, Object> result = new HashMap<>();
+                        result.put("data", jsonReadyList);
+                        result.put("cpage", cpage);
+                        result.put("record_count_per_page", Pagination.recordCountPerPage);
+                        result.put("navi_count_per_page", Pagination.naviCountPerPage);
+                        result.put("record_total_count", (game_Id == null || game_Id.equals("game_id")) ? dao.getRecordCount() : dao.getRecordCountGame(game_Id));
+                        System.out.println(result);
+                        
+                        String jsonResult = gson.toJson(result);
+                        pw.print(jsonResult);
+                    } else if (list != null) {
+                    	// 리스트 정렬 시 로직
+                        Map<String, Object> result = new HashMap<>();
+                        result.put("data", list);
+                        result.put("cpage", cpage);
+                        result.put("record_count_per_page", Pagination.recordCountPerPage);
+                        result.put("navi_count_per_page", Pagination.naviCountPerPage);
+                        result.put("record_total_count", (game_Id == null || game_Id.equals("game_id")) ? dao.getRecordCount() : dao.getRecordCountGame(game_Id));
 
-                    String jsonResult = gson.toJson(result);
-                    PrintWriter out = response.getWriter();
-                    out.print(jsonResult);
-                    out.flush();
-                    out.close();
+                        String jsonResult = gson.toJson(result);
+                        pw.print(jsonResult);
+                    }
+                    pw.flush();
+                    pw.close();
                 } else {
                     // 일반 요청인 경우 JSP로 포워딩
                     request.setAttribute("boardlist", list);

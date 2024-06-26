@@ -479,10 +479,10 @@ function fetchAndRenderData(apiUrl, page, gameId) {
           } else if (apiUrl === '/like.board') {
             col5 = $('<div>')
               .addClass('table_col mob_hidden likes_column')
-              .append($('<span>').text(dto.thumbs_up));
+              .append($('<span>').text(dto.like_count));
           } else if (apiUrl === '/view.board') {
             col5 = $('<div>')
-              .addClass('table_col mob_hidden views_column')
+              .addClass('table_col mob_hidden views_column') 
               .append($('<span>').text(dto.view_count));
           }
 
