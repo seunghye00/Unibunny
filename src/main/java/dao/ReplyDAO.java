@@ -130,20 +130,6 @@ public class ReplyDAO {
 		}
 		return false;
 	}
-
-	// 댓글 좋아요 수를 반환하는 메서드
-	public int selectLikesBySeq(int reply_seq) throws Exception {
-		
-		String sql = "select thumbs_up from reply where reply_seq = ?";
-		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
-			pstat.setInt(1, reply_seq);
-			try (ResultSet rs = pstat.executeQuery();) {
-				rs.next();
-				return rs.getInt(1);	
-			}
-		}
-	}
-
 	
 	
 //	마이페이지에서 회읜의 댓글 작성 수를 조회

@@ -204,6 +204,115 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("activeTab", "myPosts");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
 			}
+//				else if (cmd.equals("/myboard.board")) {
+			
+//				System.out.println("회원의 게시글 조회");
+//				String id = (String)request.getSession().getAttribute("loginID");
+//				
+//				List<BoardDTO> list = dao.searchMyBoardList(id);
+//				System.out.println("게시글 조회 완료");
+//				request.setAttribute("mylist", list);
+//				request.setAttribute("activeTab", "myPosts");
+//				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+				
+//			}
+				else if (cmd.equals("/myboard.board")) {
+					
+					String id = (String)request.getSession().getAttribute("loginID");
+					System.out.println("진입");
+					String pcpage = request.getParameter("cpage");
+					if( pcpage == null) {
+						pcpage = "1";
+					}
+					int cpage = Integer.parseInt(pcpage);
+					System.out.println("회원의 게시글 조회");
+					
+					List<BoardDTO> list = dao.searchMyBoardList(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+							cpage * pagination.recordCountPerPage,id);
+					System.out.println("게시글 조회 완료");
+					
+					request.setAttribute("mylist", list);
+					request.setAttribute("cpage", cpage);
+					request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
+					request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
+					request.setAttribute("record_total_count", dao.searchBoardCount(id));	
+					request.setAttribute("activeTab", "myPosts");
+					request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+					
+					
+			}else if (cmd.equals("/myreply.board")) {
+				
+				String id = (String)request.getSession().getAttribute("loginID");
+				System.out.println("진입");
+				String pcpage = request.getParameter("cpage");
+				if( pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				System.out.println("회원이 댓글 단 글 조회");
+				
+				List<BoardDTO> list = dao.searchMyCommentedBoardList(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+						cpage * pagination.recordCountPerPage,id);
+				System.out.println("게시글 조회 완료");
+				
+				request.setAttribute("myreplylist", list);
+				request.setAttribute("cpage", cpage);
+				request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
+				request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
+				request.setAttribute("record_total_count", dao.getRecordCount());	
+				request.setAttribute("activeTab", "comments");
+				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+				
+			}else if (cmd.equals("/mybookmark.board")) {
+				
+				String id = (String)request.getSession().getAttribute("loginID");
+				System.out.println("진입");
+				String pcpage = request.getParameter("cpage");
+				if( pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				System.out.println("회원의 북마크 조회");
+				
+				List<BoardDTO> list = dao.searchMyBookmarkedBoardList(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+						cpage * pagination.recordCountPerPage,id);
+				System.out.println("북마크 게시글 조회 완료");
+				
+				request.setAttribute("mybookmark", list);
+				request.setAttribute("cpage", cpage);
+				request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
+				request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
+				request.setAttribute("record_total_count", dao.getRecordCount());	
+				request.setAttribute("activeTab", "bookmarks");
+				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+				
+			}else if (cmd.equals("/deletedboard.board")) {
+				
+//				System.out.println("진입");
+//				String pcpage = request.getParameter("cpage");
+//				if( pcpage == null) {
+//					pcpage = "1";
+//				}
+//				int cpage = Integer.parseInt(pcpage);
+//				List<BoardDTO> list = dao.selectListAll(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
+//						cpage * pagination.recordCountPerPage);
+//				request.setAttribute("boardlist", list);
+//				request.setAttribute("cpage", cpage);
+//				request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
+//				request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
+//				request.setAttribute("record_total_count", dao.getRecordCount());
+				
+				List<BoardDTO> list = dao.searchDeletedList();
+				request.setAttribute("deletedlist", list);
+				System.out.println("가져오기 완료");
+//				request.setAttribute("activeTab", "draft-posts");
+				request.getRequestDispatcher("/manager/community.jsp").forward(request, response);
+				
+				
+		}
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");

@@ -108,17 +108,106 @@
 		// 선택된 옵션의 값 가져오기
 		let selectedValue = this.value;
 
-		// 선택된 옵션 값에 따라 분기 처리
-		if (selectedValue === 'board_all') {
-			// 전체 게시글을 선택한 경우, 원하는 동작 수행 (예: 기본 페이지로 이동)
-			window.location.href = '/list.board';
-		} else if (selectedValue === 'notice') {
-			// 다른 옵션을 선택한 경우, 해당 페이지로 이동
-			window.location.href = '/list.notice';
-		} else {
-			window.location.href = '/list.board';
-		} 
-	});
-	</script>
+                    <div class="flex_space mob_hidden"></div>
+                    <div class="search_bar">
+                      <div class="search_input">
+                        <input type="text" class="input_tag" id="search_input">
+                      </div>
+                      <div class="search_img">
+                        <a href="javascript:;"><img src="../../image/icon/ico_search.png" alt="검색 로고"></a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="list_table recent_list">
+      
+                    <div class="table_row table_header">
+                      <div class="table_col mob_hidden"><span>번호</span></div>
+                      <div class="table_col"><span>제목</span></div>
+                      <div class="table_col mob_hidden"><span>작성자</span></div>
+                      <div class="table_col mob_hidden"><span>작성일</span></div>
+                      <div class="table_col mob_hidden"><span>조회수</span></div>
+                    </div>
+                  	<c:forEach var="dto" items="${boardlist}">
+                  	<div class="table_row">
+                  	 <a href="/user/detail.board?board_seq=${dto.board_seq}">
+                        <div class="table_col mob_hidden"><span>${dto.board_seq}</span></div>
+                        <div class="table_col"><span>${dto.title}</span></div>
+                        <div class="table_col"><span>${dto.content}</span></div>
+                        <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                        <div class="table_col"><span>${dto.view_count}</span></div>
+                      </a>
+                  	</div>
+                  </c:forEach>
+                  </div>
+                  <div class="bottom_box">
+                    <div class="navi_box" id="pagination">
+                    </div>
+                    <div class="btn_box">
+                      <button class="write_btn" id="write_btn">작성하기</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer_area">
+        <div class="footer">
+          <div class="wrap">
+            <div class="footer_info">
+              <ul class="footer_link">
+                <li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
+                <li><a href="javascript:;">이용약관</a></li>
+              </ul>
+              <ul class="footer_address">
+                <li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호</li>
+                <li>Tel : 010-5482-9107</li>
+              </ul>
+            </div>
+            <div class="footer_service">
+              <strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
+              <ul class="copy_desc">
+                <li class="footer_copy">Copyright Team HoduSnack. All Right Reserved</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+    // 페이지네이션 스크립트
+	let pageNation = $("#pagination");
+	let cpage = ${cpage};
+	let record_total_count = ${record_total_count};
+	let record_count_per_page = ${record_count_per_page};
+	let navi_count_per_page = ${navi_count_per_page};
+	let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+	
+	// 네비게이터의 시작 값
+	let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+	// 네비게이터의 끝 값 
+	let endNavi = startNavi + navi_count_per_page - 1;
+	
+	if (endNavi > pageTotalCount) {
+	    endNavi = pageTotalCount;
+	}
+	
+	let needNext = endNavi < pageTotalCount;
+	let needPrev = startNavi > 1;
+	
+	pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/list.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+	
+	for (let i = startNavi; i <= endNavi; i++) {
+	    if (cpage == i) {
+	        pageNation.append("<a class='page_navi active' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+	    } else {
+	        pageNation.append("<a class='page_navi' href='/list.board?cpage=" + i + "'>" + i + "</a> ");
+	    }
+	}
+	
+	pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/list.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
+    </script>
 </body>
 </html>
