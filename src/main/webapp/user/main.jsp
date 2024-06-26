@@ -214,7 +214,17 @@
 <script>
 $(document).ready(function () {
 	mainList('/view.board', 1 ,'gameId');
+    initializeGameSwiper(); // 창 크기 변경 시 Swiper 재설정
+    initializeOurSwiper(); // ourpage 스와이퍼 재설정
+    initializeMainSwiper(); // main 스와이퍼 재설정
+    
+	$(window).resize(function () {
+	  initializeGameSwiper(); // 창 크기 변경 시 Swiper 재설정
+	  initializeOurSwiper(); // ourpage 스와이퍼 재설정
+	  initializeMainSwiper(); // main 스와이퍼 재설정
+	});
 });
+
 function mainList (page, gameId) {
 	// 리스트 테이블을 담을 변수
     let listContainer = $(".main_list_table");

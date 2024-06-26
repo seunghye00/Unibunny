@@ -25,7 +25,6 @@ public class BoardDTO {
 		this.game_id = game_id;
 		this.nickname = nickname;
 	}
-	
 	public BoardDTO() {
 		super();
 	}

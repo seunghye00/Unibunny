@@ -4,19 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,13 +26,10 @@ import com.google.gson.JsonObject;
 import commons.EncryptionUitls;
 import commons.MailSender;
 import commons.PasswordGenerator;
+import dao.BoardDAO;
 import dao.Duptype;
 import dao.MemberDAO;
-<<<<<<< HEAD
-=======
 import dao.ReplyDAO;
-import dto.BoardDTO;
->>>>>>> 193ce74 (내 프로필 보강 작업, 계정관리 작업, 작성한 글 리스트 출력 작업)
 import dto.MemberDTO;
 
 //import dao.MemberDAO;
@@ -53,7 +49,8 @@ public class MemberController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String cmd = request.getRequestURI();
 		mdao = MemberDAO.getInstance();
-		MemberDTO mdto = new MemberDTO();
+		
+		//MemberDTO mdto = new MemberDTO();
 		Gson g = new Gson();
 		JsonObject js = new JsonObject();
 
@@ -332,13 +329,7 @@ public class MemberController extends HttpServlet {
                     session.invalidate();
                 }
 				response.sendRedirect("/index.jsp");
-            }
-        }
-
-
-<<<<<<< HEAD
-=======
-			}else if(cmd.equals("/mypage.member")) {
+            } else if(cmd.equals("/mypage.member")) {
 				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
@@ -365,7 +356,7 @@ public class MemberController extends HttpServlet {
 				String address2 = request.getParameter("address2");
 				String postcode = request.getParameter("postcode");
 				
-				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 0));
+				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 0, ""));
 				
 				response.sendRedirect("/mypage.member");
 			}else if(cmd.equals("/account.member")) {
@@ -380,8 +371,7 @@ public class MemberController extends HttpServlet {
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 			
 			}
-			}
->>>>>>> 193ce74 (내 프로필 보강 작업, 계정관리 작업, 작성한 글 리스트 출력 작업)
+            }
 		catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");

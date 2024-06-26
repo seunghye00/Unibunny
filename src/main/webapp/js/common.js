@@ -84,13 +84,7 @@ function initializeGameSwiper() {
   });
 }
 // 초기화 및 리사이즈 이벤트 핸들러 등록
-$(document).ready(function () {
-  initializeGameSwiper(); // 초기 Swiper 설정
 
-  $(window).resize(function () {
-    initializeGameSwiper(); // 창 크기 변경 시 Swiper 재설정
-  });
-});
 
 // ourpage 스와이퍼
 // Swiper를 초기화하는 함수
@@ -123,18 +117,6 @@ function initializeOurSwiper() {
     },
   });
 }
-
-// 초기화 및 리사이즈 이벤트 핸들러 등록
-$(document).ready(function () {
-  initializeOurSwiper(); // ourpage 스와이퍼 초기화
-  initializeMainSwiper(); // main 스와이퍼 초기화
-
-  $(window).resize(function () {
-    initializeOurSwiper(); // ourpage 스와이퍼 재설정
-    initializeMainSwiper(); // main 스와이퍼 재설정
-  });
-});
-
 // 마이페이지 js
 $(document).ready(function () {
   // 모든 탭 버튼 가져오기

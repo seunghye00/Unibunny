@@ -151,7 +151,7 @@ public class BoardDAO {
 	
 	public List<BoardDTO> selectListLike(int startNum, int endNum) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "";
+		String sql = "with ranked_board as (select b.*, coalesce(bl.like_count, 0) as like_count, row_number() over (order by coalesce(bl.like_count, 0) desc) as rown from board b left join (select board_seq, count(*) as like_count from board_like group by board_seq) bl on b.board_seq = bl.board_seq where b.delete_yn = 'N') select * from ranked_board where rown between ? and ?";
 		try (
 				Connection con = this.getconnection();
 				PreparedStatement pstat = con.prepareStatement(sql);	
@@ -182,7 +182,7 @@ public class BoardDAO {
 	
 	public List<BoardDTO> selectListLikeGame(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
-		String sql = "select * from (select board.*, row_number() over(order by thumbs_up desc) rown from board) where (rown between ? and ?) and game_id = ? and delete_yn = 'N'";
+		String sql = "with ranked_board as (select b.*, coalesce(bl.like_count, 0) as like_count, row_number() over (order by coalesce(bl.like_count, 0) desc) as rown from board b left join (select board_seq, count(*) as like_count from board_like group by board_seq) bl on b.board_seq = bl.board_seq where b.game_id = ? and b.delete_yn = 'N') select * from ranked_board where rown between ? and ?";
 		try (
 				Connection con = this.getconnection();
 				PreparedStatement pstat = con.prepareStatement(sql);	
@@ -255,8 +255,7 @@ public class BoardDAO {
 		}
 		return 0; // 기본값으로 0을 반환
 	}
-<<<<<<< HEAD
-=======
+
 	
 	
 	public List<BoardDTO> searchMyBoardList(String id) throws Exception{
@@ -281,13 +280,12 @@ public class BoardDAO {
 			 String content = rs.getString("content");
 			 Timestamp write_date = rs.getTimestamp("write_date");
 			 int view_count = rs.getInt("view_count");
-			 int thumbs_up = rs.getInt("thumbs_up");
 			 String delete_yn = rs.getString("delete_yn");
 			 Timestamp delete_date = rs.getTimestamp("delete_date");
 			 int game_id = rs.getInt("game_id");
 			 String nickname = rs.getString("nickname");
 			 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-					 ,thumbs_up,delete_yn,delete_date,game_id,nickname));
+					 ,delete_yn,delete_date,game_id,nickname));
 			
 
 				}
@@ -298,14 +296,6 @@ public class BoardDAO {
 		}
 	
 	
-	
-	//더미데이터만들기
-	public static void main(String[] args) throws Exception {
-        String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String id = "bunny";
-        String pw = "bunny";
->>>>>>> 193ce74 (내 프로필 보강 작업, 계정관리 작업, 작성한 글 리스트 출력 작업)
-
 	// board_seq 값으로 해당 레코드를 반환하는 메서드
 	public BoardDTO selectBySeq(int seq) throws Exception {
 

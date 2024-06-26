@@ -69,6 +69,7 @@ public class BoardController extends HttpServlet {
                             cpage * Pagination.recordCountPerPage
                         );
             	} else  {
+            		System.out.println(list);
             		list = dao.selectListLikeGame(
                             cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
                             cpage * Pagination.recordCountPerPage, game_Id
@@ -169,8 +170,7 @@ public class BoardController extends HttpServlet {
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
-				
-<<<<<<< HEAD
+
 			} else if (cmd.equals("/user/detail.board")) {
 				// 게시글 상세 페이지
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
@@ -192,12 +192,8 @@ public class BoardController extends HttpServlet {
 			} else if(cmd.equals("/delete.board")) {
 				// 게시글 삭제
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-				dao.deleteBySeq(board_seq);
-				response.sendRedirect("/list.board");
-=======
-				List<BoardDTO> list = dao.selectListAll(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
-						cpage * pagination.recordCountPerPage);
-				request.setAttribute("boardlist", list);
+	            dao.deleteBySeq(board_seq);
+	            response.sendRedirect("/list.board");
 			}else if (cmd.equals("/myboard.board")) {
 				System.out.println("회원의 게시글 조회");
 				String id = (String)request.getSession().getAttribute("loginID");
@@ -207,8 +203,6 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("mylist", list);
 				request.setAttribute("activeTab", "myPosts");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
-				
->>>>>>> 193ce74 (내 프로필 보강 작업, 계정관리 작업, 작성한 글 리스트 출력 작업)
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
