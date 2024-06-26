@@ -362,6 +362,13 @@ select::-ms-expand {
   display: none;
 }
 
+#search_input::placeholder{
+  color: #999;
+}
+.cpage {
+  color: var(--color-yellow) !important;
+}
+
 /* base colors ------------------------------------ */
 :root {
   /* --color-background: #3a3a3a; */

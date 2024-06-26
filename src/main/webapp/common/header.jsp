@@ -38,17 +38,10 @@
                     %>
 
                     <% if (profileImg != null && nickName != null) { %>
-                    <li>
-                        <img src="<%=profileImg%>" alt="">
-                    </li>
-                    <li>
-                        <p><%=nickName%>님! 환영합니다!</p>
-                    </li>
-                    <li>
-                        <a href="/logout.member">
-                            <img src="../image/icon/login.png" alt="">
-                        </a>
-                    </li>
+	                <li class="my_01 "><a href="javascript:;" class="btn_mypage"><img src="<%=profileImg%>" alt=""></a></li>
+	                <li class="my_01 "><%=nickName%>님</li>
+	                <li class="my_02"><a href="/logout.member" class="btn_login"><img src="../../image/icon/login.png"
+	                      alt="로그인 로고"></a></li>
                     <% } else { %>
                     <li class="my_01">
                         <a href="javascript:;" class="btn_mypage">
