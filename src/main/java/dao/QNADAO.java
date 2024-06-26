@@ -10,13 +10,14 @@ import java.util.List;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+import dto.QNADTO;
 
 import dto.QNADTO;
 
 public class QNADAO {
 
 	private static QNADAO instance;
-	
+
 	public static synchronized QNADAO getInstance() {
 		if (instance == null) {
 			instance = new QNADAO();
@@ -24,7 +25,8 @@ public class QNADAO {
 		return instance;
 	}
 
-	private QNADAO() {}
+	private QNADAO() {
+	}
 
 	private Connection getConnection() throws Exception {
 		Context ctx = new InitialContext();
@@ -92,3 +94,4 @@ public class QNADAO {
 	
 	
 }
+

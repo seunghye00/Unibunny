@@ -8,13 +8,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import dto.BoardDTO;
 import dto.MemberDTO;
 
 public class MemberDAO {
@@ -36,31 +37,33 @@ public class MemberDAO {
 		return ds.getConnection();
 	}
 
+	// 회원가입
 	public int insert(MemberDTO dto) throws Exception {
-	    String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
-	    try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-	        pst.setString(1, dto.getUserid());
-	        pst.setString(2, dto.getNickname());
-	        pst.setString(3, dto.getPw());
-	        pst.setString(4, dto.getPhone());
-	        pst.setString(5, dto.getReg_num());
-	        pst.setString(6, dto.getEmail());
-	        pst.setString(7, dto.getPostcode());
-	        pst.setString(8, dto.getAddress1());
-	        pst.setString(9, dto.getAddress2());
-	        pst.setInt(10, dto.getMemcode());
-	        
-	        return pst.executeUpdate();
-	        
-	    }catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
+		String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
+		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setString(1, dto.getUserid());
+			System.out.println("aa");
+			pst.setString(2, dto.getNickname());
+			pst.setString(3, dto.getPw());
+			pst.setString(4, dto.getPhone());
+			pst.setString(5, dto.getReg_num());
+			pst.setString(6, dto.getEmail());
+			pst.setString(7, dto.getPostcode());
+			pst.setString(8, dto.getAddress1());
+			pst.setString(9, dto.getAddress2());
+			pst.setInt(10, dto.getMemcode());
+
+			return pst.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
-
+	// 로그인
 	public boolean login(String userid, String pw) throws Exception {
-		String sql = "select *from  member where  userid=? and pw=? ";
+		String sql = "select * from  member where  userid=? and pw=? ";
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, userid);
 			pst.setString(2, pw);
@@ -69,19 +72,6 @@ public class MemberDAO {
 			}
 		}
 	}
-	
-//    public boolean isIdExist(String userid, String nickname ,String phone,String email) throws Exception {
-//        String sql = "SELECT * FROM member WHERE userid = ? or nickname=? or phone=? or email=?" ;
-//        try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-//            pst.setString(1, userid);
-//            pst.setString(2, nickname);
-//            pst.setString(3, phone);
-//            pst.setString(4, email);
-//            try (ResultSet rs = pst.executeQuery()) {
-//                return rs.next();
-//            }
-//        }
-//    }
 
    
     public boolean isExist(Duptype dup, String value ) throws Exception {

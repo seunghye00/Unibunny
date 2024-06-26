@@ -362,6 +362,13 @@ select::-ms-expand {
   display: none;
 }
 
+#search_input::placeholder{
+  color: #999;
+}
+.cpage {
+  color: var(--color-yellow) !important;
+}
+
 /* base colors ------------------------------------ */
 :root {
   /* --color-background: #3a3a3a; */
@@ -387,7 +394,8 @@ select::-ms-expand {
   --color-silver: #A3A3A3;
   --color-bronze: #CD7F32;
   --color-btnActive: #0075FF;
-
+  --color-files: #7d8cbf;
+  
   /* background-color: #F5DF4E; */
   /* background-color: #3951A1; */
   /* background-color: #0093C5; */
