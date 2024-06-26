@@ -203,6 +203,14 @@ public class BoardController extends HttpServlet {
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				dao.deleteBySeq(board_seq);
 				response.sendRedirect("/list.board");
+				String pcpage = request.getParameter("cpage");
+				if (pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				List<BoardDTO> list = dao.selectListAll(cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage -1),
+						cpage * Pagination.recordCountPerPage);
+				request.setAttribute("boardlist", list);
 			} else if (cmd.equals("/myboard.board")) {
 				String id = (String) request.getSession().getAttribute("loginID");
 				System.out.println("진입");

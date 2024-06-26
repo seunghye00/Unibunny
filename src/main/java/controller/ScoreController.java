@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import dao.MemberDAO;
 import dao.ScoreDAO;
 import dto.ScoreDTO;
 
@@ -38,7 +39,6 @@ public class ScoreController extends HttpServlet {
 		try {
 			if(cmd.equals("/list.score")){
 				int gamelistNum = Integer.parseInt(request.getParameter("gamelistNum"));
-				System.out.println(gamelistNum);
 				List<ScoreDTO> list = dao.selectListGame(gamelistNum);
 				String jsonResult = gson.toJson(list);
 				pw = response.getWriter();
@@ -47,16 +47,21 @@ public class ScoreController extends HttpServlet {
 				pw.close();
 			}
 			else if(cmd.equals("/submit.score")) {
-				String loginID = (String)request.getSession().getAttribute("loginID");
-				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
-				if(loginID == null) {
-					loginID = "user001";
+				String user_id = (String)request.getSession().getAttribute("loginID");
+				if(user_id != null) {
+					String nickname = MemberDAO.getInstance().getNickname(user_id);
+					// gamelog에 저장된 log_seq 저장
+					int log_seq = Integer.parseInt(request.getParameter("log_seq"));
+					// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
+					//System.out.println(request.getParameter("score"));
+					//System.out.println(request.getParameter("gameId"));
+					int score = Integer.parseInt(request.getParameter("score"));
+					int gameId = Integer.parseInt(request.getParameter("gameId"));
+					dao.insertScore(new ScoreDTO(0,score,gameId,nickname, null, log_seq)); 
+				} else {
+					System.out.println("로그인이 안된 사용자입니다.");
 				}
-				//System.out.println(request.getParameter("score"));
-				//System.out.println(request.getParameter("gameId"));
-				int score = Integer.parseInt(request.getParameter("score"));
-				int gameId = Integer.parseInt(request.getParameter("gameId"));
-				pw.append(g.toJson(gameId));
+				
             }
 		} catch(Exception e) {
 			e.printStackTrace();

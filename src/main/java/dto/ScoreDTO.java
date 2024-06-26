@@ -9,6 +9,7 @@ public class ScoreDTO {
 	private String nickname;
 	private	Timestamp end_time;
 	private	int log_seq;
+	private String profile_img;
 	public ScoreDTO(int score_seq, int score, int game_id, String nickname, Timestamp end_time, int log_seq) {
 		super();
 		this.score_seq = score_seq;
@@ -17,6 +18,16 @@ public class ScoreDTO {
 		this.nickname = nickname;
 		this.end_time = end_time;
 		this.log_seq = log_seq;
+	}
+	public ScoreDTO(int score_seq, int score, int game_id, String nickname, Timestamp end_time, int log_seq, String profile_img) {
+		super();
+		this.score_seq = score_seq;
+		this.score = score;
+		this.game_id = game_id;
+		this.nickname = nickname;
+		this.end_time = end_time;
+		this.log_seq = log_seq;
+		this.profile_img = profile_img;
 	}
 	
 	public ScoreDTO() {
