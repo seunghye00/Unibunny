@@ -56,7 +56,7 @@ public class BookMarkDAO {
 			return result;
 		}
 	}
-
+	// board_seq와 getSession()값을 통해 id에 북마크 삭제
 	public int unsaveBookMark(String user_id, int board_seq) throws Exception {
 		String sql = "delete from bookmark where userid = ? and board_seq = ?";
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {

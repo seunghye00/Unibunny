@@ -73,33 +73,30 @@ public class MemberDAO {
 		}
 	}
 
-   
-    public boolean isExist(Duptype dup, String value ) throws Exception {
-    	String sql = "SELECT * FROM member WHERE" ;
-    	String column = "";
-    	if(dup == Duptype.Userid) {
-    		column = "userid = ?";
-    	}
-    	else if (dup == Duptype.Nickname) {
-    		column = "nickname = ?";
-    	}
-    	else if(dup == Duptype.Phone) {
-    		column = "phone = ?";
-    	}
-    	else if(dup == Duptype.Email) {
-    		column = "email = ?";
-    	}
-    	else {
-    		return false;
-    	}
-    	
-        try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-        	pst.setString(1, value);
-        	try (ResultSet rs = pst.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
+	// 회원가입 정규표현식
+	public boolean isExist(Duptype dup, String value) throws Exception {
+		String sql = "SELECT * FROM member WHERE ";
+		String column = "";
+		if (dup == Duptype.Userid) {
+			column = "userid = ?"; // 그럼 여기 sql문에 ? 부분에 value값이 들어가서 쿼리됨. 그리고 이 값을 true, false 값 리턴시킴.
+		} else if (dup == Duptype.Nickname) {
+			column = "nickname = ?";
+		} else if (dup == Duptype.Phone) {
+			column = "phone = ?";
+		} else if (dup == Duptype.Email) {
+			column = "email = ?";
+		} else {
+			return false;
+		}
+
+		sql += column;
+		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setString(1, value);
+			try (ResultSet rs = pst.executeQuery()) {
+				return rs.next();
+			}
+		}
+	}
     
     
 
@@ -205,8 +202,168 @@ public class MemberDAO {
             pstat.executeUpdate();
 		}
 	}
+	// 아이디 찾기
+		public String findAccount(String reg_num, String email, String phone) throws Exception {
+			String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
+
+			try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+				pst.setString(1, reg_num);
+				pst.setString(2, email);
+				pst.setString(3, phone);
+
+				try (ResultSet rs = pst.executeQuery()) {
+					if (rs.next()) {
+						return rs.getString("USERID");
+					} else {
+						return "";
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return "";
+				}
+			}
+		}
+	// 비밀번호 찾기
+		public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
+			String sql = "SELECT reg_num FROM member WHERE userid = ? AND email = ?";
+			String regNum = reg_num;
+			try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+				pst.setString(1, userid);
+				pst.setString(2, email);
+
+				try (ResultSet rs = pst.executeQuery()) {
+					if (rs.next()) {
+						String db_value = rs.getString("REG_NUM");
+						if (regNum.indexOf("-") != -1) {
+							regNum = regNum.substring(regNum.indexOf("-"));
+						}
+						String substr_dbVal = db_value.substring(0, db_value.indexOf("-"));
+						if (substr_dbVal.equals(regNum)) {
+							regNum = db_value;
+						} else {
+							return false;
+						}
+					} else {
+						return false;
+					}
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+
+			sql = "UPDATE member SET pw = ? WHERE userid = ? AND email = ? AND reg_num = ?";
+
+			try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+				pst.setString(1, newPassword);
+				pst.setString(2, userid);
+				pst.setString(3, email);
+				pst.setString(4, regNum);
+
+				int rowsUpdated = pst.executeUpdate();
+				return rowsUpdated > 0; // 업데이트가 성공적으로 수행되었는지 여부 반환
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
 	
-    
-    
-    
+	// 계정 정보를 간략히 Map 형식으로 가져옴.
+	public Map<String, String> getAccount(String userid) throws Exception {
+
+		// Map 초기화
+		Map<String, String> map = new HashMap<String, String>();
+
+		// userid로 닉네임, 프로필이미지, 멤버코드 가져오는 쿼리
+		String sql = "select userid, nickname, profile_img, MEMCODE from member where userid=?";
+		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setString(1, userid);
+			try (ResultSet rs = pst.executeQuery();) {
+				if (rs.next()) {
+
+					// Map에 Key, Value 형식으로 값을 삽입.
+					map.put("userid", rs.getString("USERID"));
+					map.put("nickname", rs.getString("NICKNAME"));
+					map.put("profile_img", rs.getString("PROFILE_IMG"));
+					map.put("memcode", rs.getString("MEMCODE"));
+				}
+				// map 변수 반환.
+				return map;
+			}
+		}
+	}
+
+	// 세션에 저장된 로그인 ID로 회원의 닉네임을 조회하는 메서드
+	public String getNickname(String id) throws Exception {
+
+		String sql = "select nickname from member where userid = ?";
+
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setObject(1, id);
+			try (ResultSet rs = pstat.executeQuery();) {
+				// 수정할 코드
+				if (rs.next()) {
+					return rs.getString("nickname");
+				}
+				// 임시 데이터 리턴
+				return "test_user";
+			}
+		}
+	}
+
+	// 회원 or 블랙리스트 목록 중 범위 내의 관리자 계정을 제외한 테이터 중 id, 닉네임, 가입 날짜를 반환하는 메서드
+	public List<MemberDTO> selectNtoM(int start_num, int end_num, String grade) throws Exception {
+
+		String sql = "select userid, nickname, join_date from member where memcode = (select memcode from memcode where grade = ?) and rownum between ? and ?";
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setString(1, grade);
+			pstat.setInt(2, start_num);
+			pstat.setInt(3, end_num);
+			try (ResultSet rs = pstat.executeQuery();) {
+				List<MemberDTO> list = new ArrayList<>();
+				while (rs.next()) {
+					String userid = rs.getString(1);
+					String nickname = rs.getString(2);
+					Timestamp join_date = rs.getTimestamp(3);
+					list.add(new MemberDTO(userid, nickname, join_date));
+				}
+				return list;
+			}
+		}
+	}
+
+	// 일반 회원 or 블랙리스트 목록의 전체 데이터 갯수를 반환하는 메서드
+	public int selectAll(String grade) throws Exception {
+
+		String sql = "select count(*) from member where memcode = (select memcode from memcode where grade = ?)";
+
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setString(1, grade);
+			try (ResultSet rs = pstat.executeQuery();) {
+				rs.next();
+				return rs.getInt(1);
+			}
+		}
+	}
+
+//      public void kakaoLogin(MemberDTO dto) throws SQLException {
+//           String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
+//
+//           try (Connection conn = getConnection();
+//                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//
+//               pstmt.setString(1, dto.getUserid());
+//               pstmt.setString(2, dto.getNickname());
+//               pstmt.setString(3, dto.getEmail());
+//               pstmt.setString(4, dto.getGender());
+//               pstmt.setString(5, dto.getAgeRange());
+//               pstmt.setString(6, dto.getBirthday());
+//               pstmt.setString(7, dto.getConnectedAt());
+//
+//               pstmt.executeUpdate();
+//           }
+//       }
+	
 }

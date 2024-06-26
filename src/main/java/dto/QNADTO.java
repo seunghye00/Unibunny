@@ -25,6 +25,9 @@ public class QNADTO {
 		this.answer_date = answer_date;
 		this.userid = userid;
 	}
+	public QNADTO() {
+		super();
+	}
 	public int getQuestion_seq() {
 		return question_seq;
 	}

@@ -203,166 +203,30 @@
                         </div>
                     </div>
                 </div>
-                
-
-
-                <!-- 임시 보관 게시글 리스트-->
-                <div class="list_table draft-posts hidden">
-                  <div class="table_row table_header">
-                    <div class="table_col"><span>번호</span></div>
-                    <div class="table_col"><span>제목</span></div>
-                    <div class="table_col"><span>작성자</span></div>
-                    <div class="table_col"><span>작성일</span></div>
-                    <div class="table_col"><span>되돌리기</span></div>
-                  </div>
-                  <c:forEach var="dto" items="${deletedlist}">
-                  	<div class="table_row">
-                    	<div class="table_col"><span>${dto.board_seq}</span></div>
-                    	<div class="table_col"><a href="javascript:;">${dto.content}</a></div>
-                    	<div class="table_col"><span>${dto.nickname}</span></div>
-                   	 	<div class="table_col"><span>${dto.delete_date}</span></div>
-                    	<div class="table_col"><button class="restore_btn">복구</button></div>
-                  	</div>
-                  
-                  </c:forEach>
-                  
-                  <!-- 
-                  <div class="table_row">
-                    <div class="table_col"><span>1</span></div>
-                    <div class="table_col"><a href="javascript:;">임시 삭제된 글이에오</a></div>
-                    <div class="table_col"><span>유저 1</span></div>
-                    <div class="table_col"><span>삭제 날 1</span></div>
-                    <div class="table_col"><button class="restore_btn">복구</button></div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_col"><span>2</span></div>
-                    <div class="table_col"><a href="javascript:;">임시 삭제된 글은 이 곳으로</a></div>
-                    <div class="table_col"><span>비매너유저</span></div>
-                    <div class="table_col"><span>삭제 날 2</span></div>
-                    <div class="table_col"><button class="restore_btn">복구</button></div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_col"><span>3</span></div>
-                    <div class="table_col"><a href="javascript:;">임시 삭제된 글을 완전히 삭제 할 수 있어오</a></div>
-                    <div class="table_col"><span>비매너유저</span></div>
-                    <div class="table_col"><span>삭제 날 3</span></div>
-                    <div class="table_col"><button class="restore_btn">복구</button></div>
-                  </div>
-
-                </div>
- -->
-                <!-- 임시 보관 댓글 리스트 -->
-
-                <div class="list_table draft-comments hidden">
-                  <div class="table_row table_header">
-                    <div class="table_col"><span>번호</span></div>
-                    <div class="table_col"><span>제목</span></div>
-                    <div class="table_col"><span>작성자</span></div>
-                    <div class="table_col"><span>작성일</span></div>
-                    <div class="table_col"><span>되돌리기</span></div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_col"><span>1</span></div>
-                    <div class="table_col"><a href="javascript:;">임시 삭제된 댓글이에오</a></div>
-                    <div class="table_col"><span>유저 1</span></div>
-                    <div class="table_col"><span>삭제 날 1</span></div>
-                    <div class="table_col"><button class="restore_btn">복구</button></div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_col"><span>2</span></div>
-                    <div class="table_col"><a href="javascript:;">임시 삭제된 댓글은 이 곳으로</a></div>
-                    <div class="table_col"><span>비매너유저</span></div>
-                    <div class="table_col"><span>삭제 날 2</span></div>
-                    <div class="table_col"><button class="restore_btn">복구</button></div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_col"><span>3</span></div>
-                    <div class="table_col"><a href="javascript:;">임시 삭제된 댓글을 완전히 삭제 할 수 있어오</a></div>
-                    <div class="table_col"><span>비매너유저</span></div>
-                    <div class="table_col"><span>삭제 날 3</span></div>
-                    <div class="table_col"><button class="restore_btn">복구</button></div>
-                  </div>
-
-                </div>
-
-
-
-                <div class="pagination">
-                  <a href="javascript:;" class="btn_prev btn_disabled"></a>
-                  <a href="javascript:;" class="active_page">1</a>
-                  <a href="javascript:;">2</a>
-                  <a href="javascript:;">3</a>
-                  <a href="javascript:;">4</a>
-                  <a href="javascript:;">5</a>
-                  <a href="javascript:;" class="btn_next"></a>
-                </div>
-              </div>
             </div>
             <!-- 푸터 영역 -->
         </div>
-      </div>
-    </div>
-    <!-- 푸터 영역 -->
-    <div class="footer_area">
-      <div class="footer">
-        <div class="wrap">
-          <div class="footer_info">
-            <ul class="footer_link">
-              <li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
-              <li><a href="javascript:;">이용약관</a></li>
-            </ul>
-            <ul class="footer_address">
-              <li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호</li>
-              <li>Tel : 010-5482-9107</li>
-            </ul>
-          </div>
-          <div class="footer_service">
-            <strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
-            <ul class="copy_desc">
-              <li class="footer_copy">Copyright Team HoduGwaja. All Right Reserved</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script>
-    
-    
-    
-    function loadContent(target) {
-        let url;
-        if (target === 'all-posts') {
-          url = '/list.board';
-        } else if (target === 'draft-posts') {
-          url = '/deletedboard.board';
-        } else if (target === 'draft-comments') {
-          url = '/deletedcomments.board';
-        }
-        $.ajax({
-          url: url,
-          method: 'GET',
-          success: function(response) {
-            $('.' + target).html($(response).find('.' + target).html());
-            $('.list_table').removeClass('active').addClass('hidden');
-            $('.' + target).removeClass('hidden').addClass('active');
-          },
-          error: function() {
-            alert('Failed to load content.');
-          }
-        });
-      }
-
-      $(document).ready(function () {
-        $('.toggle-btn').on('click', function () {
-          var target = $(this).data('target');
-          loadContent(target);
-        });
-
-        $('.post-toggle').on('click', function () {
-          $(this).closest('.post').toggleClass('active');
-        });
-      });
-    </script>
+        <div class="footer_area">
+            <div class="footer">
+                <div class="wrap">
+                    <div class="footer_info">
+                        <ul class="footer_link">
+                            <li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
+                            <li><a href="javascript:;">이용약관</a></li>
+                        </ul>
+                        <ul class="footer_address">
+                            <li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호</li>
+                            <li>Tel : 010-5482-9107</li>
+                        </ul>
+                    </div>
+                    <div class="footer_service">
+                        <strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
+                        <ul class="copy_desc">
+                            <li class="footer_copy">Copyright Team HoduGwaja. All Right Reserved</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 </body>
 
 </html>
