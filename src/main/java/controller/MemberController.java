@@ -342,21 +342,10 @@ public class MemberController extends HttpServlet {
                 }
 				response.sendRedirect("/index.jsp");
             } else if(cmd.equals("/mypage.member")) {
-//				마이페이지에 진입 시, 회원의 정보를 조회해 줌
-//				회원의 프로필 이미지, 가입날짜, 게시물 수, 댓글 단 수 등등
-				
-
-            } else if(cmd.equals("/mypage.member")) {
-
-				System.out.println("mypage요청");
+//				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
-				System.out.println("회원정보 가져오기완료");
-				
-				// 가입 날짜 변환
-				String formattedJoinDate = MemberDAO.getInstance().getFormattedJoinDate(mdto);
-				
-				// 게시물 작성 수와 댓글 작성 수 가져오기
+				System.out.println("user1의 회원정보 가져오기완료");
 				int board_count = BoardDAO.getInstance().searchBoardCount(id);
 				int reply_count = ReplyDAO.getInstance().searchReplyCount(id);
 //				my_info : 해당 멤버의 칼럼들
@@ -364,13 +353,10 @@ public class MemberController extends HttpServlet {
 //				board_count : 해당 멤버의 게시물 작성 수
 				request.setAttribute("board_count", board_count );
 				request.setAttribute("reply_count", reply_count );
-
-				request.setAttribute("formattedJoinDate", formattedJoinDate); // 형식화된 가입 날짜
-
+				
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
-				
-				
-			}else if(cmd.equals("/edit.member")) {
+
+            } else if(cmd.equals("/edit.member")) {
 
 //				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
 //				회원 정보 수정
@@ -430,36 +416,6 @@ public class MemberController extends HttpServlet {
 
 				response.sendRedirect("/index.jsp");
 			
-			}else if(cmd.equals("/mypage.member")) {
-				System.out.println("mypage요청");
-				String id = (String)request.getSession().getAttribute("loginID");
-				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
-				System.out.println("user1의 회원정보 가져오기완료");
-				int board_count = BoardDAO.getInstance().searchBoardCount(id);
-				int reply_count = ReplyDAO.getInstance().searchReplyCount(id);
-//				my_info : 해당 멤버의 칼럼들
-				request.setAttribute("my_info", mdto );
-//				board_count : 해당 멤버의 게시물 작성 수
-				request.setAttribute("board_count", board_count );
-				request.setAttribute("reply_count", reply_count );
-				
-				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
-				
-				
-			}else if(cmd.equals("/edit.member")) {
-				
-				String id = (String)request.getSession().getAttribute("loginID"); //변조의 가능성이 있기때문에, 세션에서 받아와야한다.
-				String pw = request.getParameter("pw");
-				String nickname = request.getParameter("nickname");
-				String phone = request.getParameter("phone");
-				String email = request.getParameter("email");
-				String address1 = request.getParameter("address1");
-				String address2 = request.getParameter("address2");
-				String postcode = request.getParameter("postcode");
-				
-				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 0, ""));
-				
-				response.sendRedirect("/mypage.member");
 			}else if(cmd.equals("/account.member")) {
 				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
