@@ -1,7 +1,11 @@
 package controller;
 
 
+
 import java.io.File;
+
+import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -9,7 +13,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+
 import java.util.Enumeration;
+
+import java.util.Map;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,7 +41,9 @@ import dao.BoardDAO;
 import dao.Duptype;
 import dao.MemberDAO;
 import dao.ReplyDAO;
+
 import dto.BoardDTO;
+
 import dto.MemberDTO;
 
 //import dao.MemberDAO;
@@ -61,7 +71,7 @@ public class MemberController extends HttpServlet {
 		System.out.println(cmd);
 		try {
             //회원가입
-            if (cmd.equals("/signup.member")) {
+			if (cmd.equals("/signup.member")) {
                 String userid = request.getParameter("userid");
                 String nickname = request.getParameter("nickname");
                 String pw = request.getParameter("pw");
@@ -76,28 +86,23 @@ public class MemberController extends HttpServlet {
 
                 String reg_num = reg_num_first + "-" + reg_num_second + "******";
 
-				try {
-					int result = mdao.insert(new MemberDTO(userid, nickname, pw, phone, reg_num, email, postcode,
-							address1, address2, null, 0,null));
-					if (result > 0) {
-						response.sendRedirect("/index.jsp");
-					} else {
-						response.sendRedirect("/error.jsp");
-					}
-				} catch (Exception e) {
-					// Log the exception for debugging
-					e.printStackTrace();
-					response.sendRedirect("/error.jsp");
-				}
-			}
 
-                        response.sendRedirect("/error.jsp");
-                    }
+                try {
+                	int result = mdao.insert(new MemberDTO(userid, nickname, pwsha512, phone, reg_num, email, postcode,
+                			address1, address2, null, 0, ""));
+                	if (result > 0) {
+                		response.sendRedirect("/login/login.jsp");
+                	} else {
+                		response.sendRedirect("/error.jsp");
+                	}
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    response.sendRedirect("/error.jsp");
+                	e.printStackTrace();
+                	response.sendRedirect("/error.jsp");
                 }
             }
+
+
+                        
 //			로그인 
             else if (cmd.equals("/login.member")) {
                 String userid = request.getParameter("userid");
@@ -342,10 +347,14 @@ public class MemberController extends HttpServlet {
                 }
 				response.sendRedirect("/index.jsp");
 
+
 			}else if(cmd.equals("/mypage.member")) {
 //				마이페이지에 진입 시, 회원의 정보를 조회해 줌
 //				회원의 프로필 이미지, 가입날짜, 게시물 수, 댓글 단 수 등등
 				
+
+            } else if(cmd.equals("/mypage.member")) {
+
 				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
@@ -362,14 +371,17 @@ public class MemberController extends HttpServlet {
 //				board_count : 해당 멤버의 게시물 작성 수
 				request.setAttribute("board_count", board_count );
 				request.setAttribute("reply_count", reply_count );
+
 				request.setAttribute("formattedJoinDate", formattedJoinDate); // 형식화된 가입 날짜
-				
+
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 				
 				
 			}else if(cmd.equals("/edit.member")) {
+
 //				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
 //				회원 정보 수정
+
 				
 				String id = (String)request.getSession().getAttribute("loginID"); //변조의 가능성이 있기때문에, 세션에서 받아와야한다.
 				String pw = request.getParameter("pw");
@@ -380,12 +392,14 @@ public class MemberController extends HttpServlet {
 				String address2 = request.getParameter("address2");
 				String postcode = request.getParameter("postcode");
 				
+
 				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 1,null));
-				
+
 				response.sendRedirect("/mypage.member");
-			}else if(cmd.equals("/account.member")) {
-//				마이페이지 계정관리에서 회원의 정보를 뽑아옴
 				
+				}else if(cmd.equals("/account.member")) {
+				//마이페이지 계정관리에서 회원의 정보를 뽑아옴
+
 				System.out.println("mypage요청");
 				String id = (String)request.getSession().getAttribute("loginID");
 				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
@@ -395,6 +409,7 @@ public class MemberController extends HttpServlet {
 //				
 				request.setAttribute("activeTab", "myAccount");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
+
 			
 			}else if(cmd.equals("/memberout.member")) {
 //				로그인한 유저의 세션을 날리고, 회원의 정보를 삭제한다
@@ -469,7 +484,9 @@ public class MemberController extends HttpServlet {
 	
 			
 			
+
 		}catch (Exception e) {
+
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
 		}
