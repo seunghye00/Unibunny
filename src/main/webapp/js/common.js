@@ -83,8 +83,6 @@ function initializeGameSwiper() {
     },
   });
 }
-// 초기화 및 리사이즈 이벤트 핸들러 등록
-
 
 // ourpage 스와이퍼
 // Swiper를 초기화하는 함수

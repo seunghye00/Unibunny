@@ -195,7 +195,7 @@
         var $row = $('<div>', { class: 'table_row' });
 
         $('<div>', { class: 'table_col' }).append($('<span>').text(i + 1)).appendTo($row); // 순위
-        $('<div>', { class: 'table_col' }).append($('<img>', { src: item.profileImage, class: 'img' })).appendTo($row); // 프로필 이미지
+        $('<div>', { class: 'table_col' }).append($('<img>', { src: item.profile_img, class: 'img' })).appendTo($row); // 프로필 이미지
         $('<div>', { class: 'table_col' }).append($('<span>').text(item.nickname)).appendTo($row); // 닉네임
         $('<div>', { class: 'table_col' }).append($('<span>').text(item.score)).appendTo($row); // 점수
 
