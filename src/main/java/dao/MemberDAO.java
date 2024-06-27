@@ -100,8 +100,7 @@ public class MemberDAO {
     
     
 
-    
-    public MemberDTO searchProfileInfo(String id) throws Exception {
+	public MemberDTO searchProfileInfo(String id) throws Exception {
         // 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
         String sql = "select * from member where userid = ?";
 
@@ -148,6 +147,8 @@ public class MemberDAO {
         Date date = new Date(timestamp.getTime());
         return sdf.format(date);
     }
+    
+
     
 
 	public int updateUserInfo(MemberDTO dto) throws Exception {
@@ -246,6 +247,7 @@ public class MemberDAO {
 					} else {
 						return false;
 					}
+
 				}
 
 			} catch (Exception e) {
@@ -270,6 +272,7 @@ public class MemberDAO {
 			}
 		}
 	
+
 	// 계정 정보를 간략히 Map 형식으로 가져옴.
 	public Map<String, String> getAccount(String userid) throws Exception {
 
@@ -365,5 +368,10 @@ public class MemberDAO {
 //               pstmt.executeUpdate();
 //           }
 //       }
+	
+
+				
+	
+	
 	
 }
