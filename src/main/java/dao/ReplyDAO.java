@@ -130,7 +130,7 @@ public class ReplyDAO {
 		}
 		return false;
 	}
-
+	
 	// 댓글 좋아요 수를 반환하는 메서드
 	public int selectLikesBySeq(int reply_seq) throws Exception {
 		
@@ -143,4 +143,28 @@ public class ReplyDAO {
 			}
 		}
 	}
+	
+//	마이페이지에서 회읜의 댓글 작성 수를 조회
+	public int searchReplyCount(String id) throws Exception {
+	    String sql = "select count(*) from reply where nickname = (select nickname from member where userid = ?)";
+	    try (
+	        Connection con = this.getConnection();  
+	        PreparedStatement pstat = con.prepareStatement(sql);
+	    ) {
+	        pstat.setString(1, id);
+
+	        try (ResultSet rs = pstat.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1); 
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new Exception("댓글 작성 수 조회 중 오류 발생", e);
+	    }
+	    return 0;  // 기본값으로 0을 반환
+	}
+	
+	
+	
 }

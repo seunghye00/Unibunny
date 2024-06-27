@@ -138,4 +138,41 @@
       <jsp:include page="../../common/footer.jsp" />
     </div>
 </body>
+<script>
+/* function initializeOurSwiper() {
+	  if (ourpage_swiper) {
+	    ourpage_swiper.destroy(true, true); // 기존 Swiper 인스턴스를 파괴
+	  }
+
+	  let slidesPerView;
+
+	  if ($(window).width() < 650) {
+	    slidesPerView = 1;
+	  } else if ($(window).width() < 750) {
+	    slidesPerView = 2;
+	  } else if ($(window).width() < 950) {
+	    slidesPerView = 3;
+	  } else if ($(window).width() < 1200) {
+	    slidesPerView = 4;
+	  } else {
+	    slidesPerView = 5;
+	  }
+
+	  ourpage_swiper = new Swiper('.ourpage_swiper', {
+	    slidesPerView: slidesPerView,
+	    spaceBetween: 30,
+	    navigation: {
+	      nextEl: '.swiper_ourpage_next',
+	      prevEl: '.swiper_ourpage_prev',
+	    },
+	  });
+	} */
+$(document).ready(function () {
+	initializeOurSwiper(); // ourpage 스와이퍼 재설정
+    
+	$(window).resize(function () {
+		initializeOurSwiper(); // ourpage 스와이퍼 재설정
+	});
+});
+</script>
 </html>

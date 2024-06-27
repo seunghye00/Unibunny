@@ -90,7 +90,7 @@
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/gameimg2.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
@@ -129,23 +129,14 @@
                 <!-- 타이틀 박스 공통 -->
                 <div class="title_box">
                   <p class="title">랭킹</p>
-                  <a href="javascript:;"></a>
+                  <a href="/user/rank/rank.jsp"></a>
                 </div>
                 <div class="rank_cont">
                   <div class="second_place">
-                    <a href="javascript:;">
-                      <img src="../image/main/문경원 증명사진.jpg" alt="">
-                    </a>
                   </div>
                   <div class="first_place">
-                    <a href="javascript:;">
-                      <img src="../image/main/문경원 증명사진.jpg" alt="">
-                    </a>
                   </div>
                   <div class="third_place">
-                    <a href="javascript:;">
-                      <img src="../image/main/문경원 증명사진.jpg" alt="">
-                    </a>
                   </div>
                 </div>
               </div>
@@ -217,9 +208,24 @@
   </div>
 </body>
 <script>
+
+
+//초기화 및 리사이즈 이벤트 핸들러 등록
+$(document).ready(function () {
+
+    initializeMainSwiper(); // main 스와이퍼 재설정
+    initializeGameSwiper(); // 창 크기 변경 시 Swiper 재설정
+    
+	$(window).resize(function () {
+	  initializeMainSwiper(); // main 스와이퍼 재설정
+	  initializeGameSwiper(); // 창 크기 변경 시 Swiper 재설정
+	});
+});
 $(document).ready(function () {
 	mainList('/view.board', 1 ,'gameId');
+	loadTableData();
 });
+// 메인 인기글 ajax
 function mainList (page, gameId) {
 	// 리스트 테이블을 담을 변수
     let listContainer = $(".main_list_table");
@@ -259,6 +265,36 @@ function mainList (page, gameId) {
         console.error("AJAX 호출 실패: ", textStatus, errorThrown);
     });
 };
+// 랭킹 조회를 위한 ajax
+// 게임 1 부터 5까지 랜덤 출력
+let gamelistNum = Math.floor(Math.random() * 5) + 1;
+function loadTableData() {
+    $.ajax({
+        url: '/list.score', // 서버 API URL로 변경 필요
+        method: 'GET',
+        data: {
+        	gamelistNum: gamelistNum,
+         },
+        dataType: 'json', // 데이터 타입을 JSON으로 지정
+    }).done(function(data) {
+        // 데이터가 성공적으로 반환된 경우 테이블에 추가
+        console.log("데이터 받아오기 성공:", data);
+        appendMainTableData(data);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        // 오류 처리
+        console.error('데이터 받아오기 실패:', textStatus, errorThrown);
+    });
+}
+// 랭킹 페이지 1~3위까지 프로필 사진 삽입
+function appendMainTableData(data) {
+    // 1위부터 3위까지 이미지 추가
+    var firstPlaceImg = data.firstPlaceProfileImg;
+    var secondPlaceImg = data.secondPlaceProfileImg;
+    var thirdPlaceImg = data.thirdPlaceProfileImg;
 
+    $('.first_place').empty().append(`<a href="/user/rank/rank.jsp"><img src="${firstPlaceImg}" alt=""></a>`);
+    $('.second_place').empty().append(`<a href="/user/rank/rank.jsp"><img src="${secondPlaceImg}" alt=""></a>`);
+    $('.third_place').empty().append(`<a href="/user/rank/rank.jsp"><img src="${thirdPlaceImg}" alt=""></a>`);
+}
 </script>
 </html>

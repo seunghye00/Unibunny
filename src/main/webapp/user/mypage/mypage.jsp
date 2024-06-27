@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,142 +13,124 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <script defer src="../../../js/common.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+/* 페이지네이션 스타일 */
+.profile_wrapper .bottom_box {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  position: relative;
+  min-height: 45px;
+}
+
+.profile_wrapper .navi_box {
+  width: 100%;
+  font-size: 18px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.profile_wrapper .navi_box a {
+  padding: 0 20px;
+}
+
+.profile_wrapper .navi_box .arr_navi {
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.profile_wrapper .navi_box .arr_navi::after {
+  background-color: var(--color-white);
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 5px;
+}
+
+.profile_wrapper .navi_box .cpage {
+  color: var(--color-yellow);
+}
+
+.profile_wrapper .navi_box .page_navi .navi_icon {
+  width: 20px;
+  height: 20px;
+  top: 4px;
+  z-index: 1;
+}
+
+.profile_wrapper .navi_box .page_navi .start_navi {
+  rotate: 180deg;
+}
+
+.profile_wrapper .navi_box .start_arr.disabled,
+.profile_wrapper .navi_box .end_arr.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.profile_wrapper .navi_box a.active {
+  color: var(--color-yellow);
+}
+</style>
+
 </head>
 <body>
 <div class="wrapper">
-    <div class="header_area">
-      <div class="header">
-        <div class="wrap mob_hidden">
-          <h1 class="logo"><a href="javascript:;" title="메인으로 가기">
-              <img src="../../image/logo.png" alt="">
-            </a>
-          </h1>
-          <div class="header_con">
-            <ul class="header_gnb">
-              <li>
-                <a href="javascript:;" class="gnb_comu"><span>커뮤니티</span></a>
-              </li>
-              <li>
-                <a href="javascript:;" class="gnb_rank"><span>랭킹</span></a>
-              </li>
-              <li>
-                <a href="javascript:;" class="gnb_our"><span>OUR PAGE</span></a>
-              </li>
-              <li>
-                <a href="javascript:;" class="gnb_cs"><span>고객센터</span></a>
-              </li>
-            </ul>
-            <ul class="header_my">
-              <li class="my_01 "><a href="javascript:;" class="btn_mypage"><img src="../../image/icon/mypageW.png"
-                    alt="마이페이지 로고"></a></li>
-              <li class="my_02"><a href="javascript:;" class="btn_login"><img src="../../image/icon/login.png"
-                    alt="로그인 로고"></a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="mob_wrap">
-          <h1 class="mob_logo"><a href="javascript:;" title="메인으로 가기">
-              <img src="../../../image/logo.png" alt="">
-            </a>
-          </h1>
-          <div class="mob_ham"></div>
-          <div onclick="history.back();" class="mob_page_cover"></div>
-          <div class="mob_menu">
-            <ul class="mob_list">
-              <li>
-                <strong><a href="javascript:;">커뮤니티</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">랭킹</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">OUR PAGE</a></strong>
-              </li>
-              <li>
-                <strong><a href="javascript:;">고객센터</a></strong>
-              </li>
-
-            </ul>
-            <div class="mob_my">
-              <ul>
-                <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png" alt="마이페이지 로고"></a>
-                </li>
-                <li><a href="javascript:;" class="mob_login"><img src="../../image/icon/login_b.png" alt="로그인 로고"></a>
-                </li>
-                <li>
-                  <div onclick="history.back();" class="mob_close"></div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <jsp:include page="../../common/header.jsp" />
     <div class="body_area">
       <div class="body for_pc">
         <div class="wrap">
           <div class="con_wrap">
-
-            <!--  -->
-
-            <!-- profile -->
             <div class="profile_container">
-
-              <!-- 프로필 카테고리탭을 담고있음(모바일에서는 사이드바로 대체) -->
               <div class="profile_aside">
                 <div class="tab_container">
                   <ul role="menubar">
                     <li class="tab_item" role="none">
-
-                      <button>
-                        <i class="fi fi-rr-user"></i>
-                        내 프로필
-                      </button>
+                      <button id="btnMyProfile"><i class="fi fi-rr-user"></i> 내 프로필</button>
                     </li>
                   </ul>
                   <div class="tab_wrapper">
                     <strong class="tab_title">MY</strong>
                     <ul role="menubar">
-                      <li class="tab_item" role="none"><button>계정관리</button></li>
-                      <li class="tab_item" role="none"><button>게임 기록 확인</button></li>
+                      <li class="tab_item" role="none"><button id="btnMyAccount">계정관리</button></li>
+                      <li class="tab_item" role="none"><button id="btnMyRecord">게임 기록 확인</button></li>
                     </ul>
                   </div>
                   <div class="tab_wrapper">
                     <strong class="tab_title">커뮤니티</strong>
                     <ul role="menubar">
-                      <li class="tab_item" role="none"><button>작성한 글</button></li>
-                      <li class="tab_item" role="none"><button>작성한 댓글</button></li>
-                      <li class="tab_item" role="none"><button>북마크</button></li>
+                      <li class="tab_item" role="none"><button id="btnMyPosts">작성한 글</button></li>
+                      <li class="tab_item" role="none"><button id="btnComments">작성한 댓글</button></li>
+                      <li class="tab_item" role="none"><button id="btnBookmarks">북마크</button></li>
                     </ul>
                   </div>
                   <div class="tab_wrapper">
                     <strong class="tab_title">고객센터</strong>
                     <ul role="menubar">
-                      <li class="tab_item" role="none"><button>1:1문의</button></li>
+                      <li class="tab_item" role="none"><button id="btnmyQNA">1:1문의</button></li>
                     </ul>
                   </div>
                   <ul role="menubar">
                     <li class="tab_item" role="none">
-
-                      <button>
-                        로그아웃
-                      </button>
+                      <button type="button" id="logout">로그아웃</button>
                     </li>
                   </ul>
-
-
                 </div>
               </div>
 
               <!-- 프로필 상세내용(모바일 마이페이지 메인화면) -->
               <div class="profile_wrapper">
-
-
                 <div class="profile_contents_wrap default_contents">
-                  <div class="profile_title">
-                    내 프로필
-                  </div>
-
+                  <div class="profile_title">내 프로필</div>
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
                     <option value="내 프로필">내 프로필</option>
@@ -159,115 +142,100 @@
                     <option value="1:1문의">1:1문의</option>
                   </select>
 
-
                   <div class="profile_contents">
-                    <div class="my_profile">
+                    <form id="profileForm" action="/uploadProfile.member" method="post" enctype="multipart/form-data">
+                      <div class="my_profile">
                         <div class="profile_left">
                           <div class="profile_image_container">
-                            <img id="profileImage" src="../../image/mypage_image/profile_icon.png" alt="Profile Image">
+                            <img id="profileImage" src="${my_info.profile_img}" alt="Profile Image">
                           </div>
-                            <span>${my_info.nickname }</span>
+                          <span>${my_info.nickname}</span>
                         </div>
-                        
                         <div class="button_container">
-                        <button class="profile_edit_btn">프로필 편집</button>
-                        <input type="file" class="real_upload" accept="image/*" style="display: none;">
-                        <button class="apply_changes_btn" style="display: none;">적용</button>
-                        <button class="cancel_changes_btn" style="display: none;">취소</button>
+                          <button type="button" class="profile_edit_btn">프로필 편집</button>
+                          <input type="file" name="profileImage" class="real_upload" accept="image/*" style="display: none;">
+                          <button type="button" class="apply_changes_btn" style="display: none;">적용</button>
+                          <button type="button" class="cancel_changes_btn" style="display: none;">취소</button>
+                        </div>
                       </div>
-                    </div>
-                </div>
+                    </form>
+                  </div>
                   <div class="profile_contents">
                     <div class="my_history">
                       <ul>
-                        <li>가입날짜 : ${my_info.join_date}</li>
-                        <li>게시물 수 : ${board_count }</li>
-                        <li>댓글 단 수 : ${reply_count }</li>
+                        <li>가입날짜 : ${formattedJoinDate}</li>
+                        <li>게시물 수 : ${board_count}</li>
+                        <li>댓글 단 수 : ${reply_count}</li>
                       </ul>
                     </div>
                   </div>
                 </div>
 
+                <!-- 계정 관리 -->
+                <form action="/edit.member" method="post">
+                  <div class="profile_contents_wrap" id="myAccount">
+                    <div class="profile_title">계정관리</div>
 
-                <!-- 계정 관리  -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    계정관리
-                  </div>
-
-                  <select class="tab-dropdown dropdown">
-                    <option value="">카테고리 선택.</option>
-                    <option value="내 프로필">내 프로필</option>
-                    <option value="계정관리">계정관리</option>
-                    <option value="게임 기록 확인">게임 기록 확인</option>
-                    <option value="작성한 글">작성한 글</option>
-                    <option value="작성한 댓글">작성한 댓글</option>
-                    <option value="북마크">북마크</option>
-                    <option value="1:1문의">1:1문의</option>
-                  </select>
-
-
-                  <div class="profile_contents">
-                    <div class="my_account">
+                    <select class="tab-dropdown dropdown">
+                      <option value="">카테고리 선택.</option>
+                      <option value="내 프로필">내 프로필</option>
+                      <option value="계정관리">계정관리</option>
+                      <option value="게임 기록 확인">게임 기록 확인</option>
+                      <option value="작성한 글">작성한 글</option>
+                      <option value="작성한 댓글">작성한 댓글</option>
+                      <option value="북마크">북마크</option>
+                      <option value="1:1문의">1:1문의</option>
+                    </select>
+                    <div class="profile_contents">
+                      <div class="my_account">
                         <label for="id">아이디</label>
-                        <input type="text" id="id" readonly value="회원의 아이디">
-                        
+                        <input type="text" id="id" readonly value="${my_info.userid}">
+
                         <label for="password" style="display: none">비밀번호</label>
-                        <input type="password" id="password" readonly value="password" style="display: none">
-                        
+                        <input type="password" name="pw" id="password" readonly value="${my_info.pw}" style="display: none">
+
                         <label for="nickname">닉네임</label>
-                        <input type="text" id="nickname" readonly value="회원의 닉네임">
+                        <input type="text" name="nickname" id="nickname" readonly value="${my_info.nickname}">
                         <label for="phone">전화번호</label>
-                        <input type="text" id="phone" readonly value="회원의 전화번호">
+                        <input type="text" name="phone" id="phone" readonly value="${my_info.phone}">
                         <label for="email">이메일</label>
-                        <input type="text" id="email" readonly value="a01000000000@gmail.com">
-                        
+                        <input type="text" name="email" id="email" readonly value="${my_info.email}">
                         <label for="address1">주소</label>
-                        <input type="text" id="address1" readonly value="회원의 주소">
+                        <input type="text" name="address1" id="address1" readonly value="${my_info.address1}">
                         <label for="address2">상세주소</label>
-                        <input type="text" id="address2" readonly value="회원의 상세 주소">
+                        <input type="text" name="address2" id="address2" readonly value="${my_info.address2}">
                         <label for="postcode">우편번호</label>
-                        <input type="text" id="postcode" readonly value="우편번호">
+                        <input type="text" name="postcode" id="postcode" readonly value="${my_info.postcode}">
+                      </div>
                     </div>
-                </div>
-                
-                <div class="profile_contents">
-                    <div class="edit_account">
+
+                    <div class="profile_contents">
+                      <div class="edit_account">
                         <ul>
-                            <li><label>계정 정보 수정</label></li>
+                          <li><label>계정 정보 수정</label></li>
                         </ul>
-                        <button id="edit_button">수정</button>
+                        <button type="button" id="edit_button">수정</button>
                         <div id="edit_actions" style="display: none;">
-                            <button id="apply_button">적용</button>
-                            <button id="cancel_button">취소</button>
+                          <button type="submit" id="apply_button">적용</button>
+                          <button type="button" id="cancel_button">취소</button>
                         </div>
+                      </div>
                     </div>
-                </div>
-                
-                <div class="profile_contents">
-                  <div class="delete_account">
-                      <ul>
+
+                    <div class="profile_contents">
+                      <div class="delete_account">
+                        <ul>
                           <li><label>계정 삭제하기</label></li>
-                      </ul>
-                          <button>회원 탈퇴</button>
+                        </ul>
+                        <button type="button" id="memberout">회원 탈퇴</button>
+                      </div>
+                    </div>
                   </div>
-              </div>
-              
-                
-                
-
-                  
-
-                </div>
-
+                </form>
 
                 <!-- 게임 기록 확인 -->
-
                 <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    게임 기록 확인
-                  </div>
+                  <div class="profile_title">게임 기록 확인</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -279,12 +247,10 @@
                     <option value="북마크">북마크</option>
                     <option value="1:1문의">1:1문의</option>
                   </select>
-
 
                   <div class="profile_contents">
                     <div class="my_score">
                       <div class="dropdown-container">
-                        <!-- <label for="dropdown">GAME</label> -->
                         <select id="dropdown" class="dropdown">
                           <option value="">게임을 선택하세요.</option>
                           <option value="option1">Game 1</option>
@@ -295,9 +261,6 @@
                         </select>
                       </div>
 
-
-
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -305,33 +268,15 @@
                           <div class="table_col"><span>점수</span></div>
                           <div class="table_col"><span>플레이 날짜</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><span>게임1</span></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>작성일</span></div>
-                        </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><span>게임2</span></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>작성일</span></div>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
-
-
-
                 </div>
 
-
                 <!-- 작성한 글 -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    작성한 글
-                  </div>
+                <div class="profile_contents_wrap" id="myPosts">
+                  <div class="profile_title">작성한 글</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -343,12 +288,9 @@
                     <option value="북마크">북마크</option>
                     <option value="1:1문의">1:1문의</option>
                   </select>
-
 
                   <div class="profile_contents">
                     <div class="my_post">
-
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -356,31 +298,26 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>조회수</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">첫번째 작성 글</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">두번째 작성 글</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
+
+                        <c:forEach var="dto" items="${mylist}">
+                          <div class="table_row">
+                            <div class="table_col"><span>${dto.board_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.view_count}</span></div>
+                          </div>
+                        </c:forEach>
+                      </div>
+                      <div class="bottom_box">
+                        <div class="navi_box" id="pagination"></div>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-
                 <!-- 작성한 댓글 -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    작성한 댓글
-                  </div>
+                <div class="profile_contents_wrap" id="comments">
+                  <div class="profile_title">작성한 댓글</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -392,11 +329,9 @@
                     <option value="북마크">북마크</option>
                     <option value="1:1문의">1:1문의</option>
                   </select>
-
 
                   <div class="profile_contents">
                     <div class="my_comment">
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -404,32 +339,22 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>조회수</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">댓글단 글1</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">댓글단 글2</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
+                        <c:forEach var="dto" items="${myreplylist}">
+                          <div class="table_row">
+                            <div class="table_col"><span>${dto.board_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.view_count}</span></div>
+                          </div>
+                        </c:forEach>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-
-
                 <!-- 북마크 -->
-
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    북마크
-                  </div>
+                <div class="profile_contents_wrap" id="bookmarks">
+                  <div class="profile_title">북마크</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -441,12 +366,9 @@
                     <option value="북마크">북마크</option>
                     <option value="1:1문의">1:1문의</option>
                   </select>
-
 
                   <div class="profile_contents">
                     <div class="my_bookmark">
-
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -454,30 +376,22 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>조회수</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">북마크한 글1</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">북마크한 글2</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>0</span></div>
-                        </div>
+                        <c:forEach var="dto" items="${mybookmark}">
+                          <div class="table_row">
+                            <div class="table_col"><span>${dto.board_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.board_seq}">${dto.title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.view_count}</span></div>
+                          </div>
+                        </c:forEach>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-
                 <!-- 1:1문의 -->
-                <div class="profile_contents_wrap">
-                  <div class="profile_title">
-                    1:1문의
-                  </div>
+                <div class="profile_contents_wrap" id="questions">
+                  <div class="profile_title">1:1문의</div>
 
                   <select class="tab-dropdown dropdown">
                     <option value="">카테고리 선택.</option>
@@ -490,11 +404,8 @@
                     <option value="1:1문의">1:1문의</option>
                   </select>
 
-
                   <div class="profile_contents">
                     <div class="my_question">
-
-
                       <div class="list_table">
                         <div class="table_row table_header">
                           <div class="table_col"><span>번호</span></div>
@@ -502,63 +413,248 @@
                           <div class="table_col"><span>작성일</span></div>
                           <div class="table_col"><span>답변 여부</span></div>
                         </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>1</span></div>
-                          <div class="table_col"><a href="#">문의 글1</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>N</span></div>
-                        </div>
-                        <div class="table_row">
-                          <div class="table_col"><span>2</span></div>
-                          <div class="table_col"><a href="#">문의 글2</a></div>
-                          <div class="table_col"><span>1234</span></div>
-                          <div class="table_col"><span>N</span></div>
-                        </div>
+                        <c:forEach var="dto" items="${myqna}">
+                          <div class="table_row">
+                            <div class="table_col"><span>${dto.question_seq}</span></div>
+                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.question_seq}">${dto.question_title}</a></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            <div class="table_col"><span>${dto.answer_yn}</span></div>
+                          </div>
+                        </c:forEach>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
               </div>
-
             </div>
 
-
             <script>
+            
+            // 프로필 편집
 
 
+            $(document).ready(function () {
+    var originalImageSrc = $('#profileImage').attr('src');
 
+    // 프로필 편집 버튼 클릭 시 파일 선택 창 열기
+    $('.profile_edit_btn').on('click', function (event) {
+        event.stopPropagation();
+        console.log('프로필 편집 버튼 클릭됨');
+        $(this).siblings('.real_upload').click();
+    });
+
+    // 파일 입력 변경 시 미리보기 및 재업로드 기능
+    $('.real_upload').on('change', function () {
+        console.log('파일 선택됨');
+        var input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                console.log('파일 읽기 완료');
+                var imageContainer = $(input).closest('.my_profile').find('.profile_image_container');
+                // 기존 이미지 삭제
+                imageContainer.find('img').remove();
+                imageContainer.append('<img id="profileImage" src="' + e.target.result + '" alt="Profile Image">');
+                // 버튼 표시
+                $('.profile_edit_btn').hide();
+                $('.apply_changes_btn').show();
+                $('.cancel_changes_btn').show();
+                console.log('이미지 미리보기 설정됨');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+
+    // 변경사항 적용 버튼 클릭 시
+    $('.apply_changes_btn').on('click', function () {
+        console.log('적용 버튼 클릭됨');
+        // 폼 제출
+        $('#profileForm').submit();
+    });
+
+    // 취소 버튼 클릭 시
+    $('.cancel_changes_btn').on('click', function () {
+        console.log('취소 버튼 클릭됨');
+        var imageContainer = $('.profile_image_container');
+        // 기존 이미지로 되돌리기
+        imageContainer.find('img').remove();
+        imageContainer.append('<img src="' + originalImageSrc + '" alt="Profile Image">');
+        // 버튼 숨기기
+        $('.apply_changes_btn').hide();
+        $('.cancel_changes_btn').hide();
+        $('.profile_edit_btn').show();
+    });
+});
+
+            
+            
+         // 마이페이지 계정관리
+
+            document.getElementById('edit_button').addEventListener('click', function () {
+            // 모든 input 요소를 선택
+            const inputs = document.querySelectorAll('.my_account input');
+
+            // 각 input 요소의 readonly 속성을 제거하고 border 스타일을 추가
+            inputs.forEach((input) => {
+              // 원래 값을 data-original-value 속성에 저장
+              if (!input.hasAttribute('data-original-value')) {
+                input.setAttribute('data-original-value', input.value);
+              }
+              input.removeAttribute('readonly');
+              input.style.border = '1px solid #ffffff';
+            });
+
+            // 비밀번호 관련 라벨과 input을 표시
+            const passwordLabel = document.querySelector('label[for="password"]');
+            const passwordInput = document.getElementById('password');
+
+            if (passwordLabel && passwordInput) {
+              passwordLabel.style.display = 'block';
+              passwordInput.style.display = 'block';
+              passwordInput.style.border = '1px solid #ffffff'; // 비밀번호 input에도 border 스타일 추가
+            }
+
+            // 버튼 표시/숨기기
+            document.getElementById('edit_button').style.display = 'none';
+            document.getElementById('edit_actions').style.display = 'flex';
+          });
+
+          document.getElementById('cancel_button').addEventListener('click', function () {
+            // 모든 input 요소를 선택
+            const inputs = document.querySelectorAll('.my_account input');
+
+            // 각 input 요소의 readonly 속성을 다시 추가하고 border 스타일 제거
+            inputs.forEach((input) => {
+              // data-original-value 속성에 저장된 원래 값으로 복원
+              const originalValue = input.getAttribute('data-original-value');
+              if (originalValue !== null) {
+                input.value = originalValue;
+              }
+              input.setAttribute('readonly', true);
+              input.style.border = 'none';
+            });
+
+            // 비밀번호 관련 라벨과 input을 숨기기
+            const passwordLabel = document.querySelector('label[for="password"]');
+            const passwordInput = document.getElementById('password');
+
+            if (passwordLabel && passwordInput) {
+              passwordLabel.style.display = 'none';
+              passwordInput.style.display = 'none';
+            }
+
+            // 버튼 표시/숨기기
+            document.getElementById('edit_button').style.display = 'inline';
+            document.getElementById('edit_actions').style.display = 'none';
+          });
+
+            
+            
+            
+            
+            $("#logout").on("click", function() {
+              location.href = "/logout.member";
+            });
+
+            $("#memberout").on("click", function() {
+              if (confirm("정말 탈퇴 하시겠습니까?")) {
+                location.href = "/memberout.member";
+              }
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+              // select 요소와 tab item 연동
+              document.querySelectorAll('.tab-dropdown').forEach(dropdown => {
+                dropdown.addEventListener('change', function() {
+                  const value = this.value;
+                  if (value) {
+                    const tabId = {
+                      "내 프로필": "btnMyProfile",
+                      "계정관리": "btnMyAccount",
+                      "게임 기록 확인": "btnMyRecord",
+                      "작성한 글": "btnMyPosts",
+                      "작성한 댓글": "btnComments",
+                      "북마크": "btnBookmarks",
+                      "1:1문의": "btnmyQNA"
+                    }[value];
+                    if (tabId) document.getElementById(tabId).click();
+                  }
+                });
+              });
+
+              document.getElementById("btnMyProfile").addEventListener("click", function() {
+                window.location.href = "/mypage.member";
+              });
+              document.getElementById("btnMyAccount").addEventListener("click", function() {
+                window.location.href = "/account.member";
+              });
+              document.getElementById("btnMyPosts").addEventListener("click", function() {
+                window.location.href = "/myboard.board";
+              });
+              document.getElementById("btnComments").addEventListener("click", function() {
+                window.location.href = "/myreply.board";
+              });
+              document.getElementById("btnBookmarks").addEventListener("click", function() {
+                window.location.href = "/mybookmark.board";
+              });
+              document.getElementById("btnmyQNA").addEventListener("click", function() {
+                window.location.href = "/myqna.qna";
+              });
+
+              // 서버에서 전달된 activeTab 값을 읽어 해당 탭을 활성화
+              const activeTab = "${activeTab}";
+              if (activeTab) {
+                document.querySelector(".default_contents").style.display = "none";
+                document.getElementById(activeTab).style.display = "block";
+              } else {
+                // 기본적으로 내 프로필 탭을 활성화
+                document.querySelector(".default_contents").style.display = "block";
+              }
+            });
             </script>
-
-            <!--  -->
-
           </div>
         </div>
       </div>
     </div>
-    <div class="footer_area">
-      <div class="footer">
-        <div class="wrap">
-          <div class="footer_info">
-            <ul class="footer_link">
-              <li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
-              <li><a href="javascript:;">이용약관</a></li>
-            </ul>
-            <ul class="footer_address">
-              <li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호</li>
-              <li>Tel : 010-5482-9107</li>
-            </ul>
-          </div>
-          <div class="footer_service">
-            <strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
-            <ul class="copy_desc">
-              <li class="footer_copy">Copyright Team HoduSnack. All Right Reserved</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <!-- 푸터 영역 -->
+  	<jsp:include page="../../common/footer.jsp" />
+    <script>
+    
+    
+    
+      // 페이지네이션 스크립트
+      let pageNation = $("#pagination");
+      let cpage = ${cpage};
+      let record_total_count = ${record_total_count};
+      let record_count_per_page = ${record_count_per_page};
+      let navi_count_per_page = ${navi_count_per_page};
+      let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+
+      // 네비게이터의 시작 값
+      let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+      // 네비게이터의 끝 값 
+      let endNavi = startNavi + navi_count_per_page - 1;
+
+      if (endNavi > pageTotalCount) {
+        endNavi = pageTotalCount;
+      }
+
+      let needNext = endNavi < pageTotalCount;
+      let needPrev = startNavi > 1;
+
+      pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='/myboard.board?cpage=" + (needPrev ? startNavi - 1 : "#") + "'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>");
+
+      for (let i = startNavi; i <= endNavi; i++) {
+        if (cpage == i) {
+          pageNation.append("<a class='page_navi active' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
+        } else {
+          pageNation.append("<a class='page_navi' href='/myboard.board?cpage=" + i + "'>" + i + "</a> ");
+        }
+      }
+
+      pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='/myboard.board?cpage=" + (needNext ? endNavi + 1 : "#") + "'><img class='navi_icon' src='../../image/icon/pagination.png' alt='end navi 로고'></a>");
+    </script>
+</div>
 </body>
 </html>

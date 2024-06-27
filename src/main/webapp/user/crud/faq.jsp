@@ -27,7 +27,7 @@
 							</div>
 							<div class="agent_list">
 								<li><a href="/list.faq">FAQ</a></li>
-								<li><a href="../crud/qna_write.jsp">Q&A</a></li>
+								<li><a href="/user/crud/qna_write.jsp">Q&A</a></li>
 							</div>
 							<div style="padding: 20px;"></div>
 							<div class="list_table faq_table">

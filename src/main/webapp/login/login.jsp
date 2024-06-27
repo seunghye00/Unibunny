@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+	String profileImg = (String) session.getAttribute("profileImg");
+	String nickName = (String) session.getAttribute("nickName");
+	if (profileImg != null && nickName != null) {
+		response.sendRedirect("/user/main.jsp");
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 
@@ -26,10 +34,10 @@
 					<input type="text" placeholder="Id" name="userid">
 				</div>
 				<div class="pw_Input">
-					<input type="text" placeholder="Password" name="pw">
+					<input type="password" placeholder="Password" name="pw">
 				</div>
 				<div class="login_Btn">
-					<button type="submit">Login</button>
+					<button id="login_form_btn" type="submit">Login</button>
 				</div>
 				</form>
 				<div class="api_Login">

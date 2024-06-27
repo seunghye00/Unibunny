@@ -161,71 +161,51 @@
 
 /* 게시물 관리 페이지네이션 */
 .pagination {
+  width: 100%;
+  font-size: 18px;
+  height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 30px;
 }
-
 .pagination a {
-  font-size: 18px;
-  padding: 0 10px;
-  display: block;
-  font-weight: 500;
+  padding: 0 20px;
 }
-
-.pagination .btn_next,
-.pagination .btn_prev {
-  width: 20px;
-  height: 20px;
-  padding: 15px 20px;
+.pagination a.active {
+  color: var(--color-yellow);
+}
+.pagination .start_arr.disabled,
+.pagination .end_arr.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.pagination .arr_navi {
+  padding: 5px 10px;
+  border-radius: 5px;
   position: relative;
+  margin: 0 10px;
 }
-
-.pagination .btn_next::before,
-.pagination .btn_prev::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
+.pagination .start_navi {
+  rotate: 180deg;
+}
+.pagination .navi_icon {
   width: 20px;
   height: 20px;
-  left: calc((100% - 20px) / 2);
-  top: calc((100% - 20px) / 2);
-  background: url(../image/icon/pagination.png) no-repeat center;
-  background-size: 20px;
+  top: 4px;
   z-index: 1;
 }
 
-.pagination .btn_next.btn_disabled::before,
-.pagination .btn_prev.btn_disabled::before {
-  opacity: .6;
-}
-
-.pagination .btn_next::after,
-.pagination .btn_prev::after {
+.pagination .arr_navi::after {
+  background-color: var(--color-white);
   content: "";
   display: block;
-  position: absolute;
   width: 100%;
   height: 100%;
+  position: absolute;
   top: 0;
   left: 0;
-  background: var(--color-line);
-  z-index: 0;
-  opacity: .6;
   border-radius: 5px;
 }
-
-.pagination .btn_prev::before {
-  transform: rotate(180deg);
-}
-
-.pagination .active_page {
-  color: var(--color-yellow);
-}
-
 
 /* 메인배너 공통 */
 .select_banner {

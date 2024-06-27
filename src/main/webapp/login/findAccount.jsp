@@ -31,7 +31,7 @@
                 </div>
                 <div >
                 <div class="find_input_reg">
-                    <input type="text" placeholder="생년월일" name="find_input_reg">
+                    <input type="text" placeholder="주민번호 앞 6자리" name="find_input_reg">
                 </div>
                 <div class="find_input_email">
                     <input type="text" placeholder="이메일" name="find_input_email">

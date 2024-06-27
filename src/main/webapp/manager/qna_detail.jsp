@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -75,18 +74,21 @@
             <div class="footer_area">
                 <!-- 생략된 푸터 코드 -->
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
     <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                height : 250, // 에디터 높이 설정
-                minHeight : null, // 최소 높이 설정
-                maxHeight : null, // 최대 높이 설정
-                focus : true
-            });
-            $('#summernote').summernote('disable'); // 읽기 전용 모드 설정
-        });
-    </script>
+    $(document).ready(function () {
+      $('#summernote').summernote({
+        height: 250,                 // 에디터 높이 설정
+        minHeight: null,             // 최소 높이 설정
+        maxHeight: null,             // 최대 높이 설정
+        focus: true                  // 초기 포커스 설정
+      });
+      $('#summernote').summernote('disable');  // 읽기 전용 모드 설정
+    });
+  </script>
 </body>
 </html>
