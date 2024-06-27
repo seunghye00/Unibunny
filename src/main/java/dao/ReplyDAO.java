@@ -130,7 +130,7 @@ public class ReplyDAO {
 		}
 		return false;
 	}
-
+	
 	// 댓글 좋아요 수를 반환하는 메서드
 	public int selectLikesBySeq(int reply_seq) throws Exception {
 		
@@ -143,8 +143,6 @@ public class ReplyDAO {
 			}
 		}
 	}
-
-	
 	
 //	마이페이지에서 회읜의 댓글 작성 수를 조회
 	public int searchReplyCount(String id) throws Exception {

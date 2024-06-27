@@ -168,6 +168,8 @@ game.States.play = function() {
 		this.pipeGroup.setAll('body.velocity.x', -this.gameSpeed);
 	};
 	this.startGame = function() {
+		// 게임 로그 전송
+		StartGameFunctions.sendScore(gameId);
 		this.gameSpeed = 200;
 		this.gameIsOver = false;
 		this.hasHitGround = false;
@@ -268,7 +270,7 @@ game.States.play = function() {
 		this.gameOverGroup.y = 30;
 
 		// 점수 전송
-		CommonFunctions.sendScore(this.score, gameId);
+		EndGameFunctions.sendScore(this.score, gameId);
 	};
 
 	this.resetPipe = function(topPipeY, bottomPipeY) {

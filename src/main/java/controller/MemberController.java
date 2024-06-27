@@ -1,5 +1,9 @@
 package controller;
 
+
+
+import java.io.File;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +13,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+
+import java.util.Enumeration;
+
 import java.util.Map;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,6 +41,9 @@ import dao.BoardDAO;
 import dao.Duptype;
 import dao.MemberDAO;
 import dao.ReplyDAO;
+
+import dto.BoardDTO;
+
 import dto.MemberDTO;
 
 //import dao.MemberDAO;
@@ -325,9 +336,7 @@ public class MemberController extends HttpServlet {
                     }
                 }
 
-            }
-
-			else if (cmd.equals("/logout.member")) {
+            } else if (cmd.equals("/logout.member")) {
                 if(session != null) {
                     session.invalidate();
                 }
@@ -355,6 +364,12 @@ public class MemberController extends HttpServlet {
 				request.setAttribute("formattedJoinDate", formattedJoinDate); // 형식화된 가입 날짜
 				
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
+
+            } else if(cmd.equals("/edit.member")) {
+
+//				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
+//				회원 정보 수정
+
 				
 				
 			}else if(cmd.equals("/edit.member")) {
@@ -370,9 +385,51 @@ public class MemberController extends HttpServlet {
 				String address2 = request.getParameter("address2");
 				String postcode = request.getParameter("postcode");
 				
-				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 0, ""));
-				
+
+				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 1,null));
+
 				response.sendRedirect("/mypage.member");
+				
+				}else if(cmd.equals("/account.member")) {
+				//마이페이지 계정관리에서 회원의 정보를 뽑아옴
+
+				System.out.println("mypage요청");
+				String id = (String)request.getSession().getAttribute("loginID");
+				MemberDTO mdto = (MemberDTO) mdao.searchProfileInfo(id);
+				System.out.println("user1의 회원정보 가져오기완료");
+				
+				request.setAttribute("my_info", mdto );
+//				
+				request.setAttribute("activeTab", "myAccount");
+				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
+
+			
+			}else if(cmd.equals("/memberout.member")) {
+//				로그인한 유저의 세션을 날리고, 회원의 정보를 삭제한다
+//				마이 페이지 계정관리 -> 회원 탈퇴 기능
+		
+				HttpSession session = request.getSession();
+				
+				
+				String id = (String) session.getAttribute("loginID");
+				System.out.println((String) session.getAttribute("loginID"));
+				mdao.deleteMember(id);
+//				session.invalidate(); //무효화 -> 해당하는 명령쓰면 세션 다 날라감
+				
+				
+				
+				System.out.println("회원탈퇴 성공");
+				
+				response.sendRedirect("/index.jsp");
+			}else if(cmd.equals("/logout.member")){
+//				로그인한 유저의 세션을 날림
+//				로그아웃 기능
+				
+				HttpSession session = request.getSession();
+				session.invalidate(); //무효화 -> 해당하는 명령쓰면 세션 다 날라감
+
+				response.sendRedirect("/index.jsp");
+			
 			}else if(cmd.equals("/account.member")) {
 //				마이페이지 계정관리에서 회원의 정보를 뽑아옴
 				

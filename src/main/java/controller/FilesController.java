@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,14 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import dao.GameLogDAO;
-import dao.MemberDAO;
-import dto.ScoreDTO;
 
-
-@WebServlet("*.gamelog")
-public class GameLogController extends HttpServlet {
-
+@WebServlet("*.file")
+public class FilesController extends HttpServlet {
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 인코딩 설정
 		request.setCharacterEncoding("UTF-8");
@@ -30,17 +24,9 @@ public class GameLogController extends HttpServlet {
 		// 접속 경로 저장
 		String cmd = request.getRequestURI();
 		// System.out.println(cmd);
-		GameLogDAO dao = GameLogDAO.getInstance();
+		
 		try {
-			if(cmd.equals("/submit.gamelog")){
-				String user_id = (String)request.getSession().getAttribute("loginID");
-				String nickname = MemberDAO.getInstance().getNickname(user_id);
-				int gameID = Integer.parseInt(request.getParameter("gameID"));
-				int log_seq = dao.insertGameLog(gameID, nickname);
-				
-				// gamelog에 저장된 log_seq submit.score에 전달 
-				response.sendRedirect("/submit.score?log_seq=" + log_seq);
-			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -97,75 +97,8 @@ public class MemberDAO {
 			}
 		}
 	}
-
-	// 아이디 찾기
-	public String findAccount(String reg_num, String email, String phone) throws Exception {
-		String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
-
-		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setString(1, reg_num);
-			pst.setString(2, email);
-			pst.setString(3, phone);
-
-			try (ResultSet rs = pst.executeQuery()) {
-				if (rs.next()) {
-					return rs.getString("USERID");
-				} else {
-					return "";
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return "";
-			}
-		}
-	}
-
-	// 비밀번호 찾기
-	public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
-		String sql = "SELECT reg_num FROM member WHERE userid = ? AND email = ?";
-		String regNum = reg_num;
-		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setString(1, userid);
-			pst.setString(2, email);
-
-			try (ResultSet rs = pst.executeQuery()) {
-				if (rs.next()) {
-					String db_value = rs.getString("REG_NUM");
-					if (regNum.indexOf("-") != -1) {
-						regNum = regNum.substring(regNum.indexOf("-"));
-					}
-					String substr_dbVal = db_value.substring(0, db_value.indexOf("-"));
-					if (substr_dbVal.equals(regNum)) {
-						regNum = db_value;
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		sql = "UPDATE member SET pw = ? WHERE userid = ? AND email = ? AND reg_num = ?";
-
-		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setString(1, newPassword);
-			pst.setString(2, userid);
-			pst.setString(3, email);
-			pst.setString(4, regNum);
-
-			int rowsUpdated = pst.executeUpdate();
-			return rowsUpdated > 0; // 업데이트가 성공적으로 수행되었는지 여부 반환
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+    
+    
 
 	public MemberDTO searchProfileInfo(String id) throws Exception {
         // 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
@@ -215,6 +148,130 @@ public class MemberDAO {
         return sdf.format(date);
     }
     
+
+    
+
+	public int updateUserInfo(MemberDTO dto) throws Exception {
+//	해당 유저의 id로 회원의 정보를 수정한다.
+//	마이 페이지의 계정 관리 기능
+			String sql = "update member set nickname = ?, pw = ?, phone = ?, email = ?, address1 = ?, address2 = ?, postcode = ? where userid = ?";
+			try(
+					Connection con = this.getConnection();	
+					PreparedStatement pstat = con.prepareStatement(sql);
+			 
+					){
+		
+				pstat.setString(1, dto.getNickname());
+				pstat.setString(2, dto.getPw());
+				pstat.setString(3, dto.getPhone());
+				pstat.setString(4, dto.getEmail());
+				pstat.setString(5, dto.getPostcode());
+				pstat.setString(6, dto.getAddress1());
+				pstat.setString(7, dto.getAddress2());
+				pstat.setString(8, dto.getUserid());
+			
+	
+				return pstat.executeUpdate();}
+		}
+
+
+	
+	public int deleteMember(String id) throws Exception {
+//		해당 회원의 정보를 삭제한다.
+//		마이페이지의 회원 탈퇴 기능
+		String sql = "delete from member where userid = ?";
+		try(
+				Connection con = this.getConnection();	
+				PreparedStatement pstat = con.prepareStatement(sql);
+				 
+				){	
+			pstat.setString(1,id);
+			int result = pstat.executeUpdate();
+		return result;
+		}
+	}
+	
+
+	public void updateProfileImage(String userid, String sysName) throws Exception {
+//		회원이 선택한 프로필 이미지 정보를 DB의 회원 테이블에 저장함
+		
+		String sql = "UPDATE member SET profile_img = ? WHERE userid = ?";
+		try (Connection con = this.getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql)) {
+			pstat.setString(1, "/image/mypage_image/" + sysName);
+            pstat.setString(2, userid);
+            pstat.executeUpdate();
+		}
+	}
+	// 아이디 찾기
+		public String findAccount(String reg_num, String email, String phone) throws Exception {
+			String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
+
+			try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+				pst.setString(1, reg_num);
+				pst.setString(2, email);
+				pst.setString(3, phone);
+
+				try (ResultSet rs = pst.executeQuery()) {
+					if (rs.next()) {
+						return rs.getString("USERID");
+					} else {
+						return "";
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return "";
+				}
+			}
+		}
+	// 비밀번호 찾기
+		public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
+			String sql = "SELECT reg_num FROM member WHERE userid = ? AND email = ?";
+			String regNum = reg_num;
+			try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+				pst.setString(1, userid);
+				pst.setString(2, email);
+
+				try (ResultSet rs = pst.executeQuery()) {
+					if (rs.next()) {
+						String db_value = rs.getString("REG_NUM");
+						if (regNum.indexOf("-") != -1) {
+							regNum = regNum.substring(regNum.indexOf("-"));
+						}
+						String substr_dbVal = db_value.substring(0, db_value.indexOf("-"));
+						if (substr_dbVal.equals(regNum)) {
+							regNum = db_value;
+						} else {
+							return false;
+						}
+					} else {
+						return false;
+					}
+
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+
+			sql = "UPDATE member SET pw = ? WHERE userid = ? AND email = ? AND reg_num = ?";
+
+			try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+				pst.setString(1, newPassword);
+				pst.setString(2, userid);
+				pst.setString(3, email);
+				pst.setString(4, regNum);
+
+				int rowsUpdated = pst.executeUpdate();
+				return rowsUpdated > 0; // 업데이트가 성공적으로 수행되었는지 여부 반환
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+	
 
 	// 계정 정보를 간략히 Map 형식으로 가져옴.
 	public Map<String, String> getAccount(String userid) throws Exception {
@@ -311,57 +368,9 @@ public class MemberDAO {
 //               pstmt.executeUpdate();
 //           }
 //       }
-	public int updateUserInfo(MemberDTO dto) throws Exception {
-//	해당 유저의 id로 회원의 정보를 수정한다.
-			String sql = "update member set nickname = ?, pw = ?, phone = ?, email = ?, address1 = ?, address2 = ?, postcode = ? where userid = ?";
-			try(
-					Connection con = this.getConnection();	
-					PreparedStatement pstat = con.prepareStatement(sql);
-			 
-					){
-		
-				pstat.setString(1, dto.getNickname());
-				pstat.setString(2, dto.getPw());
-				pstat.setString(3, dto.getPhone());
-				pstat.setString(4, dto.getEmail());
-				pstat.setString(5, dto.getPostcode());
-				pstat.setString(6, dto.getAddress1());
-				pstat.setString(7, dto.getAddress2());
-				pstat.setString(8, dto.getUserid());
-			
-	
-				return pstat.executeUpdate();}
-		}
-	
-	
-	public int deleteMember(String id) throws Exception {
-//		해당 회원의 정보를 삭제한다.
-//		마이페이지의 회원 탈퇴 기능
-		String sql = "delete from member where userid = ?";
-		try(
-				Connection con = this.getConnection();	
-				PreparedStatement pstat = con.prepareStatement(sql);
-				 
-				){	
-			pstat.setString(1,id);
-			int result = pstat.executeUpdate();
-		return result;
-		}
-	}
 	
 
-	public void updateProfileImage(String userid, String sysName) throws Exception {
-//		회원이 선택한 프로필 이미지 정보를 DB의 회원 테이블에 저장함
-		
-		String sql = "UPDATE member SET profile_img = ? WHERE userid = ?";
-		try (Connection con = this.getConnection();
-				PreparedStatement pstat = con.prepareStatement(sql)) {
-			pstat.setString(1, "/image/mypage_image/" + sysName);
-            pstat.setString(2, userid);
-            pstat.executeUpdate();
-		}
-	}
-	
+				
 	
 	
 	
