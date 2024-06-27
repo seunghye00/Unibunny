@@ -285,16 +285,26 @@ function loadTableData() {
         console.error('데이터 받아오기 실패:', textStatus, errorThrown);
     });
 }
-// 랭킹 페이지 1~3위까지 프로필 사진 삽입
+//랭킹 페이지 1~3위까지 프로필 사진 삽입
 function appendMainTableData(data) {
-    // 1위부터 3위까지 이미지 추가
-    var firstPlaceImg = data.firstPlaceProfileImg;
-    var secondPlaceImg = data.secondPlaceProfileImg;
-    var thirdPlaceImg = data.thirdPlaceProfileImg;
+    // 1위부터 3위까지 이미지 경로 가져오기
+    var firstPlaceImg = data[0].profile_img;
+    var secondPlaceImg = data[1].profile_img;
+    var thirdPlaceImg = data[2].profile_img;
 
-    $('.first_place').empty().append(`<a href="/user/rank/rank.jsp"><img src="${firstPlaceImg}" alt=""></a>`);
-    $('.second_place').empty().append(`<a href="/user/rank/rank.jsp"><img src="${secondPlaceImg}" alt=""></a>`);
-    $('.third_place').empty().append(`<a href="/user/rank/rank.jsp"><img src="${thirdPlaceImg}" alt=""></a>`);
+    // 첫 번째, 두 번째, 세 번째 이미지 태그와 링크를 동적으로 생성하여 추가
+    var firstPlaceImgTag = $('<img>').attr('src', firstPlaceImg).attr('alt', '1st Place');
+    var secondPlaceImgTag = $('<img>').attr('src', secondPlaceImg).attr('alt', '2nd Place');
+    var thirdPlaceImgTag = $('<img>').attr('src', thirdPlaceImg).attr('alt', '3rd Place');
+
+    var firstPlaceLink = $('<a>').attr('href', '/user/rank/rank.jsp').append(firstPlaceImgTag);
+    var secondPlaceLink = $('<a>').attr('href', '/user/rank/rank.jsp').append(secondPlaceImgTag);
+    var thirdPlaceLink = $('<a>').attr('href', '/user/rank/rank.jsp').append(thirdPlaceImgTag);
+
+    // 해당 위치에 이미지를 추가
+    $('.first_place').empty().append(firstPlaceLink);
+    $('.second_place').empty().append(secondPlaceLink);
+    $('.third_place').empty().append(thirdPlaceLink);
 }
 </script>
 </html>

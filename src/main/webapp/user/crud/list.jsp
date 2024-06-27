@@ -73,10 +73,10 @@
 										<div class="flex_space mob_hidden"></div>
 										<div class="search_bar">
 											<div class="search_input">
-												<input type="text" class="input_tag" id="search_input">
+												<input type="text" class="input_tag" id="search_input" placeholder="제목을 입력해주세요">
 											</div>
 											<div class="search_img">
-												<a href="javascript:;"><img
+												<a href="javascript:;" id = "list_search_btn"><img
 													src="../../image/icon/ico_search.png" alt="검색 로고"></a>
 											</div>
 										</div>
