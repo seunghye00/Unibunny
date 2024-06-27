@@ -147,7 +147,7 @@
 
 <script>
 $(document).ready(function() {
-    // FAQ 항목 토글 버튼 클릭 이벤트 핸들러 (FAQ 항목 동적 생성 시)
+    // FAQ 토글!
     $(document).on('click', '.faq-toggle', function() {
         const $faq = $(this).closest('.faq');
         $faq.toggleClass('active');
@@ -180,23 +180,27 @@ $(document).ready(function() {
         event.preventDefault();
         
         const title = $('#faqList li:last-child .faq-title').text();
-        let content = $('#faqList li:last-child .faq-text').clone(); // 클론을 생성하고
-        content.find('button').remove(); // 버튼 요소를 제거합니다.
-        content = content.text(); // 텍스트만 가져옵니다.
+        let content = $('#faqList li:last-child .faq-text').clone();
+        // 버튼 요소를 제거합니다.
+        content.find('button').remove();
+        // 텍스트만 가져옵니다.
+        content = content.text();
 
         $('#faqTitle').val(title);
         $('#faqContent').val(content);
         $('#faqForm').submit();
     });
 
-    // 취소 버튼 클릭 이벤트 핸들러
+    // 취소 버튼
+    // FAQ 등록 하다가 갑자기 안올릴수도 있으니깐!
     $('.cancel_btn').on('click', function() {
         $('#faqList li:last-child').remove();
         $('.save_btn, .cancel_btn').hide();
         $('.faq_btn').show();
     });
 
-    // FAQ 항목 더블 클릭 이벤트 핸들러 (수정 가능하게 만들기)
+    // FAQ 더블클릭 
+    // FAQ 수정 가능하게 만들기
     $(document).on('dblclick', '.editable', function() {
         $(this).attr('contenteditable', 'true').focus();
     });
@@ -207,7 +211,7 @@ $(document).ready(function() {
         $(this).attr('contenteditable', 'false');
     });
 
-    // 삭제 버튼 클릭 이벤트 핸들러
+    // FAQ 삭제
     $(document).on('click', '.faq-delete', function() {
         const faqId = $(this).data('id');
         if (confirm('정말로 이 FAQ를 삭제하시겠습니까?')) {

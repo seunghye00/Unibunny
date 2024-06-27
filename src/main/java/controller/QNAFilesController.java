@@ -23,7 +23,7 @@ public class QNAFilesController extends HttpServlet {
 
         // 인코딩 설정
         request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
+        response.setContentType("application/json; charset=UTF-8");
 
         // 접속 경로 저장
         String cmd = request.getRequestURI();
@@ -43,7 +43,7 @@ public class QNAFilesController extends HttpServlet {
                 MultipartRequest multi = new MultipartRequest(request, realPath, maxSize, "UTF-8",
                         new DefaultFileRenamePolicy());
 
-                int question_seq = Integer.parseInt(request.getParameter("question_seq"));
+                int question_seq = Integer.parseInt(multi.getParameter("question_seq"));
                 Enumeration<String> fileNames = multi.getFileNames();
 
                 while (fileNames.hasMoreElements()) {
@@ -63,7 +63,7 @@ public class QNAFilesController extends HttpServlet {
                     }
                 }
 
-                response.sendRedirect("/list.faq");
+                response.getWriter().write("{\"status\":\"success\"}");
             } else if (cmd.equals("/download.qnafile")) {
                 // 파일 다운로드 처리
                 String fileName = request.getParameter("fileName");

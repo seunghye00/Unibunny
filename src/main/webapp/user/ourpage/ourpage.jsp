@@ -118,11 +118,11 @@
                             <img src="../../image/main/문경원 증명사진.jpg" alt="">
                           </div>
                           <div class="our_cont">
-                            <span class="our_name">문경원</span>
-                            <span class="our_insta">moontari_96</span>
+                            <span class="our_name">손민서</span>
+                            <span class="our_insta">minseo._.10.17</span>
                             <span class="our_phone"></span>
-                            <span class="our_txt">안녕하세요 풀스택 개발자를 꿈꾸는 알파메일 문경원입니다.</span>
-                            <span class="our_stack">JS, JAVA, React, SQL</span>
+                            <span class="our_txt">안녕하세요 풀스택 개발자를 꿈꾸는 손민서입니다.</span>
+                            <span class="our_stack">JS, JAVA, SQL</span>
                             <span class="our_role">GIT 관리 및 UI 관리</span>
                           </div>
                         </div>

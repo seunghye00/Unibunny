@@ -35,6 +35,11 @@
           </div>
           <div class="swiper-slide">
             <a href="javascript:;" class="swiper_bg">
+              <img src="../image/main/main_banner_ms.png" alt="">
+            </a>
+          </div>
+          <div class="swiper-slide">
+            <a href="javascript:;" class="swiper_bg">
               <img src="../image/main/Asset6.png" alt="">
             </a>
           </div>
@@ -90,7 +95,7 @@
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/game_banner_ms.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
