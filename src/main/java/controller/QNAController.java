@@ -63,7 +63,7 @@ public class QNAController extends HttpServlet {
                 dto.setQuestion_title(title);
                 dto.setQuestion_content(content);
                 dto.setWrite_date(writeDate);
-                dto.setId(userId);
+                dto.setUserid(userId);
 
                 int result = dao.insertQnA(dto);
 
@@ -144,14 +144,7 @@ public class QNAController extends HttpServlet {
 				request.setAttribute("record_total_count", QNADAO.getInstance().getRecordCount());	
 				request.setAttribute("activeTab", "questions");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
-				
-				
-				
 			}
-            
-            
-            
-            
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("/index.jsp");
