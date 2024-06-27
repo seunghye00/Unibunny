@@ -31,9 +31,10 @@ public class FAQDAO {
         return ds.getConnection();
     }
 
+    // FAQ 등록하기
     public int insertFAQ(FAQDTO faq) throws Exception {
         String sql = "INSERT INTO faq (faq_seq, title, content) VALUES (faq_seq.NEXTVAL, ?, ?)";
-        try (Connection con = getConnection();
+        try (Connection con = this.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, faq.getTitle());
             ps.setString(2, faq.getContent());
@@ -42,9 +43,11 @@ public class FAQDAO {
         }
     }
 
+    // FAQ 조회하기
+    // 사용자, 관리자 둘 다 전체를 뽑아와야한다!
     public List<FAQDTO> getFAQs() throws Exception {
         String sql = "SELECT * FROM faq ORDER BY faq_seq DESC";
-        try (Connection con = getConnection();
+        try (Connection con = this.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -60,9 +63,10 @@ public class FAQDAO {
         }
     }
     
+    //FAQ 삭제하기
     public int deleteFAQ(int id) throws Exception {
         String sql = "DELETE FROM faq WHERE faq_seq = ?";
-        try (Connection con = getConnection();
+        try (Connection con = this.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int result = ps.executeUpdate();

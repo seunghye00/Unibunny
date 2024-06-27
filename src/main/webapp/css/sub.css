@@ -1814,6 +1814,38 @@
   border-radius: 10px;
 }
 
+/* 관리자 공지사항 수정폼 */
+.notice-edit .file-input-wrapper {
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+}
+
+.notice-edit .file-input-wrapper input[type="file"] {
+	flex: 1;
+}
+
+.notice-edit .file-input-wrapper button {
+	margin-left: 10px;
+}
+
+.notice-edit .file-list-wrapper {
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+}
+
+.notice-edit .file-list-wrapper span {
+	flex: 1;
+	color: white;
+	font-size: 15px;
+	padding-left: 5px;
+}
+
+.notice-edit .file-list-wrapper button {
+	margin-left: 10px;
+}
+
 
 /* 모바일 */
 @media (hover: hover) {

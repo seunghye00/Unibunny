@@ -52,12 +52,13 @@
 
 	<script>
 		$(document).ready(function() {
+			// FAQ 토글!
 			$('.faq-toggle').on('click', function() {
 				var $faq = $(this).closest('.faq');
 				$faq.toggleClass('active');
 			});
 		});
 	</script>
-	
+
 </body>
 </html>

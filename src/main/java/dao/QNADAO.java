@@ -31,6 +31,7 @@ public class QNADAO {
 		return ds.getConnection();
 	}
 
+	// Q&A 등록하기
 	public int insertQnA(QNADTO dto) throws Exception {
 		String sql = "INSERT INTO QNA (QUESTION_SEQ, QUESTION_TITLE, QUESTION_CONTENT, WRITE_DATE, USERID, ANSWER_CONTENT) VALUES (QUESTION_SEQ.NEXTVAL, ?, ?, ?, ?, '')";
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -42,6 +43,7 @@ public class QNADAO {
 		}
 	}
 	
+	// DB에 마지막으로 등록된 레코드의 ID 가져오기
     public int getLastInsertedId() throws Exception {
         String sql = "SELECT QUESTION_SEQ.CURRVAL FROM DUAL";
         try (Connection con = getConnection();
@@ -54,6 +56,8 @@ public class QNADAO {
             }
         }
     }
+    
+    // Q&A 조회하기
     public List<QNADTO> selectAllQnA() throws Exception {
     	String sql = "SELECT * FROM QNA ORDER BY answer_yn ASC, write_date ASC";
         try (Connection con = getConnection();
@@ -76,6 +80,7 @@ public class QNADAO {
         }
     }
     
+    // Q&A 디테일
     public QNADTO selectQnABySeq(int question_seq) throws Exception {
         String sql = "SELECT * FROM QNA WHERE QUESTION_SEQ = ?";
         try (Connection con = getConnection();
@@ -100,6 +105,7 @@ public class QNADAO {
         }
     }
     
+    // 사용자의 Q&A에 대한 관리자의 답변 DB에 등록하기
     public int insertAnswer(QNADTO dto) throws Exception {
         String sql = "UPDATE QNA SET ANSWER_CONTENT = ?, ANSWER_YN = ?, ANSWER_DATE = ? WHERE QUESTION_SEQ = ?";
         try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

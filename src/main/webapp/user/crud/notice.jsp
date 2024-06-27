@@ -28,7 +28,7 @@
 					<div class="con_wrap">
 						<div class="con">
 							<div class="title_box">
-								<p class="title">게시판</p>
+								<p class="title">공지사항</p>
 							</div>
 							<div class="cont_box">
 								<div class="cate_box mob_hidden">
@@ -80,9 +80,6 @@
 									<div class="list_table notice_table"></div>
 									<div class="bottom_box">
 										<div class="navi_box" id="pagination"></div>
-										<div class="btn_box">
-											<button class="write_btn" id="write_btn" type="button">작성하기</button>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -307,35 +304,6 @@
 	    // 최신순 버튼 색 변경 & 해당 리스트 숨김
 	    $('#recent_btn').css('background-color', 'var(--color-space');
 	    $('.recent_list').hide();
-	});
-
-	// 게시글 상세 페이지에서 수정 버튼 클릭 시
-	$('#edit_btn').on('click', function() {
-	    location.href = '/tryUpdate.board?board_seq=' + get_board_seq();
-	});
-
-	// 게시글 수정 페이지에서 완료 버튼 클릭 시
-	$('#update_btn').on('click', function(e) {
-	    e.preventDefault();
-
-	    let trimmedHtml = $("#summernote").html().trim();
-	    $("#summernote").html(trimmedHtml);
-	    console.log($("#summernote").text());
-	    $('#update_board').submit();
-	});
-
-	// 게시글 수정 페이지에서 취소 버튼 클릭 시
-	$('#cancel_btn').on('click', function() {
-	    if (confirm("수정하신 내용은 저장되지 않습니다.")) {
-	        location.href = '/user/detail.board?board_seq=' + get_board_seq();
-	    }
-	});
-
-	// 게시글 상세 페이지에서 삭제 버튼 클릭 시
-	$('#del_btn').on('click', function() {
-	    if (confirm("정말로 삭제하시겠습니까?")) {
-	        location.href = '/delete.board?board_seq=' + get_board_seq();
-	    }
 	});
 
 	// 게시글의 seq 값을 반환하는 메서드

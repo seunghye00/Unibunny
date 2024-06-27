@@ -41,7 +41,8 @@
 				<li class="snb_cate"><a href="javascript:;"> <span>게시판
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="/admin_list.notice"> <span>공지사항 관리</span>
+				<li class="snb_cate"><a href="/admin_list.notice"> <span>공지사항
+							관리</span>
 				</a></li>
 				<li class="snb_cate"><a href="javascript:;"> <span>고객센터</span>
 				</a></li>
@@ -76,7 +77,7 @@
 							<div class="con ntc_con">
 								<div class="ntc select_subject">
 									<ul>
-										<li><a href="/admin_list.notice">공지사항</a></li>
+										<li><a href="/admin_list.notice" class="cpage">공지사항</a></li>
 										<li><a href="../manager/community.jsp">전체 게시물</a></li>
 										<li><a href="../manager/keepboard.jsp">임시보관 게시물</a></li>
 										<li><a href="../manager/keepreply.jsp">임시보관 댓글</a></li>
@@ -102,14 +103,16 @@
 											<span>조회수</span>
 										</div>
 									</div>
-									<c:forEach var="notice" items="${boardlist}">
+									<c:forEach var="notice" items="${noticelist}">
 										<div class="table_row">
 											<div class="table_col">
 												<span>${notice.notice_seq}</span>
 											</div>
 											<div class="table_col">
-												<span>${notice.title}</span>
+												<a
+													href="admin_detail.notice?notice_seq=${notice.notice_seq}">${notice.title}</a>
 											</div>
+
 											<div class="table_col">
 												<span>${notice.nickname}</span>
 											</div>
@@ -168,7 +171,7 @@
 					</div>
 				</div>
 			</div>
-<script>
+			<script>
     document.addEventListener('DOMContentLoaded', function() {
         let rows = document.querySelectorAll('.table_row:not(.table_header)');
         let totalRows = rows.length;
@@ -188,7 +191,6 @@
         });
     });
 </script>
-
 </body>
 
 </html>
