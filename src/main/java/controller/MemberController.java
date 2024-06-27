@@ -110,7 +110,7 @@ public class MemberController extends HttpServlet {
                 String pw = EncryptionUitls.getSHA512(request.getParameter("pw"));
                 String ipAddress = request.getRemoteAddr();
                 System.out.println("Client IP Address: " + ipAddress); // IP 주소 출력
-
+                
                 boolean result = mdao.login(userid, pw);
                 System.out.println("Login Result : " + result);
 
@@ -419,8 +419,6 @@ public class MemberController extends HttpServlet {
 				System.out.println((String) session.getAttribute("loginID"));
 				mdao.deleteMember(id);
 //				session.invalidate(); //무효화 -> 해당하는 명령쓰면 세션 다 날라감
-				
-				
 				
 				System.out.println("회원탈퇴 성공");
 				

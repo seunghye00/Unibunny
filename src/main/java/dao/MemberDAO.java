@@ -204,26 +204,34 @@ public class MemberDAO {
 		}
 	}
 	// 아이디 찾기
-		public String findAccount(String reg_num, String email, String phone) throws Exception {
-			String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
+	public String findAccount(String reg_num, String email, String phone) throws Exception {
+	      String sql = "SELECT userid FROM member WHERE reg_num LIKE ? AND email = ? AND phone = ?";
 
-			try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-				pst.setString(1, reg_num);
-				pst.setString(2, email);
-				pst.setString(3, phone);
+	      // '-' 이후 문자 제거
+	      if (reg_num.indexOf("-") != -1) {
+	         reg_num = reg_num.substring(0, reg_num.indexOf("-"));
+	      }
 
-				try (ResultSet rs = pst.executeQuery()) {
-					if (rs.next()) {
-						return rs.getString("USERID");
-					} else {
-						return "";
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return "";
-				}
-			}
-		}
+	      try (Connection con = this.getConnection();
+	          PreparedStatement pst = con.prepareStatement(sql)) {
+	         // 와일드카드 문자 추가
+	         pst.setString(1, reg_num + "-%");
+	         pst.setString(2, email);
+	         pst.setString(3, phone);
+
+	         try (ResultSet rs = pst.executeQuery()) {
+	            if (rs.next()) {
+	               return rs.getString("userid");
+	            } else {
+	               return "";
+	            }
+	         } catch (SQLException e) {
+	            e.printStackTrace();
+	            return "";
+	         }
+	      }
+
+	   }
 	// 비밀번호 찾기
 		public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
 			String sql = "SELECT reg_num FROM member WHERE userid = ? AND email = ?";
