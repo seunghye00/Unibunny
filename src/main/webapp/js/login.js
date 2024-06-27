@@ -258,7 +258,7 @@ $(document).ready(function() {
 	// 이메일 자동완성
 	const emailDomains = ["gmail.com", "hotmail.com", "naver.com", "daum.net"];
 
-	$("#input_email")
+	/*$("#input_email")
 		.autocomplete({
 			source: function(request, response) {
 				const term = request.term;
@@ -312,7 +312,7 @@ $(document).ready(function() {
 					isemail = false;
 				},
 			});
-		});
+		});*/
 
 	// 다음 우편번호 서비스 사용
 	$(".postcode_btn").click(function() {
