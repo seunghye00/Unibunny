@@ -27,17 +27,17 @@
                 </a>
               </li>
               <li class="snb_cate">
-                <a href="javescript:;">
+                <a href="#">
                   <span>대시보드</span>
                 </a>
               </li>
               <li class="snb_cate">
-                <a href="javescript:;">
+                <a href="#">
                   <span>배너 관리</span>
                 </a>
               </li>
               <li class="snb_cate">
-                <a href="javescript:;">
+                <a href="#">
                   <span>게임 관리</span>
                 </a>
               </li>
@@ -47,12 +47,12 @@
                 </a>
               </li>
               <li class="snb_cate">
-                <a href="javescript:;">
+                <a href="/manager/community.jsp">
                   <span>게시판 관리</span>
                 </a>
               </li>
               <li class="snb_cate">
-                <a href="javescript:;">
+                <a href="/manager/faq.jsp">
                   <span>고객센터</span>
                 </a>
               </li>
@@ -95,10 +95,10 @@
                       <div class="select_subject">
                         <ul>
                           <li>
-                            <a href="#" class="cpage">전체 회원</a>
+                            <a href="javascript:change_grade('회원')" class="cpage grade user">일반 회원</a>
                           </li>
                           <li>
-                            <a href="javascript:get_member_like('블랙리스트', 1)">블랙 리스트</a>
+                            <a href="javascript:change_grade('정지된 회원')" class="grade blacklist">블랙리스트</a>
                           </li>
                         </ul>
                       </div>
@@ -117,7 +117,7 @@
                             <input type="text" class="input_tag" id="search_input" placeholder="아이디 혹은 닉네임">
                           </div>
                           <div class="search_img">
-                            <a href="javascript:;"><img src="../image/icon/ico_search.png" alt="검색 로고"></a>
+                            <a href="javascript:search_user()"><img src="../image/icon/ico_search.png" alt="검색 로고"></a>
                           </div>
                         </div>
                       </div>
@@ -153,8 +153,8 @@
           </div>
         </div>
         <script>
-          $(document).ready(function ( ) {
-            get_member_list("default", 1);
+          $(document).ready(function() {
+            get_member_list();
           });
         </script>
       </body>

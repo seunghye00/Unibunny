@@ -861,6 +861,10 @@
   padding-top: 20px;
 }
 
+.member_con .table_col:nth-child(5) button:active {
+  background-color: var(--color-space-click);		
+}
+
 /* qa 리스트 */
 .qa.table_col:nth-child(1) {
   width: 20%;

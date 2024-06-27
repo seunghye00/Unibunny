@@ -73,6 +73,9 @@ public class MemberController extends HttpServlet {
 		JsonObject js = new JsonObject();
 
 		System.out.println(cmd);
+		
+		PrintWriter print_writer = response.getWriter();
+		
 		try {
             //회원가입
             if (cmd.equals("/signup.member")) {
@@ -473,38 +476,77 @@ public class MemberController extends HttpServlet {
 			    
 			    // 파일 업로드 완료 후 마이페이지로 리디렉션
 			    response.sendRedirect("/mypage.member");
+			
 			} else if(cmd.equals("/list.member")) {
 				// 관리자 페이지에서 해당 등급의 회원 목록 전체를 조회 하기
 				String grade = request.getParameter("grade");
 				String cpage = request.getParameter("cpage");
-				System.out.println(cpage);
+				
 				if (cpage == null) {
 					cpage = "1";
 				}
 				int pcpage = Integer.parseInt(cpage);
 				int start_num = pcpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1);
 				int end_num = pcpage * Pagination.recordCountPerPage;	
-				System.out.println(start_num);
-				System.out.println(end_num);
+
 				Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
-				PrintWriter pw = response.getWriter();
-				pw.append(gson.toJson(mdao.selectNtoM(start_num, end_num, grade)));
+				
+				print_writer.append(gson.toJson(mdao.selectNtoM(start_num, end_num, grade)));
 				
 			} else if (cmd.equals("/total.member")) {
 				// 관리자 페이지에서 해당 등급의 회원 데이터 총 갯수를 얻기 위한 경로
 				String grade = request.getParameter("grade");
-				PrintWriter pw = response.getWriter();
 				Map<String, Object> result = new HashMap<>();
-                result.put("total_data", mdao.selectAll(grade));
+                
+				result.put("total_data", mdao.selectAll(grade));
                 result.put("record_count_per_page", Pagination.recordCountPerPage);
                 result.put("navi_count_per_page", Pagination.naviCountPerPage);
-				pw.append(g.toJson(result));
+				
+                print_writer.append(g.toJson(result));
+				
+			} else if (cmd.equals("/changeGrade.member")) {
+				// 관리자 페이지에서 해당 회원의 등급을 블랙리스트로 바꾸기 위한 경로
+				String user_id = request.getParameter("user_id");
+				String grade = request.getParameter("grade");
+				
+				print_writer.append(g.toJson(mdao.toChageGrade(grade, user_id)));
+			
+			} else if (cmd.equals("/getSearchNum.member")) {
+				// 관리자 페이지에서 회원을 검색한 결과의 데이터 총 갯수를 얻기 위한 경로
+				String grade = request.getParameter("grade");
+				String user_info = request.getParameter("user_info");
+				Map<String, Object> result = new HashMap<>();
+                
+				result.put("total_data", mdao.getNumBySearchMem(grade, user_info));
+                result.put("record_count_per_page", Pagination.recordCountPerPage);
+                result.put("navi_count_per_page", Pagination.naviCountPerPage);
+				
+                print_writer.append(g.toJson(result));
+                
+			} else if (cmd.equals("/trySearch.member")) {
+				// 관리자 페이지에서 회원을 검색한 결과 전체를 얻기 위한 경로
+				String grade = request.getParameter("grade");
+				String user_info = request.getParameter("user_info");
+				String cpage = request.getParameter("cpage");
+				
+				if (cpage == null) {
+					cpage = "1";
+				}
+				int pcpage = Integer.parseInt(cpage);
+				int start_num = pcpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1);
+				int end_num = pcpage * Pagination.recordCountPerPage;	
+
+				Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
+				
+				print_writer.append(gson.toJson(mdao.searchMemAndSelectNtoM(start_num, end_num, grade, user_info)));
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
 		}
-
+		
+		print_writer.close();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
