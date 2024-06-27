@@ -99,8 +99,8 @@ public class MemberDAO {
 	}
 
 	public MemberDTO searchProfileInfo(String id) throws Exception {
-		// 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
-		String sql = "select * from member where userid = ?";
+        // 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
+        String sql = "select * from member where userid = ?";
 
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			pstat.setString(1, id);
@@ -143,6 +143,8 @@ public class MemberDAO {
 		Date date = new Date(timestamp.getTime());
 		return sdf.format(date);
 	}
+
+    
 
 	public int updateUserInfo(MemberDTO dto) throws Exception {
 //	해당 유저의 id로 회원의 정보를 수정한다.
@@ -231,8 +233,7 @@ public class MemberDAO {
 					} else {
 						return false;
 					}
-				} else {
-					return false;
+
 				}
 			}
 

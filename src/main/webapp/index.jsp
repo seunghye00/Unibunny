@@ -29,7 +29,7 @@
         </a>
       </div>
       <div class="img_box">
-        <a href="user/crud/ourpage.jsp" >
+        <a href="user/ourpage/ourpage.jsp" >
           <img src="../image/index/index_ourpage.png" alt="">
         </a>
       </div>
