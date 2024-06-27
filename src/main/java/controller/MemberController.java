@@ -13,6 +13,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.Enumeration;
 
@@ -30,12 +32,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import commons.EncryptionUitls;
 import commons.MailSender;
+import commons.Pagination;
 import commons.PasswordGenerator;
 import dao.BoardDAO;
 import dao.Duptype;
@@ -469,9 +473,34 @@ public class MemberController extends HttpServlet {
 			    
 			    // 파일 업로드 완료 후 마이페이지로 리디렉션
 			    response.sendRedirect("/mypage.member");
+			} else if(cmd.equals("/list.member")) {
+				// 관리자 페이지에서 해당 등급의 회원 목록 전체를 조회 하기
+				String grade = request.getParameter("grade");
+				String cpage = request.getParameter("cpage");
+				System.out.println(cpage);
+				if (cpage == null) {
+					cpage = "1";
+				}
+				int pcpage = Integer.parseInt(cpage);
+				int start_num = pcpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1);
+				int end_num = pcpage * Pagination.recordCountPerPage;	
+				System.out.println(start_num);
+				System.out.println(end_num);
+				Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
+				PrintWriter pw = response.getWriter();
+				pw.append(gson.toJson(mdao.selectNtoM(start_num, end_num, grade)));
+				
+			} else if (cmd.equals("/total.member")) {
+				// 관리자 페이지에서 해당 등급의 회원 데이터 총 갯수를 얻기 위한 경로
+				String grade = request.getParameter("grade");
+				PrintWriter pw = response.getWriter();
+				Map<String, Object> result = new HashMap<>();
+                result.put("total_data", mdao.selectAll(grade));
+                result.put("record_count_per_page", Pagination.recordCountPerPage);
+                result.put("navi_count_per_page", Pagination.naviCountPerPage);
+				pw.append(g.toJson(result));
 			}
-		}catch (Exception e) {
-
+		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
 		}

@@ -316,7 +316,7 @@ public class MemberDAO {
 	// 회원 or 블랙리스트 목록 중 범위 내의 관리자 계정을 제외한 테이터 중 id, 닉네임, 가입 날짜를 반환하는 메서드
 	public List<MemberDTO> selectNtoM(int start_num, int end_num, String grade) throws Exception {
 
-		String sql = "select userid, nickname, join_date from member where memcode = (select memcode from memcode where grade = ?) and rownum between ? and ?";
+		String sql = "select userid, nickname, join_date from (select m.userid, m.nickname, m.join_date,rownum rn from member m join memcode mc on m.memcode = mc.memcode where mc.grade = ?) where rn between ? and ?";
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			pstat.setString(1, grade);
 			pstat.setInt(2, start_num);
@@ -348,8 +348,8 @@ public class MemberDAO {
 		}
 	}
 
-//      public void kakaoLogin(MemberDTO dto) throws SQLException {
-//           String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
+//	   public void kakaoLogin(MemberDTO dto) throws SQLException {
+//	        String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
 //
 //           try (Connection conn = getConnection();
 //                PreparedStatement pstmt = conn.prepareStatement(sql)) {
