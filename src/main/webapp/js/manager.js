@@ -142,10 +142,12 @@ $(document).ready(function() {
 
 // 해당 페이지의 회원 목록을 불러오는 메서드 
 function get_member_list(grade, cpage) {
+
+	// 테이블 헤더 영역을 제외한 데이터 비우기
+	$(".list_table>div:not(.table_header)").remove();
 	
 	if (grade == "default") {
 		grade = "일반회원";
-		cpage = 1;
 	}
 	// 해당 등급의 총 회원 수를 불러오기 위한 코드
 	$.ajax({
@@ -155,52 +157,67 @@ function get_member_list(grade, cpage) {
 			grade: grade
 		}
 	}).done(function(resp) {
-		
 		let record_count_per_page = resp.record_count_per_page;
-		let navi_count_per_page = resp.navi_count_per_page;		
-		let record_total_count = resp.total_data; 
-	
+		let navi_count_per_page = resp.navi_count_per_page;
+		let record_total_count = resp.total_data;
+
 		// 필요한 Page navigator의 수
-		let pageTotalCount = 0;
-	
+		let page_total_count = 0;
+
 		if (record_total_count % record_count_per_page > 0) {
-			pageTotalCount = record_total_count / record_count_per_page + 1;
+			// 전체 게시글을 한 페이지 당 노출할 게시글 수로 나눴을 때 나머지가 존재한다면 navi 수는 (전체 게시글 / 한 페이지 당 게시글 + 1)
+			page_total_count = record_total_count / record_count_per_page + 1;
 		} else {
-			pageTotalCount = record_total_count / record_count_per_page;
+			// 나머지가 존재하지 않는다면 navi 수는 (전체 게시글 / 한 페이지 당 게시글)
+			page_total_count = record_total_count / record_count_per_page;
 		}
-	
+
 		// 현재 페이지의 Page Navigator들 중 시작 번호
-		let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1; 
+		let start_navi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
 		// 현재 페이지의 Page Navigator들 중 끝 번호
-		let endNavi = startNavi + navi_count_per_page - 1; 
-	
-		if (endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
+		let end_navi = start_navi + navi_count_per_page - 1;
+
+		if (end_navi > page_total_count) {
+			end_navi = page_total_count;
 		}
-	
-		let needNext = endNavi < pageTotalCount;
-		let needPrev = startNavi > 1;
-		
+
+		let need_next = end_navi < page_total_count;
+		let need_prev = start_navi > 1;
+
 		// 페이지네이션 HTML 생성
-		let pageNation = $(".pagination");
-		pageNation.empty();
-		
-		// '첫 페이지로' 버튼
-		pageNation.append("<a class='page_navi arr_navi start_arr" + (needPrev ? "" : " disabled") + "' href='" + (needPrev ? "#" : "javascript:void(0);") + "' data-page='" + (needPrev ? (startNavi - 1) : "") + "'><img class='navi_icon start_navi' src='../image/icon/pagination.png' alt='start navi 로고'></a>");
+		let page_nation = $(".pagination");
+		page_nation.empty();
+
+		// '이전 페이지로' 버튼
+		let prev_btn = $("<a>", { "class": "page_navi arr_navi start_arr", "href": "javascript:get_member_list(" + "'일반회원'" + ", " + (start_navi - 1) + ")" });
+		let prev_img = $("<img>", { "class": "navi_icon start_navi", "src": "../image/icon/pagination.png", "alt": "start navi 로고" });
+		if (!need_prev) {
+			prev_btn.addClass("disabled");
+		}
+		prev_btn.append(prev_img);
+		page_nation.append(prev_btn);
+
 
 		// 페이지 번호
-		for (let i = startNavi; i <= endNavi; i++) {
-			if (cpage === i) {
-				pageNation.append("<a class='page_navi active' href='javascript:void(0);' data-page='" + i + "'>" + i + "</a> ");
-			} else {
-				pageNation.append("<a class='page_navi' href='#' data-page='" + i + "'>" + i + "</a> ");
+		for (let i = start_navi; i <= end_navi; i++) {
+			let page_navi = $("<a>", { "class": "page_navi", "href": "javascript:get_member_list(" + "'일반회원'" + ", " + i + ")" });
+			page_navi.text(i);
+			if (cpage == i) {
+				page_navi.addClass("active");
 			}
+			page_nation.append(page_navi);
 		}
 
-		// '마지막 페이지로' 버튼
-		pageNation.append("<a class='page_navi arr_navi end_arr" + (needNext ? "" : " disabled") + "' href='" + (needNext ? "#" : "javascript:void(0);") + "' data-page='" + (needNext ? (endNavi + 1) : "") + "'><img class='navi_icon end_navi' src='../image/icon/pagination.png' alt='end navi 로고'></a>");
+		// '다음 페이지로' 버튼
+		let next_btn = $("<a>", { "class": "page_navi arr_navi end_arr", "href": "javascript:get_member_list(" + "'일반회원'" + ", " + (end_navi - 1) + ")" });
+		let next_img = $("<img>", { "class": "navi_icon end_navi", "src": "../image/icon/pagination.png", "alt": "end navi 로고" });
+		if (!need_next) {
+			next_btn.addClass("disabled");
+		}
+		next_btn.append(next_img);
+		page_nation.append(next_btn);
 	});
-	
+
 	$.ajax({
 		url: "/list.member",
 		dataType: "json",
@@ -209,54 +226,53 @@ function get_member_list(grade, cpage) {
 			cpage: cpage
 		}
 	}).done(function(resp) {
-		console.log(cpage);
+		console.log(resp);
 		let index = cpage * 10 - 9;
 		for (let i of resp) {
+
 			let row = $("<div>", { "class": "table_row" });
 			let col = $("<div>", { "class": "table_col" });
 			let span = $("<span>");
+
 			// table_col 첫번째 요소에 index 값 삽입
 			span.text(index++);
 			col.append(span);
 			row.append(col);
-			
+
 			// table_col 두번째 요소에 userid 값 삽입
 			col = $("<div>", { "class": "table_col" });
 			span = $("<span>");
 			span.text(i.userid);
 			col.append(span);
 			row.append(col);
-			
+
 			// table_col 세번째 요소에 nickname 값 삽입
 			col = $("<div>", { "class": "table_col" });
 			span = $("<span>");
 			span.text(i.nickname);
 			col.append(span);
 			row.append(col);
-			
+
 			// table_col 네번째 요소에 join_date 값 삽입
 			col = $("<div>", { "class": "table_col" });
 			span = $("<span>");
-			// Timestamp 값을 원하는 형식으로 변환하기 위해 moment 라이브러리 사용 (예: "MMMM Do YYYY, h:mm:ss a" 형식)
-			// let join_date = moment(i.join_date).format('YYYY.MM.dd hh:mm:ss');
 			span.text(i.join_date);
 			col.append(span);
 			row.append(col);
-			
+
 			// table_col 다섯번째 요소에 버튼 삽입
 			col = $("<div>", { "class": "table_col" });
 			let btn = $("<button>");
-			if (grade == "블랙리스트"){
+			if (grade == "블랙리스트") {
 				btn.text("해제");
 			} else {
 				btn.text("등록");
 			}
 			col.append(btn);
 			row.append(col);
-			
+
 			// 테이블에 데이터 출력
 			$(".list_table").append(row);
-			
 		}
 	});
 }

@@ -123,6 +123,7 @@
 				<script>
 					$(document).ready(function () {
 						get_options_record();
+						get_file_list("board");
 						get_comm_list("default");
 						get_user_record();
 					});

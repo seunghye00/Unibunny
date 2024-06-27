@@ -363,7 +363,7 @@ select::-ms-expand {
 }
 
 #search_input::placeholder{
-  color: #999;
+  color: #999 !important;
 }
 .cpage {
   color: var(--color-yellow) !important;
