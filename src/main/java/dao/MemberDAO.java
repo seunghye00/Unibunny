@@ -1,10 +1,12 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -166,41 +168,53 @@ public class MemberDAO {
 	}
 
 	public MemberDTO searchProfileInfo(String id) throws Exception {
-		// 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임,가입날짜 등)
+        // 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
+        String sql = "select * from member where userid = ?";
 
-		String sql = "select * from member where userid = ?";
+        try (
+            Connection con = this.getConnection();
+            PreparedStatement pstat = con.prepareStatement(sql);
+        ) {
+            pstat.setString(1, id);
 
-		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);
+            try (ResultSet rs = pstat.executeQuery();) {
 
-		) {
-			pstat.setString(1, id);
+                while (rs.next()) {
+                    String userid = rs.getString("userid");
+                    String nickname = rs.getString("nickname");
+                    String pw = rs.getString("pw");
+                    String phone = rs.getString("phone");
+                    String reg_num = rs.getString("reg_num");
+                    String email = rs.getString("email");
+                    String postcode = rs.getString("postcode");
+                    String address1 = rs.getString("address1");
+                    String address2 = rs.getString("address2");
+                    Timestamp join_date = rs.getTimestamp("join_date");
+                    int memcode = rs.getInt("memcode");
+                    String profile_img = rs.getString("profile_img");
 
-			try (ResultSet rs = pstat.executeQuery();) {
+                    MemberDTO dto = new MemberDTO(userid, nickname, pw, phone, reg_num, email, postcode, address1, address2, join_date, memcode, profile_img);
+                    return dto;
+                }
 
-				while (rs.next()) {
+            }
+        }
+        return null;
+    }
 
-					String userid = rs.getString("userid");
-					String nickname = rs.getString("nickname");
-					String pw = rs.getString("pw");
-					String phone = rs.getString("phone");
-					String reg_num = rs.getString("reg_num");
-					String email = rs.getString("email");
-					String postcode = rs.getString("postcode");
-					String address1 = rs.getString("address1");
-					String address2 = rs.getString("address2");
-					Timestamp join_date = rs.getTimestamp("join_date");
-					int memcode = rs.getInt("memcode");
-					String profile_img = rs.getString("profile_img");
+    // 가입날짜를 원하는 형식으로 변환하여 출력하는 메서드
+    public String getFormattedJoinDate(MemberDTO dto) {
+        Timestamp join_date = dto.getJoin_date();
+        return formatTimestamp(join_date);
+    }
 
-					MemberDTO dto = new MemberDTO(userid, nickname, pw, phone, reg_num, email, postcode, address1,
-							address2, join_date, memcode, profile_img);
-					return dto;
-				}
-
-			}
-		}
-		return null;
-	}
+    // Timestamp를 원하는 형식의 문자열로 변환하는 메서드
+    private String formatTimestamp(Timestamp timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+        Date date = new Date(timestamp.getTime());
+        return sdf.format(date);
+    }
+    
 
 	// 계정 정보를 간략히 Map 형식으로 가져옴.
 	public Map<String, String> getAccount(String userid) throws Exception {
@@ -318,4 +332,37 @@ public class MemberDAO {
 	
 				return pstat.executeUpdate();}
 		}
+	
+	
+	public int deleteMember(String id) throws Exception {
+//		해당 회원의 정보를 삭제한다.
+//		마이페이지의 회원 탈퇴 기능
+		String sql = "delete from member where userid = ?";
+		try(
+				Connection con = this.getConnection();	
+				PreparedStatement pstat = con.prepareStatement(sql);
+				 
+				){	
+			pstat.setString(1,id);
+			int result = pstat.executeUpdate();
+		return result;
+		}
+	}
+	
+
+	public void updateProfileImage(String userid, String sysName) throws Exception {
+//		회원이 선택한 프로필 이미지 정보를 DB의 회원 테이블에 저장함
+		
+		String sql = "UPDATE member SET profile_img = ? WHERE userid = ?";
+		try (Connection con = this.getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql)) {
+			pstat.setString(1, "/image/mypage_image/" + sysName);
+            pstat.setString(2, userid);
+            pstat.executeUpdate();
+		}
+	}
+	
+	
+	
+	
 }

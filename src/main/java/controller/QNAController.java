@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+import commons.Pagination;
 import dao.QNADAO;
 import dao.QNAFilesDAO;
 import dto.QNADTO;
@@ -119,7 +121,37 @@ public class QNAController extends HttpServlet {
                 } else {
                     response.sendRedirect("/index.jsp");
                 }
-            }
+            }else if(cmd.equals("/myqna.qna")) {
+//				회원이 작성한 QNA를 마이페이지에서 조회
+				
+				String id = (String)request.getSession().getAttribute("loginID");
+				System.out.println("진입");
+				String pcpage = request.getParameter("cpage");
+				if( pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				System.out.println("회원의 북마크 조회");
+				
+				List<QNADTO> list = QNADAO.getInstance().searchMyQNAList(cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage -1),
+						cpage * Pagination.recordCountPerPage,id);
+				System.out.println("북마크 게시글 조회 완료");
+				
+				request.setAttribute("myqna", list);
+				request.setAttribute("cpage", cpage);
+				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
+				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
+				request.setAttribute("record_total_count", QNADAO.getInstance().getRecordCount());	
+				request.setAttribute("activeTab", "questions");
+				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+				
+				
+				
+			}
+            
+            
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("/index.jsp");

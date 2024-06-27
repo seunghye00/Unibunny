@@ -267,42 +267,42 @@ public class BoardDAO {
 
 	
 	
-	public List<BoardDTO> searchMyBoardList(String id) throws Exception{
+	public List<BoardDTO> searchMyBoardList(int startNum, int endNum,String id) throws Exception{
+//		'해당하는 회원이' 작성한 글 리스트를 반환하는 메서드
+//		회원의 id를 인자로 가져와서 닉네임을 찾는다.
 		
-		String sql = "select * from board where nickname = (select nickname from member where userid = ?)";
-		try(
-				Connection con = this.getconnection();	
-				PreparedStatement pstat = con.prepareStatement(sql);
-				
-				){
-			pstat.setString(1, id);
-		
-			try(ResultSet rs = pstat.executeQuery()){
-		
-			
+	System.out.println("board_seq");
+	String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown from board where nickname = (select nickname from member where userid = ?)) where rown between ? and ?";
+	try (
+			Connection con = this.getconnection();
+			PreparedStatement pstat = con.prepareStatement(sql);	
+			) {
 		List<BoardDTO> list = new ArrayList<>();
-			
-		while(rs.next()) {
-			
-			int board_seq = rs.getInt("board_seq");
-			 String title = rs.getString("title");
-			 String content = rs.getString("content");
-			 Timestamp write_date = rs.getTimestamp("write_date");
-			 int view_count = rs.getInt("view_count");
-			 String delete_yn = rs.getString("delete_yn");
-			 Timestamp delete_date = rs.getTimestamp("delete_date");
-			 int game_id = rs.getInt("game_id");
-			 String nickname = rs.getString("nickname");
-			 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
-					 ,delete_yn,delete_date,game_id,nickname));
-			
-
-				}
-				return list;
-			}
-			
+		pstat.setString(1,id);
+		pstat.setInt(2, startNum);
+		pstat.setInt(3, endNum);
+		
+		try (	
+				ResultSet rs= pstat.executeQuery();
+				){
+			 while(rs.next()) {
+				 int board_seq = rs.getInt("board_seq");
+				 String title = rs.getString("title");
+				 String content = rs.getString("content");
+				 Timestamp write_date = rs.getTimestamp("write_date");
+				 int view_count = rs.getInt("view_count");
+				 String delete_yn = rs.getString("delete_yn");
+				 Timestamp delete_date = rs.getTimestamp("delete_date");
+				 int game_id = rs.getInt("game_id");
+				 String nickname = rs.getString("nickname");
+				 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
+						 ,delete_yn,delete_date,game_id,nickname));
+			 }
+			 return list;
 		}
+	}
 		}
+	
 	
 	
 	// board_seq 값으로 해당 레코드를 반환하는 메서드
@@ -362,6 +362,120 @@ public class BoardDAO {
 	    }
 	    return resultList;
 	}
+	
+	
+	public List<BoardDTO> searchMyCommentedBoardList(int startNum, int endNum, String id) throws Exception {
+		//해당 회원이 댓글을 작성한 게시물들의 리스트를 중복없이 반환함
+		
+    System.out.println("board_seq");
+    String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown " +
+                 "from board where board_seq in (select distinct board_seq from reply where nickname = (select nickname from member where userid = ?))) " +
+                 "where rown between ? and ?";
+    try (
+            Connection con = this.getconnection();
+            PreparedStatement pstat = con.prepareStatement(sql);    
+            ) {
+        List<BoardDTO> list = new ArrayList<>();
+        pstat.setString(1, id);
+        pstat.setInt(2, startNum);
+        pstat.setInt(3, endNum);
+        
+        try (
+                ResultSet rs = pstat.executeQuery();
+                ) {
+            while (rs.next()) {
+                int board_seq = rs.getInt("board_seq");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                Timestamp write_date = rs.getTimestamp("write_date");
+                int view_count = rs.getInt("view_count");
+                String delete_yn = rs.getString("delete_yn");
+                Timestamp delete_date = rs.getTimestamp("delete_date");
+                int game_id = rs.getInt("game_id");
+                String nickname = rs.getString("nickname");
+                list.add(new BoardDTO(board_seq, title, content, write_date, view_count, delete_yn, delete_date, game_id, nickname));
+            }
+            return list;
+        }
+    }
+}
+
+
+
+	public List<BoardDTO> searchMyBookmarkedBoardList(int startNum, int endNum, String id) throws Exception {
+//		회원이 북마크한 게시글 리스트를 반환하는 메서드
+		
+	    System.out.println("board_seq");
+	    String sql = "select * from (select board.*, row_number() over(order by board_seq desc) rown " +
+	                 "from board where board_seq in (select board_seq from bookmark where userid = ?)) " +
+	                 "where rown between ? and ?";
+	    try (
+	            Connection con = this.getconnection();
+	            PreparedStatement pstat = con.prepareStatement(sql);    
+	            ) {
+	        List<BoardDTO> list = new ArrayList<>();
+	        pstat.setString(1, id);
+	        pstat.setInt(2, startNum);
+	        pstat.setInt(3, endNum);
+	        
+	        try (
+	                ResultSet rs = pstat.executeQuery();
+	                ) {
+	            while (rs.next()) {
+	                int board_seq = rs.getInt("board_seq");
+	                String title = rs.getString("title");
+	                String content = rs.getString("content");
+	                Timestamp write_date = rs.getTimestamp("write_date");
+	                int view_count = rs.getInt("view_count");
+	                String delete_yn = rs.getString("delete_yn");
+	                Timestamp delete_date = rs.getTimestamp("delete_date");
+	                int game_id = rs.getInt("game_id");
+	                String nickname = rs.getString("nickname");
+	                list.add(new BoardDTO(board_seq, title, content, write_date, view_count, delete_yn, delete_date, game_id, nickname));
+	            }
+	            return list;
+	        }
+	    }
+	}
+
+	
+//	관리자가 deleteYN = Y인 삭제된게시물(임시 보관 게시물)을 조회하는 메서드
+	public List<BoardDTO> searchDeletedList() throws Exception {
+		// 내부 조인으로 desc 순으로 번호 출력
+		System.out.println("board_seq");
+		String sql = "select * from board where delete_YN = 'Y'";
+		try (
+				Connection con = this.getconnection();
+				PreparedStatement pstat = con.prepareStatement(sql);	
+				) {
+			List<BoardDTO> list = new ArrayList<>();
+			
+			try (	
+					ResultSet rs= pstat.executeQuery();
+					){
+				 while(rs.next()) {
+					 int board_seq = rs.getInt("board_seq");
+					 String title = rs.getString("title");
+					 String content = rs.getString("content");
+					 Timestamp write_date = rs.getTimestamp("write_date");
+					 int view_count = rs.getInt("view_count");
+					 String delete_yn = rs.getString("delete_yn");
+					 Timestamp delete_date = rs.getTimestamp("delete_date");
+					 int game_id = rs.getInt("game_id");
+					 String nickname = rs.getString("nickname");
+					 list.add(new BoardDTO(board_seq,title,content,write_date,view_count
+							 ,delete_yn,delete_date,game_id,nickname));
+				 }
+				 return list;
+			}
+		}
+ 	}
+	
+	
+	
+	
+	
+	
 	
 //	// 더미데이터만들기
 //		public static void main(String[] args) throws Exception {
