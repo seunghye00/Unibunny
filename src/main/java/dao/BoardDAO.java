@@ -539,9 +539,19 @@ public class BoardDAO {
 				return pstat.executeUpdate();
 			}
 		}
-	
-	
-	
+	//	해당 게시물의 deleteYN을 N로
+	public int restoreUpdateToN(int board_seq) throws Exception {
+
+			String sql = "update board set delete_yn = 'N' where board_seq = ?";
+			try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
+
+			) {
+				System.out.println(board_seq);
+				pstat.setInt(1, board_seq);
+				return pstat.executeUpdate();
+			}
+		}
+		
 //	// 더미데이터만들기
 //		public static void main(String[] args) throws Exception {
 //			String url = "jdbc:oracle:thin:@localhost:1521:xe";

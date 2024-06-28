@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -232,6 +231,7 @@
 				}, // 페이지 번호를 쿼리 파라미터로 전달
 			})
 				.done(function(resp) {
+					console.log(resp);
 					// 페이지네이션 변수 초기화
 					initPaginationVariables(page, resp.record_total_count);
 

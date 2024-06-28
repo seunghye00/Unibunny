@@ -330,10 +330,7 @@ public class BoardController extends HttpServlet {
 				String loginID = (String) request.getSession().getAttribute("loginID");
 				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
 				request.getRequestDispatcher("/manager/detail.jsp").forward(request, response);
-			}
-			
-			
-			else if (cmd.equals("/deletedboard.board")) {
+			} else if (cmd.equals("/deletedboard.board")) {
 				
 				String pcpage = request.getParameter("cpage");
 				if (pcpage == null) {
@@ -367,8 +364,14 @@ public class BoardController extends HttpServlet {
 				BoardDAO.getInstance().updateToN(board_seq);
 				
 				response.sendRedirect("/admin_list.board");
+			} else if(cmd.equals("/restoreUpdateToN.board")) {
+				// 임시 보관된 게시물 서블릿
+				int board_seq = Integer.parseInt(request.getParameter("boardSeq"));
+				System.out.println(board_seq);
+				BoardDAO.getInstance().restoreUpdateToN(board_seq);
+				// 다시 임시 보관된 게시물 페이지로 이동
+				response.sendRedirect("/deletedboard.board");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
