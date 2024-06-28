@@ -12,6 +12,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import dto.BoardDTO;
+import dto.MemberDTO;
 import dto.ReplyDTO;
 
 public class ReplyDAO {
@@ -209,7 +210,34 @@ public class ReplyDAO {
 	}
 	
 	
+//	해당 댓글의 deleteYN을 Y로
+	public int updateToY(int reply_id) throws Exception {
+
+			String sql = "update reply set delete_yn = 'Y' where reply_seq = ?";
+			try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);
+
+			) {
+			
+				pstat.setInt(1, reply_id);
+
+				return pstat.executeUpdate();
+			}
+		}
 	
+	
+//	해당 댓글의 deleteYN을 N으로
+	public int updateToN(int reply_id) throws Exception {
+
+			String sql = "update reply set delete_yn = 'N' where reply_seq = ?";
+			try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);
+
+			) {
+			
+				pstat.setInt(1, reply_id);
+
+				return pstat.executeUpdate();
+			}
+		}
 	
 	
 	

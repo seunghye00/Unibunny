@@ -132,7 +132,7 @@
                                     <c:forEach var="board" items="${boardlist}">
                           				<div class="table_row">
                            				<div class="table_col"><span>${board.board_seq}</span></div>
-                            			<div class="table_col"><a href="/user/detail.board?board_seq=${board.board_seq}">${board.title}</a></div>
+                            			<div class="table_col"><a href="/manager/detail.board?board_seq=${board.board_seq}">${board.title}</a></div>
                             			<div class="table_col"><span>${board.nickname}</span></div>
                             			<div class="table_col"><span><fmt:formatDate value="${board.write_date}" pattern="yyyy.MM.dd" /></span></div>
                             			<div class="table_col"><span>${board.view_count}</span></div>
