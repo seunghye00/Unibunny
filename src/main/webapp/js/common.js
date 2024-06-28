@@ -176,6 +176,8 @@ let listContainer = $('.crud_table');
 let listNoticeContainer = $('.notice_table');
 // 초기 값 설정
 let currentGameId = 'game_id';
+//  search값 넘기기 위한 변수
+let searchTxt;
 // 페이지네이션 변수 설정
 let cpage,
 	record_total_count,
@@ -239,18 +241,22 @@ $('#game5').click(function() {
 });
 
 // 클릭 이벤트 핸들러
-$('#search_img').on('click', function() {
-	// 여기에 클릭 시 실행할 코드를 작성하세요.
-	console.log('이미지 클릭됨');
-	// 원하는 작업 수행
+$('#list_search_btn').on('click', function() {
+	let apiUrl = '/search.board';
+	searchTxt =  $('#search_input').val();
+	console.log(searchTxt);
+	updateUrlAndFetchData(apiUrl, 1, currentGameId, searchTxt);
+	$('#search_input').attr('value', '');
 });
 
 // 엔터 키 이벤트 핸들러
-$('#search_img').on('keypress', function(event) {
+$('#search_input').on('keypress', function(event) {
 	if (event.key === 'Enter' || event.keyCode === 13) {
-		// 여기에 엔터 키 입력 시 실행할 코드를 작성하세요.
-		console.log('엔터 키 입력됨');
-		// 원하는 작업 수행
+		let apiUrl = '/search.board';
+		searchTxt =  $('#search_input').val();
+		console.log(searchTxt);
+		updateUrlAndFetchData(apiUrl, 1, currentGameId, searchTxt);
+		$('#search_input').attr('value', '');
 	}
 });
 //
@@ -278,7 +284,7 @@ $('#sub_menu').on('change', function() {
 });
 
 // 데이터 가져오고 테이블 렌더링 함수
-function fetchAndRenderData(apiUrl, page, gameId) {
+function fetchAndRenderData(apiUrl, page, gameId, search_txt) {
 	if (gameId == 'default') {
 		// 정렬 기준이 dafault면 최신순으로 설정
 		gameId = 'gameId';
@@ -291,6 +297,7 @@ function fetchAndRenderData(apiUrl, page, gameId) {
 			cpage: page,
 			recordCountPerPage: record_count_per_page,
 			gameId: gameId,
+			searchTxt: searchTxt
 		}, // 페이지 번호를 쿼리 파라미터로 전달
 	})
 		.done(function(resp) {

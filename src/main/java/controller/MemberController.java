@@ -2,8 +2,6 @@ package controller;
 
 
 
-import java.io.File;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +13,6 @@ import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
-import java.util.Enumeration;
-
-import java.util.Map;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,9 +38,6 @@ import dao.BoardDAO;
 import dao.Duptype;
 import dao.MemberDAO;
 import dao.ReplyDAO;
-
-import dto.BoardDTO;
-
 import dto.MemberDTO;
 
 //import dao.MemberDAO;
@@ -66,7 +56,7 @@ public class MemberController extends HttpServlet {
         session = request.getSession();
 		request.setCharacterEncoding("utf-8");
 		String cmd = request.getRequestURI();
-		mdao = MemberDAO.getInstance();
+		//mdao = MemberDAO.getInstance();
 		
 		//MemberDTO mdto = new MemberDTO();
 		Gson g = new Gson();

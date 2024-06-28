@@ -101,8 +101,8 @@
 	<script>
 	$(document).ready(function () {
 		fetchAndRenderData('list.jsp',1,"default");
-		 listLoad();
-	});
+		listLoad();
+	})
 	// select 요소의 변경 이벤트 처리
 	document.getElementById('sub_menu').addEventListener('change', function() {
 		// 선택된 옵션의 값 가져오기

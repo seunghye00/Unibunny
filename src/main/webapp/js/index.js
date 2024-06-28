@@ -81,7 +81,7 @@ function init() {
       // 이미지의 위치를 원래대로 변경
       img.style.transform = 'translateX(0)';
       // 1초 간격으로 등장하게 설정
-    }, 1000 * (index + 1));
+    }, 300 * (index + 1));
     // 마우스 오버 이벤트 추가
     img.addEventListener('mouseover', () => {
       img.style.transform = 'scale(1.2)';
