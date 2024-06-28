@@ -104,7 +104,7 @@
 												<span>${qna.question_seq}</span>
 											</div>
 											<div class="table_col">
-												<span>${qna.id}</span>
+												<span>${qna.userid}</span>
 											</div>
 											<div class="table_col">
 												<a href="/detail.qna?question_seq=${qna.question_seq}"><span>${qna.question_title}</span></a>

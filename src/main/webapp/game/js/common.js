@@ -25,8 +25,7 @@ var StartGameFunctions = {
             url: '/submit.gamelog', // 서버의 점수 처리 URL
             type: 'POST',
             data: {
-                score: score,
-                gameId: gameId,
+                gameID: gameId
             },
             success: function(response) {
                 console.log('Score submitted successfully:', response);

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.directory.SearchControls;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,19 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import commons.Pagination;
 import dao.BoardDAO;
-import dao.BoardLikeDAO;
-import dao.BookMarkDAO;
 import dao.MemberDAO;
 import dto.BoardDTO;
 
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
 	private void processRequest(HttpServletRequest request, HttpServletResponse response, String cmd, String game_id,
-			String type) throws ServletException, IOException {
+			String searchTxt, String type) throws ServletException, IOException {
 		// 클라이언트로부터 전송되는 문자열에 대한 인코딩을 utf8로 처리
 		// request에서 값을 꺼내기 전에 처리해야만 함!
 		request.setCharacterEncoding("UTF-8");
@@ -40,6 +38,8 @@ public class BoardController extends HttpServlet {
 		try {
 			String pcpage = request.getParameter("cpage");
 			String game_Id = request.getParameter("gameId");
+			String search_Txt = request.getParameter("searchTxt");
+			
 			if (pcpage == null) {
 				pcpage = "1";
 			}
@@ -50,6 +50,7 @@ public class BoardController extends HttpServlet {
 			Map<BoardDTO, Integer> thumb_list = null;
 			if ("list".equals(type)) {
 				System.out.println(game_Id);
+
 				// 리스트 정렬 if통해서 분기 처리
 				if (game_Id == null || game_Id.equals("game_id")) {
 					list = dao.selectListAll(
@@ -83,6 +84,17 @@ public class BoardController extends HttpServlet {
 							cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 							cpage * Pagination.recordCountPerPage, game_Id);
 				}
+			} else if ("search".equals(type)) {
+				// 추천수 리스트 정렬 if통해서 분기 처리
+				if (game_Id == null || game_Id.equals("game_id")) {
+					list = dao.searchListView(
+							cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+							cpage * Pagination.recordCountPerPage, search_Txt);
+				} else {
+					list = dao.searchListGameView(
+							cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+							cpage * Pagination.recordCountPerPage, game_Id, search_Txt);
+				}
 			}
 			// 리스트 출력 하기 전 null값 검사
 			if (list != null || thumb_list != null) {
@@ -100,11 +112,12 @@ public class BoardController extends HttpServlet {
 						result.put("cpage", cpage);
 						result.put("record_count_per_page", Pagination.recordCountPerPage);
 						result.put("navi_count_per_page", Pagination.naviCountPerPage);
+						System.out.println(search_Txt);
 						result.put("record_total_count",
-								(game_Id == null || game_Id.equals("game_id")) ? dao.getRecordCount()
-										: dao.getRecordCountGame(game_Id));
-						System.out.println(result);
-
+								(game_Id == null || game_Id.equals("game_id")) ?
+								        (search_Txt == null ? dao.getRecordCount() : dao.getRecordCountSearch(game_Id, search_Txt)) :
+								        dao.getRecordCountGame(game_Id));
+						System.out.println(search_Txt);
 						String jsonResult = gson.toJson(result);
 						pw.print(jsonResult);
 					} else if (list != null) {
@@ -115,12 +128,12 @@ public class BoardController extends HttpServlet {
 						result.put("record_count_per_page", Pagination.recordCountPerPage);
 						result.put("navi_count_per_page", Pagination.naviCountPerPage);
 						result.put("record_total_count",
-								(game_Id == null || game_Id.equals("game_id")) ? dao.getRecordCount()
-										: dao.getRecordCountGame(game_Id));
-
+								(game_Id == null || game_Id.equals("game_id")) ?
+								        (search_Txt == null ? dao.getRecordCount() : dao.getRecordCountSearch(game_Id, search_Txt)) :
+								        dao.getRecordCountGame(game_Id));
 						String jsonResult = gson.toJson(result);
 						pw.print(jsonResult);
-					}
+					} 
 					pw.flush();
 					pw.close();
 				} else {
@@ -138,7 +151,9 @@ public class BoardController extends HttpServlet {
 					request.getRequestDispatcher("/user/crud/list.jsp").forward(request, response);
 				}
 			}
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
 		} finally {
@@ -156,19 +171,22 @@ public class BoardController extends HttpServlet {
 		System.out.println(cmd);
 		BoardDAO dao = BoardDAO.getInstance();
 		String game_Id = request.getParameter("gameId");
+		String search_Txt = request.getParameter("searchTxt");
 		Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd").create();
 		// reponse writer 변수 저장
 		PrintWriter pw = response.getWriter();
 		try {
 			if (cmd.equals("/list.board")) {
-				System.out.println(game_Id);
-				processRequest(request, response, cmd, game_Id, "list");
+				// 일반 리스트 출력 서블릿
+				processRequest(request, response, cmd, game_Id, null, "list");
 			} else if (cmd.equals("/like.board")) {
-				System.out.println(game_Id);
-				processRequest(request, response, cmd, game_Id, "like");
+				// 추천수 리스트 출력 서블릿
+				processRequest(request, response, cmd, game_Id, null, "like");
 			} else if (cmd.equals("/view.board")) {
-				System.out.println(game_Id);
-				processRequest(request, response, cmd, game_Id, "view");
+				// 좋아요 리스트 출력 서블릿
+				processRequest(request, response, cmd, game_Id, null, "view");
+			} else if (cmd.equals("/search.board")) {
+				processRequest(request, response, cmd, game_Id, search_Txt, "search");
 			} else if (cmd.equals("/mylist.board")) {
 				String pcpage = request.getParameter("cpage");
 				if (pcpage == null) {
@@ -208,7 +226,8 @@ public class BoardController extends HttpServlet {
 					pcpage = "1";
 				}
 				int cpage = Integer.parseInt(pcpage);
-				List<BoardDTO> list = dao.selectListAll(cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage -1),
+				List<BoardDTO> list = dao.selectListAll(
+						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
 			} else if (cmd.equals("/myboard.board")) {
@@ -233,7 +252,9 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("record_total_count", dao.searchBoardCount(id));
 				request.setAttribute("activeTab", "myPosts");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+
 			} else if (cmd.equals("/myreply.board")) {
+
 				String id = (String) request.getSession().getAttribute("loginID");
 				System.out.println("진입");
 				String pcpage = request.getParameter("cpage");
@@ -303,6 +324,7 @@ public class BoardController extends HttpServlet {
 				request.getRequestDispatcher("/manager/community.jsp").forward(request, response);
 
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");

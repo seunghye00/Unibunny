@@ -38,10 +38,10 @@
                     %>
 
                     <% if (profileImg != null && nickName != null) { %>
-	                <li class="my_01 "><a href="javascript:;" class="btn_mypage"><img src="<%=profileImg%>" alt=""></a></li>
-	                <li class="my_01 "><%=nickName%>님</li>
-	                <li class="my_02"><a href="/logout.member" class="btn_login"><img src="../../image/icon/login.png"
-	                      alt="로그인 로고"></a></li>
+	                <li class="my_01 "><a href="javascript:;" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="<%=profileImg%>" alt=""></a></li>
+	                <li class="my_01 "><a href="jacascript::"><%=nickName%>님</a></li>
+	                <li class="my_02"><a href="/logout.member" class="btn_login"><img src="../../image/icon/logout.png"
+	                      alt="로그아웃 로고"></a></li>
                     <% } else { %>
                     <li class="my_01">
                         <a href="javascript:;" class="btn_mypage">
@@ -54,8 +54,6 @@
                         </a>
                     </li>
                     <% } %>
-
-
                 </ul>
             </div>
         </div>

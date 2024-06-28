@@ -73,10 +73,10 @@
 										<div class="flex_space mob_hidden"></div>
 										<div class="search_bar">
 											<div class="search_input">
-												<input type="text" class="input_tag" id="search_input">
+												<input type="text" class="input_tag" id="search_input" placeholder="제목을 입력해주세요">
 											</div>
 											<div class="search_img">
-												<a href="javascript:;"><img
+												<a href="javascript:;" id = "list_search_btn"><img
 													src="../../image/icon/ico_search.png" alt="검색 로고"></a>
 											</div>
 										</div>
@@ -101,8 +101,8 @@
 	<script>
 	$(document).ready(function () {
 		fetchAndRenderData('list.jsp',1,"default");
-		 listLoad();
-	});
+		listLoad();
+	})
 	// select 요소의 변경 이벤트 처리
 	document.getElementById('sub_menu').addEventListener('change', function() {
 		// 선택된 옵션의 값 가져오기

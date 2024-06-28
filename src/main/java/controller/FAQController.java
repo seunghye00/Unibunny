@@ -35,12 +35,13 @@ public class FAQController extends HttpServlet {
 
         try {
             if (cmd.equals("/write.faq")) {
-                // 폼 데이터 받기
                 String title = request.getParameter("title");
                 String content = request.getParameter("content");
 
                 // DTO 생성
+                // FAQ를 작성할떄만 사용해서 여기에서 인스턴스를 생성하는게 더 좋다 생각해서 여기에 뒀습니다!
                 FAQDTO faq = new FAQDTO();
+                
                 faq.setTitle(title);
                 faq.setContent(content);
 
@@ -49,7 +50,8 @@ public class FAQController extends HttpServlet {
 
                 // 결과에 따라 페이지 이동
                 if (result > 0) {
-                    response.sendRedirect("/list.faq?userType=manager"); // 관리자페이지로 리다이렉션
+                	// 관리자페이지로 리다이렉션
+                    response.sendRedirect("/list.faq?userType=manager"); 
                 } else {
                     response.sendRedirect("index.jsp");
                 }
@@ -61,6 +63,7 @@ public class FAQController extends HttpServlet {
                 
                 // 관리자인지 사용자인지 확인 (여기서는 간단히 파라미터로 확인)
                 String userType = request.getParameter("userType");
+                
                 if ("manager".equals(userType)) {
                     request.getRequestDispatcher("/manager/faq.jsp").forward(request, response);
                 } else {

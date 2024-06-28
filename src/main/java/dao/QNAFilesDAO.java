@@ -28,6 +28,7 @@ public class QNAFilesDAO {
         return ds.getConnection();
     }
 
+    // 파일 등록!
     public int insertFile(QNAFilesDTO dto) throws Exception {
         String sql = "INSERT INTO qna_files VALUES (QNA_FILES_SEQ.NEXTVAL, ?, ?, ?)";
         try (Connection con = getConnection();
@@ -39,6 +40,8 @@ public class QNAFilesDAO {
         }
     }
     
+    // 파일 조회!
+    // 해당하는 게시물에 등록된 파일 찾기!
     public QNAFilesDTO selectFileByQuestionSeq(int question_seq) throws Exception {
         String sql = "SELECT * FROM qna_files WHERE question_seq = ?";
         try (Connection con = getConnection();

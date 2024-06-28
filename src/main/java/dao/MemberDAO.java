@@ -99,8 +99,8 @@ public class MemberDAO {
 	}
 
 	public MemberDTO searchProfileInfo(String id) throws Exception {
-		// 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
-		String sql = "select * from member where userid = ?";
+        // 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)
+        String sql = "select * from member where userid = ?";
 
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			pstat.setString(1, id);
@@ -143,6 +143,8 @@ public class MemberDAO {
 		Date date = new Date(timestamp.getTime());
 		return sdf.format(date);
 	}
+
+    
 
 	public int updateUserInfo(MemberDTO dto) throws Exception {
 //	해당 유저의 id로 회원의 정보를 수정한다.
@@ -191,25 +193,33 @@ public class MemberDAO {
 
 	// 아이디 찾기
 	public String findAccount(String reg_num, String email, String phone) throws Exception {
-		String sql = "SELECT userid FROM member WHERE reg_num = ? AND email = ? AND phone = ?";
+	      String sql = "SELECT userid FROM member WHERE reg_num LIKE ? AND email = ? AND phone = ?";
 
-		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setString(1, reg_num);
-			pst.setString(2, email);
-			pst.setString(3, phone);
+	      // '-' 이후 문자 제거
+	      if (reg_num.indexOf("-") != -1) {
+	         reg_num = reg_num.substring(0, reg_num.indexOf("-"));
+	      }
 
-			try (ResultSet rs = pst.executeQuery()) {
-				if (rs.next()) {
-					return rs.getString("USERID");
-				} else {
-					return "";
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return "";
-			}
-		}
-	}
+	      try (Connection con = this.getConnection();
+	          PreparedStatement pst = con.prepareStatement(sql)) {
+	         // 와일드카드 문자 추가
+	         pst.setString(1, reg_num + "-%");
+	         pst.setString(2, email);
+	         pst.setString(3, phone);
+
+	         try (ResultSet rs = pst.executeQuery()) {
+	            if (rs.next()) {
+	               return rs.getString("userid");
+	            } else {
+	               return "";
+	            }
+	         } catch (SQLException e) {
+	            e.printStackTrace();
+	            return "";
+	         }
+	      }
+
+	   }
 
 	// 비밀번호 찾기
 	public boolean findPassword(String userid, String newPassword, String email, String reg_num) throws Exception {
@@ -231,8 +241,7 @@ public class MemberDAO {
 					} else {
 						return false;
 					}
-				} else {
-					return false;
+
 				}
 			}
 
