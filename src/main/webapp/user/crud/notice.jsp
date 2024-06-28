@@ -15,7 +15,7 @@
 	href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-<script defer src="../../../js/common.js"></script>
+<!-- <script defer src="../../../js/common.js"></script> -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
@@ -82,48 +82,60 @@
 		</div>
 		<jsp:include page="../../common/footer.jsp" />
 	</div>
-	<script>
-	// select 요소의 변경 이벤트 처리
-	document.getElementById('sub_menu').addEventListener('change', function() {
-		// 선택된 옵션의 값 가져오기
-		let selectedValue = this.value;
-
-		// 선택된 옵션 값에 따라 분기 처리
-		if (selectedValue === 'board_all') {
-			// 전체 게시글을 선택한 경우, 원하는 동작 수행 (예: 기본 페이지로 이동)
-			window.location.href = '/list.board';
-		} else if (selectedValue === 'notice') {
-			// 다른 옵션을 선택한 경우, 해당 페이지로 이동
-			window.location.href = '/list.notice';
-		} else {
-			window.location.href = '/list.board';
-		}
-	});
-	</script>
 	<script type="text/javascript">
 	// 테이블 담을 컨테이너 변수
-	let listContainer = $(".notice_table");
+	let noticeContainer = $(".notice_table");
 
 	// 페이지네이션 변수 설정
-	let cpage, record_total_count, record_count_per_page = 10, navi_count_per_page = 5;
+	let currentPage, totalRecordCount, recordsPerPage = 10, navPagesPerPage = 5;
 
 	// 초기 페이지네이션 변수 설정
-	function initPaginationVariables(cpageParam, recordTotalCount) {
-	    cpage = cpageParam;
-	    record_total_count = recordTotalCount;
+	function initPaginationVariables(currentPageParam, totalRecordCountParam) {
+	    currentPage = currentPageParam;
+	    totalRecordCount = totalRecordCountParam;
 	}
 
 	// 최신순 버튼 클릭 시
 	$("#notice_recent_btn").on("click", function() {
 	    let apiUrl = "/list.notice";
 	    updateUrlAndFetchData(apiUrl, 1);
+	    setActiveButton("#notice_recent_btn");
 	});
 
 	// 조회수 버튼 클릭 시
 	$("#notice_views_btn").on("click", function() {
 	    let apiUrl = "/view.notice";
 	    updateUrlAndFetchData(apiUrl, 1);
+	    setActiveButton("#notice_views_btn");
 	});
+	
+	$('#sub_menu').on('change', function() {
+		// 선택된 옵션의 값 가져오기
+		let selectedValue = $(this).val();
+
+		// 선택된 옵션 값에 따라 분기 처리
+		if (selectedValue === 'board_all') {
+			currentGameId = 'game_id';
+			updateUrlAndFetchData('/list.board', 1, currentGameId);
+		} else if (selectedValue === 'notice') {
+			// 공지사항을 선택한 경우, 해당 페이지로 이동
+			window.location.href = '/list.notice';
+		} else if (selectedValue.startsWith('game')) {
+			// 게임을 선택한 경우, 해당 페이지로 이동
+			let gameId = selectedValue.replace('game', '');
+			currentGameId = gameId;
+			updateUrlAndFetchData('/list.board', 1, currentGameId);
+		} else {
+			// 기타 경우, 기본 페이지로 이동
+			window.location.href = '/list.board';
+		}
+	});
+
+	// 버튼 active 클래스 설정
+	function setActiveButton(buttonId) {
+	    $("#notice_recent_btn, #notice_views_btn").removeClass("active");
+	    $(buttonId).addClass("active");
+	}
 
 	// 데이터 가져오고 테이블 렌더링 함수
 	function fetchAndRenderData(apiUrl, page) {
@@ -131,7 +143,7 @@
 	        url: apiUrl,
 	        method: "GET",
 	        dataType: "json",
-	        data: { cpage: page, recordCountPerPage: record_count_per_page }, // 페이지 번호를 쿼리 파라미터로 전달
+	        data: { cpage: page, recordCountPerPage: recordsPerPage }, // 페이지 번호를 쿼리 파라미터로 전달
 	    }).done(function(resp) {
 	        console.log(resp); // 받은 데이터 확인
 
@@ -139,7 +151,7 @@
 	        initPaginationVariables(page, resp.record_total_count);
 
 	        // 기존의 목록 컨테이너를 비웁니다.
-	        listContainer.empty();
+	        noticeContainer.empty();
 
 	        // 테이블의 헤더 부분 생성
 	        let headerRow = $("<div>").addClass("table_row table_header");
@@ -147,21 +159,14 @@
 	        let headerCol2 = $("<div>").addClass("table_col").append($("<span>").text("제목"));
 	        let headerCol3 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성자"));
 	        let headerCol4 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text("작성일"));
-	        let headerCol5 = null;
-
-	        // 버튼에 따라 추가되는 열 처리
-	        if (apiUrl === "/list.notice") {
-	            headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
-	        } else if (apiUrl === "/view.notice") {
-	            headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
-	        }
+	        let headerCol5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text("조회수"));
 
 	        headerRow.append(headerCol1, headerCol2, headerCol3, headerCol4, headerCol5);
-	        listContainer.append(headerRow);
+	        noticeContainer.append(headerRow);
 
 	        // 데이터 반복 처리
 	        if (Array.isArray(resp.data)) {
-	            let startNumber = (page - 1) * record_count_per_page + 1; // 시작 번호 계산
+	            let startNumber = (page - 1) * recordsPerPage + 1; // 시작 번호 계산
 
 	            for (let i = 0; i < resp.data.length; i++) {
 	                let dto = resp.data[i];
@@ -171,18 +176,11 @@
 	                let col2 = $("<div>").addClass("table_col").append($("<span>").text(dto.title));
 	                let col3 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text(dto.nickname));
 	                let col4 = $("<div>").addClass("table_col mob_hidden").append($("<span>").text(dto.write_date));
-	                let col5 = null;
-
-	                // 버튼에 따라 추가되는 열 처리
-	                if (apiUrl === "/list.notice") {
-	                    col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
-	                } else if (apiUrl === "/view.notice") {
-	                    col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
-	                }
+	                let col5 = $("<div>").addClass("table_col mob_hidden views_column").append($("<span>").text(dto.view_count));
 
 	                link.append(col1, col2, col3, col4, col5);
 	                row.append(link);
-	                listContainer.append(row);
+	                noticeContainer.append(row);
 	            }
 	        } else {
 	            console.error("데이터 형식이 올바르지 않습니다. 데이터가 배열이 아닙니다.");
@@ -193,15 +191,6 @@
 
 	        // URL 업데이트
 	        updateUrl(apiUrl, page);
-
-	        // 버튼의 active 클래스 설정
-	        $("#recent_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
-	        if (apiUrl === "/list.notice") {
-	            $("#recent_btn").addClass("active");
-	        } else if (apiUrl === "/view.notice") {
-	            $("#views_btn").addClass("active");
-	        }
-
 	    }).fail(function(jqXHR, textStatus, errorThrown) {
 	        // AJAX 호출이 실패했을 경우 처리할 내용
 	        console.error("AJAX 호출 실패: ", textStatus, errorThrown);
@@ -211,9 +200,9 @@
 	// 페이지네이션 생성 함수
 	function renderPagination(apiUrl, currentPage) {
 	    // 페이지네이션 초기 설정
-	    let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
-	    let startNavi = Math.floor((currentPage - 1) / navi_count_per_page) * navi_count_per_page + 1;
-	    let endNavi = startNavi + navi_count_per_page - 1;
+	    let pageTotalCount = Math.ceil(totalRecordCount / recordsPerPage);
+	    let startNavi = Math.floor((currentPage - 1) / navPagesPerPage) * navPagesPerPage + 1;
+	    let endNavi = startNavi + navPagesPerPage - 1;
 
 	    if (endNavi > pageTotalCount) {
 	        endNavi = pageTotalCount;
@@ -248,13 +237,13 @@
 
 	// 현재 선택된 API 경로 반환 함수
 	function getCurrentApiUrl() {
-	    if ($("#recent_btn").hasClass("active")) {
+	    if ($("#notice_recent_btn").hasClass("active")) {
 	        return "/list.notice";
-	    } else if ($("#views_btn").hasClass("active")) {
+	    } else if ($("#notice_views_btn").hasClass("active")) {
 	        return "/view.notice";
 	    }
 	    // 기본적으로 최신순으로 설정
-	    return "/list.board";
+	    return "/list.notice";
 	}
 
 	// URL 업데이트 및 데이터 가져오는 함수
@@ -278,22 +267,17 @@
 	    fetchAndRenderData(apiUrl, page); // 초기에는 최신순 데이터를 가져오도록 설정
 
 	    // 버튼의 active 클래스 설정
-	    $("#recent_btn, #views_btn").removeClass("active"); // 모든 버튼의 active 클래스 제거
-	    if (apiUrl === "/list.notice") {
-	        $("#recent_btn").addClass("active");
-	    } else if (apiUrl === "/view.notice") {
-	        $("#views_btn").addClass("active");
-	    }
+	    setActiveButton(apiUrl === "/list.notice" ? "#notice_recent_btn" : "#notice_views_btn");
 	});
 
 	// 조회순 버튼 클릭 시
-	$('#views_btn').on('click', function() {
+	$('#notice_views_btn').on('click', function() {
 	    // 조회순 버튼 색 변경 및 조회순 게시글 노출
 	    $(this).css('background-color', 'var(--color-space-click)');
 	    $('.views_list').show();
 
 	    // 최신순 버튼 색 변경 & 해당 리스트 숨김
-	    $('#recent_btn').css('background-color', 'var(--color-space');
+	    $('#notice_recent_btn').css('background-color', 'var(--color-space');
 	    $('.recent_list').hide();
 	});
 

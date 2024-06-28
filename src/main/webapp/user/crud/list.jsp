@@ -103,22 +103,6 @@
 		fetchAndRenderData('list.jsp',1,"default");
 		listLoad();
 	})
-	// select 요소의 변경 이벤트 처리
-	document.getElementById('sub_menu').addEventListener('change', function() {
-		// 선택된 옵션의 값 가져오기
-		let selectedValue = this.value;
-
-		// 선택된 옵션 값에 따라 분기 처리
-		if (selectedValue === 'board_all') {
-			// 전체 게시글을 선택한 경우, 원하는 동작 수행 (예: 기본 페이지로 이동)
-			window.location.href = '/list.board';
-		} else if (selectedValue === 'notice') {
-			// 다른 옵션을 선택한 경우, 해당 페이지로 이동
-			window.location.href = '/list.notice';
-		} else {
-			window.location.href = '/list.board';
-		} 
-	});
 	</script>
 </body>
 </html>

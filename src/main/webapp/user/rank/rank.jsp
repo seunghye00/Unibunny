@@ -38,7 +38,6 @@
 									href="javascript:;" title="게임5로 이동" gamelistNum=5>게임5</a>
 							</div>
 							<div class="top_rank">
-								매월 첫째 주 월요일 업데이트 !!!
 								<div class="podium">
 									<div class="second">
 										<div class="second-2">
