@@ -12,6 +12,23 @@
     <link rel="stylesheet" href="../css/manager.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style type="text/css">
+    	.ntc_con_reply .keep .table_col:nth-child(1) {
+    		width: 10%
+    	}	
+    	.ntc_con_reply .keep .table_col:nth-child(2) {
+    		width: 10%
+    	}	
+    	.ntc_con_reply .keep .table_col:nth-child(3) {
+    		width: 60%
+    	}	
+    	.ntc_con_reply .keep .table_col:nth-child(4) {
+    		width: 10%
+    	}	
+    	.ntc_con_reply .keep .table_col:nth-child(5) {
+    		width: 10%
+    	}	
+    </style>
 </head>
 
 <body>
@@ -97,13 +114,13 @@
                     <div class="wrap">
                         <!-- 메인 콘텐츠 영역 -->
                         <div class="con_wrap">
-                            <div class="con">
+                            <div class="con ntc_con_reply">
                                 <div class="ntc select_subject">
                                     <ul>
-                                        <li><a href="../manager/notice.jsp">공지사항</a></li>
-                                        <li><a href="../manager/community.jsp">전체 게시물</a></li>
-                                        <li><a href="../manager/keepboard.jsp">임시보관 게시물</a></li>
-                                        <li><a href="../manager/keepreply.jsp">임시보관 댓글</a></li>
+                                        <li><a href="/admin_list.notice">공지사항</a></li>
+                                        <li><a href="/admin_list.board">전체 게시물</a></li>
+                                        <li><a href="/deletedboard.board">임시보관 게시물</a></li>
+                                        <li><a href="/deletedreply.reply" class="cpage">임시보관 댓글</a></li>
                                     </ul>
                                 </div>
 
@@ -114,77 +131,39 @@
                                             <span>게시물 번호</span>
                                         </div>
                                         <div class="table_col">
-                                            <span>게시물 제목</span>
+                                            <span>댓글 번호</span>
                                         </div>
                                         <div class="table_col">
-                                            <span>댓글</span>
+                                            <span>댓글 내용</span>
                                         </div>
                                         <div class="table_col">
-                                            <span>보관날짜</span>
+                                            <span>작성자</span>
                                         </div>
                                         <div class="table_col">
                                             <span>되돌리기</span>
                                         </div>
                                     </div>
+                                        <c:forEach var="deletedreply" items="${deletedreply}">
                                         <div class="table_row">
-                                            <div class="table_col"><span>1</span></div>
-                                            <div class="table_col"><span>임시 게시물</span></div>
-                                            <div class="table_col"><span>임시 댓글</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
+                                            <div class="table_col"><span>${deletedreply.board_seq }</span></div>
+                                            <div class="table_col"><span>${deletedreply.reply_seq }</span></div>
+                                            <div class="table_col"><span>${deletedreply.content }</span></div>
+                                            <div class="table_col"><span>${deletedreply.nickname }</span></div>
+											
                                             <div class="table_col"><button class="restore_btn">복구</button></div>
                                         </div>
-                                        <div class="table_row">
-                                            <div class="table_col"><span>2</span></div>
-                                            <div class="table_col"><span>임시 게시물</span></div>
-                                            <div class="table_col"><span>임시 댓글</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><button class="restore_btn">복구</button></div>
-                                        </div>
-                                        <div class="table_row">
-                                            <div class="table_col"><span>3</span></div>
-                                            <div class="table_col"><span>임시 게시물</span></div>
-                                            <div class="table_col"><span>임시 댓글</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><button class="restore_btn">복구</button></div>
-                                        </div>
-                                        <div class="table_row">
-                                            <div class="table_col"><span>4</span></div>
-                                            <div class="table_col"><span>임시 게시물</span></div>
-                                            <div class="table_col"><span>임시 댓글</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><button class="restore_btn">복구</button></div>
-                                        </div>
-                                        <div class="table_row">
-                                            <div class="table_col"><span>5</span></div>
-                                            <div class="table_col"><span>임시 게시물</span></div>
-                                            <div class="table_col"><span>임시 댓글</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><button class="restore_btn">복구</button></div>
-                                        </div>
-                                        <div class="table_row">
-                                            <div class="table_col"><span>6</span></div>
-                                            <div class="table_col"><span>임시 게시물</span></div>
-                                            <div class="table_col"><span>임시 댓글</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><button class="restore_btn">복구</button></div>
-                                        </div>
-                                        <div class="table_row">
-                                            <div class="table_col"><span>7</span></div>
-                                            <div class="table_col"><span>임시 게시물</span></div>
-                                            <div class="table_col"><span>임시 댓글</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><button class="restore_btn">복구</button></div>
-                                        </div>
+                                    </c:forEach>
+                                        
                                 </div>
                                 <div class="pagination">
-                                    <a href="javascript:;" class="btn_prev btn_disabled"></a>
-                                    <a href="javascript:;" class="active_page">1</a>
-                                    <a href="javascript:;">2</a>
-                                    <a href="javascript:;">3</a>
-                                    <a href="javascript:;">4</a>
-                                    <a href="javascript:;">5</a>
-                                    <a href="javascript:;" class="btn_next"></a>
-                                </div>
+									<a href="javascript:;" class="btn_prev btn_disabled"></a>
+									<c:forEach var="i" begin="1"
+										end="${record_total_count / record_count_per_page + 1}">
+										<a href="/deletedreply?cpage=${i}"
+											class="<c:if test="${i == cpage}">active_page</c:if>">${i}</a>
+									</c:forEach>
+									<a href="javascript:;" class="btn_next"></a>
+								</div>
                             </div>
                         </div>
                     </div>
