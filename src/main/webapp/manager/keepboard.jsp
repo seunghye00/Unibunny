@@ -143,7 +143,7 @@
 									<a href="javascript:;" class="btn_prev btn_disabled"></a>
 									<c:forEach var="i" begin="1"
 										end="${record_total_count / record_count_per_page + 1}">
-										<a href="/deletedboard?cpage=${i}"
+										<a href="/deletedboard.board?cpage=${i}"
 											class="<c:if test="${i == cpage}">active_page</c:if>">${i}</a>
 									</c:forEach>
 									<a href="javascript:;" class="btn_next"></a>

@@ -101,6 +101,17 @@ public class ReplyController extends HttpServlet {
 				request.getRequestDispatcher("/manager/keepreply.jsp").forward(request, response);
 				
 				
+			} else if(cmd.equals("/deleteYN_N_To_Y.reply")) {
+				
+				int reply_seq = Integer.parseInt(request.getParameter("reply_seq"));
+				
+				ReplyDAO.getInstance().updateToY(reply_seq);
+				
+			} else if(cmd.equals("/deleteYN_Y_To_N.reply")) {
+				
+				int reply_seq = Integer.parseInt(request.getParameter("reply_seq"));
+				
+				ReplyDAO.getInstance().updateToN(reply_seq);
 			}
 			
 		} catch(Exception e) {

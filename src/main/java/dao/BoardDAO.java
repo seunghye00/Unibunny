@@ -513,6 +513,36 @@ public class BoardDAO {
 		}
 	}
 
+//	해당 게시물의 deleteYN을 Y로
+	public int updateToY(int board_id) throws Exception {
+
+			String sql = "update board set delete_yn = 'Y', delete_date = sysdate where board_seq = ?";
+			try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
+
+			) {
+			
+				pstat.setInt(1, board_id);
+
+				return pstat.executeUpdate();
+			}
+		}
+	
+//	해당 게시물의 deleteYN을 N으로
+	public int updateToN(int board_id) throws Exception {
+
+			String sql = "update board set delete_yn = 'N' where board_seq = ?";
+			try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
+
+			) {
+			
+				pstat.setInt(1, board_id);
+
+				return pstat.executeUpdate();
+			}
+		}
+	
+	
+	
 //	// 더미데이터만들기
 //		public static void main(String[] args) throws Exception {
 //			String url = "jdbc:oracle:thin:@localhost:1521:xe";

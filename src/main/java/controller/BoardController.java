@@ -324,6 +324,13 @@ public class BoardController extends HttpServlet {
 				request.getRequestDispatcher("/manager/community.jsp").forward(request, response);
 				
 				
+			}else if (cmd.equals("/manager/detail.board")) {
+				// 게시글 상세 페이지
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				request.setAttribute("dto", dao.selectBySeq(board_seq));
+				String loginID = (String) request.getSession().getAttribute("loginID");
+				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
+				request.getRequestDispatcher("/manager/detail.jsp").forward(request, response);
 			}
 			
 			
@@ -346,6 +353,21 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("record_total_count", dao.getDeletedRecordCount());
 				request.getRequestDispatcher("/manager/keepboard.jsp").forward(request, response);
 				
+			}else if(cmd.equals("/deleteYN_N_To_Y.board")) {
+				
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				
+				BoardDAO.getInstance().updateToY(board_seq);
+				
+				response.sendRedirect("/admin_list.board");
+				
+			}else if(cmd.equals("/deleteYN_Y_To_N.board")) {
+				
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				
+				BoardDAO.getInstance().updateToN(board_seq);
+				
+				response.sendRedirect("/admin_list.board");
 			}
 
 		} catch (Exception e) {
