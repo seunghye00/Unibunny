@@ -84,7 +84,7 @@
                 <div class="swiper game_swiper">
                   <div class="swiper-wrapper">
                     <div class="swiper-slide">
-					  <a href="javascript:;" onclick="window.open('../game/flappyCirby/index.jsp', 'GameWindow', 'width=288,height=505')" class="game_box">
+					  <a href="javascript:;" onclick="window.open('../game/flappyCirby/index.jsp', 'GameWindow', 'width=500,height=800')" class="game_box">
 					    <img src="../image/main/gameimg1.png" alt="">
 					  </a>
                     </div>

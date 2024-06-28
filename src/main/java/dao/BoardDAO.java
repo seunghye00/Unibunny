@@ -300,11 +300,10 @@ public class BoardDAO {
 	}
 
 	// 검색 별 카운트 조회
-	public int getRecordCountSearch(String game_id, String title_txt) throws Exception {
-		String sql = "select count(*) from board where delete_yn = 'N' and game_id = ? and title like ?";
+	public int getRecordCountSearch(String title_txt) throws Exception {
+		String sql = "select count(*) from board where delete_yn = 'N' and title like ?";
 		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
-			pstat.setString(1, game_id);
-			pstat.setString(2, "%" + title_txt.toLowerCase() + "%");
+			pstat.setString(1, "%" + title_txt.toLowerCase() + "%");
 			try (ResultSet rs = pstat.executeQuery();) {
 				rs.next();
 				return rs.getInt(1);
