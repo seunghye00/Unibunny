@@ -1,0 +1,8 @@
+body {
+  background-image: url(../image/game/load_game_bg.png);
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
