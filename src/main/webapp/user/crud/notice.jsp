@@ -60,21 +60,12 @@
 								<div class="list_box">
 									<div class="choi_box">
 										<div class="btn_box">
-											<button class="write_btn choi_btn" id="recent_btn">최신순</button>
+											<button class="write_btn choi_btn" id="notice_recent_btn">최신순</button>
 										</div>
 										<div class="btn_box betw_btn">
-											<button class="write_btn choi_btn" id="views_btn">조회순</button>
+											<button class="write_btn choi_btn" id="notice_views_btn">조회순</button>
 										</div>
 										<div class="flex_space mob_hidden"></div>
-										<div class="search_bar">
-											<div class="search_input">
-												<input type="text" class="input_tag" id="search_input">
-											</div>
-											<div class="search_img">
-												<a href="javascript:;"><img
-													src="../../image/icon/ico_search.png" alt="검색 로고"></a>
-											</div>
-										</div>
 									</div>
 									<!-- 추후 ajax로 데이터 받아와서 반복문으로 데이터 입력할 부분 -->
 									<div class="list_table notice_table"></div>
@@ -123,13 +114,13 @@
 	}
 
 	// 최신순 버튼 클릭 시
-	$("#recent_btn").on("click", function() {
+	$("#notice_recent_btn").on("click", function() {
 	    let apiUrl = "/list.notice";
 	    updateUrlAndFetchData(apiUrl, 1);
 	});
 
 	// 조회수 버튼 클릭 시
-	$("#views_btn").on("click", function() {
+	$("#notice_views_btn").on("click", function() {
 	    let apiUrl = "/view.notice";
 	    updateUrlAndFetchData(apiUrl, 1);
 	});
