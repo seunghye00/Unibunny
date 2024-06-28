@@ -1,8 +1,43 @@
 body {
-  background-image: url(../image/game/load_game_bg.png);
-  background-size: cover;
-  background-attachment: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	background-image: url(../image/game/start_game.png);
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+#background {
+	position: absolute;
+	width: 100%;
+	height: 100vh;
+	background-image: url(../image/game/load_game_bg.png);
+	background-size: cover;
+	background-attachment: fixed;
+	z-index: 1000;
+}
+
+#rocket {
+	position: absolute;
+	width: 600px;
+	height: auto;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	animation: moveRocket 2s linear infinite;
+}
+
+@keyframes moveRocket {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	50% {
+		transform: translate(-50%, -60%) rotate(10deg);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
 }
