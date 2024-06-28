@@ -64,7 +64,8 @@ public class MemberController extends HttpServlet {
 
         // !!!! 중요. REQUEST로 세션값을 받아오지 않으면 사용할 수 없음. (NULL 반환)
         session = request.getSession();
-		request.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
 		String cmd = request.getRequestURI();
 		mdao = MemberDAO.getInstance();
 		
