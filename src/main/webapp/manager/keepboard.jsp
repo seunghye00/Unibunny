@@ -169,11 +169,6 @@
 					</div>
 				</div>
 			</div>
-			<script>
-				$(document).ready(function() {
-					updateBoard();
-				})
-			</script>
 </body>
 
 </html>
