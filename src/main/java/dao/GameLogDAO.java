@@ -30,8 +30,6 @@ public class GameLogDAO {
 	}
 
 	public int insertGameLog(int gameID, String nickname) throws Exception {
-	    System.out.println(gameID);
-	    System.out.println(nickname);
 	    String sql = "insert into gamelog (log_seq, start_time, game_id, nickname) values (log_seq.nextval, sysdate, ?, ?)";
 
 	    try (Connection con = this.getConnection(); 
@@ -56,5 +54,4 @@ public class GameLogDAO {
 	        }
 	    }
 	}
-
 }
