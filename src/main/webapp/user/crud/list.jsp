@@ -39,12 +39,12 @@
 										<div style="padding: 5px;"></div>
 										<ul>
 											<li class="sub_title not_link">게시글</li>
-											<li><a href="javascript:;" id ="board_all">전체 게시글</a></li>
-											<li><a href="javascript:;" id ="game1">게임1</a></li>
-											<li><a href="javascript:;" id ="game2">게임2</a></li>
-											<li><a href="javascript:;" id ="game3">게임3</a></li>
-											<li><a href="javascript:;" id ="game4">게임4</a></li>
-											<li><a href="javascript:;" id ="game5">게임5</a></li>
+											<li><a href="javascript:;" id="board_all">전체 게시글</a></li>
+											<li><a href="javascript:;" id="game1">게임1</a></li>
+											<li><a href="javascript:;" id="game2">게임2</a></li>
+											<li><a href="javascript:;" id="game3">게임3</a></li>
+											<li><a href="javascript:;" id="game4">게임4</a></li>
+											<li><a href="javascript:;" id="game5">게임5</a></li>
 										</ul>
 									</div>
 								</div>
@@ -72,10 +72,11 @@
 										<div class="flex_space mob_hidden"></div>
 										<div class="search_bar">
 											<div class="search_input">
-												<input type="text" class="input_tag" id="search_input" placeholder="제목을 입력해주세요">
+												<input type="text" class="input_tag" id="search_input"
+													placeholder="제목을 입력해주세요">
 											</div>
 											<div class="search_img">
-												<a href="javascript:;" id = "list_search_btn"><img
+												<a href="javascript:;" id="list_search_btn"><img
 													src="../../image/icon/ico_search.png" alt="검색 로고"></a>
 											</div>
 										</div>
@@ -99,22 +100,22 @@
 	</div>
 	<script>
 	$(document).ready(function () {
-		fetchAndRenderData('list.jsp',1,"default");
 		listLoad();
 	})
 	// 커뮤니티 게시판 테이블 조회 스크립트
 		// 테이블 담을 컨테이너 변수
 		let listContainer = $('.crud_table');
 		// 초기 값 설정
+		//let currentGameId = null;
 		let currentGameId = 'game_id';
 		//  search값 넘기기 위한 변수
-		let searchTxt;
+		let searchTxt = null;
 		// 페이지네이션 변수 설정
 		let cpage,
 			record_total_count,
 			record_count_per_page = 10,
 			navi_count_per_page = 5;
-
+		
 		// 초기 페이지네이션 변수 설정
 		function initPaginationVariables(cpageParam, recordTotalCount) {
 			cpage = cpageParam;
@@ -124,6 +125,7 @@
 		// 최신순 버튼 클릭 시
 		$('#recent_btn').on('click', function() {
 			let apiUrl = '/list.board';
+			searchTxt = null; // 검색어 초기화
 			updateUrlAndFetchData(apiUrl, 1, currentGameId);
 			$('#recent_btn, #likes_btn, #views_btn').removeClass('active');
 			$(this).addClass('active');
@@ -132,6 +134,7 @@
 		// 좋아요 버튼 클릭 시
 		$('#likes_btn').on('click', function() {
 			let apiUrl = '/like.board';
+			searchTxt = null; // 검색어 초기화
 			updateUrlAndFetchData(apiUrl, 1, currentGameId);
 			$('#recent_btn, #likes_btn, #views_btn').removeClass('active');
 			$(this).addClass('active');
@@ -140,6 +143,7 @@
 		// 조회수 버튼 클릭 시
 		$('#views_btn').on('click', function() {
 			let apiUrl = '/view.board';
+			searchTxt = null; // 검색어 초기화
 			updateUrlAndFetchData(apiUrl, 1, currentGameId);
 			$('#recent_btn, #likes_btn, #views_btn').removeClass('active');
 			$(this).addClass('active');
@@ -147,49 +151,52 @@
 
 		// 게임 선택 및 전체 보기 버튼 클릭 시 이벤트 처리
 		$('#board_all').click(function() {
-			currentGameId = 'game_id';
-			updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+		    currentGameId = 'game_id'; // 전체 보기를 위한 gameId 초기화
+		    searchTxt = null; // 검색어 초기화
+		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
 		});
 		$('#game1').click(function() {
-			currentGameId = 1; // 현재 게임 ID를 1로 설정
-			updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+		    currentGameId = 1; // 현재 게임 ID를 1로 설정
+		    searchTxt = null; // 검색어 초기화
+		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
 		});
 		$('#game2').click(function() {
-			currentGameId = 2; // 현재 게임 ID를 2로 설정
-			updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+		    currentGameId = 2; // 현재 게임 ID를 2로 설정
+		    searchTxt = null; // 검색어 초기화
+		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
 		});
 		$('#game3').click(function() {
-			currentGameId = 3; // 현재 게임 ID를 3로 설정
-			updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+		    currentGameId = 3; // 현재 게임 ID를 3로 설정
+		    searchTxt = null; // 검색어 초기화
+		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
 		});
 		$('#game4').click(function() {
-			currentGameId = 4; // 현재 게임 ID를 4로 설정
-			updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+		    currentGameId = 4; // 현재 게임 ID를 4로 설정
+		    searchTxt = null; // 검색어 초기화
+		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
 		});
 		$('#game5').click(function() {
-			currentGameId = 5; // 현재 게임 ID를 5로 설정
-			updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+		    currentGameId = 5; // 현재 게임 ID를 5로 설정
+		    searchTxt = null; // 검색어 초기화
+		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
 		});
 		
 		$('#sub_menu').on('change', function() {
-			// 선택된 옵션의 값 가져오기
-			let selectedValue = $(this).val();
-			// 선택된 옵션 값에 따라 분기 처리
-			if (selectedValue === 'board_all') {
-				currentGameId = 'game_id';
-				updateUrlAndFetchData('/list.board', 1, currentGameId);
-			} else if (selectedValue === 'notice') {
-				// 공지사항을 선택한 경우, 해당 페이지로 이동
-				window.location.href = '/list.notice';
-			} else if (selectedValue.startsWith('game')) {
-				// 게임을 선택한 경우, 해당 페이지로 이동
-				let gameId = selectedValue.replace('game', '');
-				currentGameId = gameId;
-				updateUrlAndFetchData('/list.board', 1, currentGameId);
-			} else {
-				// 기타 경우, 기본 페이지로 이동
-				window.location.href = '/list.board';
-			}
+		    let selectedValue = $(this).val();
+		    if (selectedValue === 'board_all') {
+		        currentGameId = 'game_id'; // 전체 보기를 위한 gameId 초기화
+		        searchTxt = null; // 검색어 초기화
+		        updateUrlAndFetchData('/list.board', 1, currentGameId);
+		    } else if (selectedValue === 'notice') {
+		        window.location.href = '/list.notice';
+		    } else if (selectedValue.startsWith('game')) {
+		        let gameId = selectedValue.replace('game', '');
+		        currentGameId = gameId;
+		        searchTxt = null; // 검색어 초기화
+		        updateUrlAndFetchData('/list.board', 1, currentGameId);
+		    } else {
+		        window.location.href = '/list.board';
+		    }
 		});
 		// 클릭 이벤트 핸들러
 		$('#list_search_btn').on('click', function() {
@@ -197,8 +204,8 @@
 			searchTxt = $('#search_input').val();
 			console.log(searchTxt);
 			updateUrlAndFetchData(apiUrl, 1, currentGameId, searchTxt);
-			//$('#search_input').val('');;
-			//$('#search_input').attr('value', '');
+			$('#search_input').val('');;
+			$('#search_input').attr('value', '');
 		});
 
 		// 엔터 키 이벤트 핸들러
@@ -208,8 +215,8 @@
 				searchTxt = $('#search_input').val();
 				console.log(searchTxt);
 				updateUrlAndFetchData(apiUrl, 1, currentGameId, searchTxt);
-				//$('#search_input').val('');;
-				//$('#search_input').attr('value', '');
+				$('#search_input').val('');;
+				$('#search_input').attr('value', '');
 			}
 		});
 		//
@@ -234,7 +241,6 @@
 					console.log(resp);
 					// 페이지네이션 변수 초기화
 					initPaginationVariables(page, resp.record_total_count);
-
 					// 기존의 목록 컨테이너를 비웁니다.
 					listContainer.empty();
 
@@ -280,71 +286,85 @@
 					);
 					listContainer.append(headerRow);
 
-					// 데이터 반복 처리
-					if (Array.isArray(resp.data)) {
-						let startNumber = (page - 1) * record_count_per_page + 1; // 시작 번호 계산
-
-						for (let i = 0; i < resp.data.length; i++) {
-							let dto = resp.data[i];
-							let row = $('<div>').addClass('table_row');
-							let link = $('<a>').attr(
-								'href',
-								'/user/detail.board?board_seq=' + dto.board_seq
-							);
-							let col1 = $('<div>')
-								.addClass('table_col mob_hidden')
-								.append($('<span>').text(startNumber + i));
-							let col2 = $('<div>')
-								.addClass('table_col')
-								.append($('<span>').text(dto.title));
-							let col3 = $('<div>')
-								.addClass('table_col')
-								.append($('<span>').text(dto.nickname));
-							let col4 = $('<div>')
-								.addClass('table_col')
-								.append($('<span>').text(dto.write_date));
-							let col5 = null;
-							let col6 = null;
-
-							// 버튼에 따라 추가되는 열 처리
-							if (apiUrl === '/list.board') {
-								col5 = $('<div>')
-									.addClass('table_col mob_hidden views_column')
-									.append($('<span>').text(dto.view_count));
-							} else if (apiUrl === '/like.board') {
-								col5 = $('<div>')
-									.addClass('table_col mob_hidden likes_column')
-									.append($('<span>').text(dto.like_count));
-							} else if (apiUrl === '/view.board') {
-								col5 = $('<div>')
-									.addClass('table_col mob_hidden views_column')
-									.append($('<span>').text(dto.view_count));
+					if (record_total_count > 0) {
+						// 데이터 반복 처리
+						if (Array.isArray(resp.data)) {
+							let startNumber = (page - 1) * record_count_per_page + 1; // 시작 번호 계산
+	
+							for (let i = 0; i < resp.data.length; i++) {
+								let dto = resp.data[i];
+								let row = $('<div>').addClass('table_row');
+								let link = $('<a>').attr(
+									'href',
+									'/user/detail.board?board_seq=' + dto.board_seq
+								);
+								let col1 = $('<div>')
+									.addClass('table_col mob_hidden')
+									.append($('<span>').text(startNumber + i));
+								let col2 = $('<div>')
+									.addClass('table_col')
+									.append($('<span>').text(dto.title));
+								let col3 = $('<div>')
+									.addClass('table_col')
+									.append($('<span>').text(dto.nickname));
+								let col4 = $('<div>')
+									.addClass('table_col')
+									.append($('<span>').text(dto.write_date));
+								let col5 = null;
+								let col6 = null;
+	
+								// 버튼에 따라 추가되는 열 처리
+								if (apiUrl === '/list.board') {
+									col5 = $('<div>')
+										.addClass('table_col mob_hidden views_column')
+										.append($('<span>').text(dto.view_count));
+								} else if (apiUrl === '/like.board') {
+									col5 = $('<div>')
+										.addClass('table_col mob_hidden likes_column')
+										.append($('<span>').text(dto.like_count));
+								} else if (apiUrl === '/view.board') {
+									col5 = $('<div>')
+										.addClass('table_col mob_hidden views_column')
+										.append($('<span>').text(dto.view_count));
+								}
+	
+								link.append(col1, col2, col3, col4, col5, col6);
+								row.append(link);
+								listContainer.append(row);
 							}
-
-							link.append(col1, col2, col3, col4, col5, col6);
-							row.append(link);
-							listContainer.append(row);
+						} else {
+							console.error(
+								'데이터 형식이 올바르지 않습니다. 데이터가 배열이 아닙니다.'
+							);
 						}
-					} else {
-						console.error(
-							'데이터 형식이 올바르지 않습니다. 데이터가 배열이 아닙니다.'
-						);
-					}
-
-					// 페이지네이션 생성
-					renderPagination(apiUrl, page);
-
-					// URL 업데이트
-					updateUrl(apiUrl, page);
-
-					// 버튼의 active 클래스 설정
-					$('#recent_btn, #likes_btn, #views_btn').removeClass('active'); // 모든 버튼의 active 클래스 제거
-					if (apiUrl === '/list.board') {
-						$('#recent_btn').addClass('active');
-					} else if (apiUrl === '/like.board') {
-						$('#likes_btn').addClass('active');
-					} else if (apiUrl === '/view.board') {
-						$('#views_btn').addClass('active');
+	
+						// 페이지네이션 생성
+						renderPagination(apiUrl, page);
+	
+						// URL 업데이트
+						updateUrl(apiUrl, page);
+	
+						// 버튼의 active 클래스 설정
+						$('#recent_btn, #likes_btn, #views_btn').removeClass('active'); // 모든 버튼의 active 클래스 제거
+						if (apiUrl === '/list.board') {
+							$('#recent_btn').addClass('active');
+						} else if (apiUrl === '/like.board') {
+							$('#likes_btn').addClass('active');
+						} else if (apiUrl === '/view.board') {
+							$('#views_btn').addClass('active');
+						}
+						
+					} else{
+						// 검색한 결과가 없을 경우
+						let row = $("<div>", { "class": "table_row" });
+						row.css({
+							"font-size": "16px",
+							"justify-content": "center",
+							"color": "var(--color-white)",
+							"padding": "15px"
+						});
+						row.text("검색한 결과가 존재하지 않습니다");
+						listContainer.append(row);
 					}
 				})
 
@@ -419,9 +439,11 @@
 				return '/like.board';
 			} else if ($('#views_btn').hasClass('active')) {
 				return '/view.board';
-			}
-			// 기본적으로 최신순으로 설정
-			return '/list.board';
+			} else if (searchTxt) {
+		        return '/search.board';
+		    } else {
+		        return '/list.board';
+		    }
 		}
 
 		// 현재 선택된 게임 ID 반환 함수
@@ -430,9 +452,11 @@
 		}
 
 		// URL 업데이트 및 데이터 가져오는 함수
-		function updateUrlAndFetchData(apiUrl, page, gameId) {
-			updateUrl(apiUrl, page, gameId);
-			fetchAndRenderData(apiUrl, page, gameId);
+		function updateUrlAndFetchData(apiUrl, page, gameId, searchTxt = null) {
+			//updateUrl(apiUrl, page, gameId);
+			//fetchAndRenderData(apiUrl, page, gameId);
+			history.pushState(null, null, `${apiUrl}?page=${page}&gameId=${gameId}&searchTxt=${searchTxt}`);
+		    fetchAndRenderData(apiUrl, page, gameId, searchTxt);
 		}
 		// URL 업데이트 함수
 		function updateUrl(apiUrl, page) {
@@ -445,7 +469,7 @@
 			let urlParams = new URLSearchParams(window.location.search);
 			let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
 			let page = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
-			currentGameId = urlParams.has('gameId') ? urlParams.get('gameId') : 'game_id';
+			//currentGameId = urlParams.has('gameId') ? urlParams.get('gameId') : 'game_id';
 
 			fetchAndRenderData(apiUrl, page, currentGameId); // 초기에는 최신순 데이터를 가져오도록 설정
 

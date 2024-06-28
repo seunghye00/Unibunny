@@ -145,7 +145,7 @@
                 <!-- 타이틀 박스 공통 -->
                 <div class="title_box">
                   <p class="title">인기글</p>
-                  <a href="/list.board?api=/view.board&page=1&gameId=game_id"></a>
+                  <a href="http://localhost/list.board?api=/like.board&page=1"></a>
                 </div>
                 <div class="list_table main_list_table">
                   <div class="table_row table_header">

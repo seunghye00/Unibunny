@@ -113,10 +113,9 @@ public class BoardController extends HttpServlet {
 						result.put("cpage", cpage);
 						result.put("record_count_per_page", Pagination.recordCountPerPage);
 						result.put("navi_count_per_page", Pagination.naviCountPerPage);
-						System.out.println(search_Txt);
 						result.put("record_total_count",
 								(game_Id == null || game_Id.equals("game_id")) ?
-								        (search_Txt == null ? dao.getRecordCount() : dao.getRecordCountSearch(search_Txt)) :
+								        (search_Txt == null ? dao.getRecordCount() : dao.getRecordCountSearch(game_Id, search_Txt)) :
 								        dao.getRecordCountGame(game_Id));
 						String jsonResult = gson.toJson(result);
 						pw.print(jsonResult);
@@ -129,7 +128,7 @@ public class BoardController extends HttpServlet {
 						result.put("navi_count_per_page", Pagination.naviCountPerPage);
 						result.put("record_total_count",
 								(game_Id == null || game_Id.equals("game_id")) ?
-								        (search_Txt == null ? dao.getRecordCount() : dao.getRecordCountSearch(search_Txt)) :
+								        (search_Txt == null ? dao.getRecordCount() : dao.getRecordCountSearch(game_Id, search_Txt)) :
 								        dao.getRecordCountGame(game_Id));
 						String jsonResult = gson.toJson(result);
 						pw.print(jsonResult);
@@ -186,7 +185,7 @@ public class BoardController extends HttpServlet {
 				// 좋아요 리스트 출력 서블릿
 				processRequest(request, response, cmd, game_Id, null, "view");
 			} else if (cmd.equals("/search.board")) {
-				processRequest(request, response, cmd, game_Id, null, "search");
+				processRequest(request, response, cmd, game_Id, search_Txt, "search");
 			} else if (cmd.equals("/mylist.board")) {
 				String pcpage = request.getParameter("cpage");
 				if (pcpage == null) {
