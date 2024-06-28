@@ -89,6 +89,8 @@
 <script>
 $(document).ready(function() {
     var deletedFiles = [];
+    var fileClickCount = 0;
+    var maxFiles = 5;
 
     $('#summernote').summernote({
         height: 500,
@@ -98,11 +100,16 @@ $(document).ready(function() {
     });
 
     $('#file').on('click', function() {
-        var fileInputWrapper = $('<div class="file-input-wrapper">'
+        if (fileClickCount < maxFiles) {
+            var fileInputWrapper = $('<div class="file-input-wrapper">'
                 + '<input type="file" name="files">'
                 + '<button type="button" class="removeFileInput">-</button>'
                 + '</div>');
-        $('#newFileInputs').append(fileInputWrapper);
+            $('#newFileInputs').append(fileInputWrapper);
+            fileClickCount++;
+        } else {
+            alert('최대 5개의 파일만 업로드할 수 있습니다.');
+        }
     });
 
     $('#newFileInputs').on('click', '.removeFileInput', function() {
