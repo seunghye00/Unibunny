@@ -5,7 +5,7 @@ var EndGameFunctions = {
             type: 'POST',
             data: {
                 score: score,
-                gameId: gameId,
+                gameID: gameId,
             },
             success: function(response) {
                 console.log('Score submitted successfully:', response);

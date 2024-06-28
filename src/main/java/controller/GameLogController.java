@@ -29,15 +29,20 @@ public class GameLogController extends HttpServlet {
 
 		// 접속 경로 저장
 		String cmd = request.getRequestURI();
-		// System.out.println(cmd);
+		System.out.println(cmd);
 		GameLogDAO dao = GameLogDAO.getInstance();
 		try {
 			if(cmd.equals("/submit.gamelog")){
 				String user_id = (String)request.getSession().getAttribute("loginID");
-				String nickname = MemberDAO.getInstance().getNickname(user_id);
+				System.out.println(user_id);
+				String nickname = "guest";
+				if(user_id != null) {
+					nickname = MemberDAO.getInstance().getNickname(user_id);
+				}
 				int gameID = Integer.parseInt(request.getParameter("gameID"));
 				int log_seq = dao.insertGameLog(gameID, nickname);
 				
+				System.out.println(log_seq);
 				// gamelog에 저장된 log_seq submit.score에 전달 
 				response.sendRedirect("/submit.score?log_seq=" + log_seq);
 			}
