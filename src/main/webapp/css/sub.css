@@ -494,6 +494,21 @@
   align-items: center;
 }
 
+/* 게시글 작성 페이지 */
+.write_con.board_write .title_box {
+	padding-bottom: 20px !important;
+}
+.write_con.board_write .title_box .title {
+	padding-bottom: 16px;
+}
+.write_con.board_write .title_box .choi_menu {
+	height: 43px;
+    width: 180px;
+    border-radius: 10px;
+    color: black;
+    padding-left: 10px;
+}
+
 /* 테이블 공통 */
 .qa_write_con .list_table,
 .write_con .list_table,

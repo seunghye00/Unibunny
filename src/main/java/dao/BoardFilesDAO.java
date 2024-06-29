@@ -50,4 +50,16 @@ public class BoardFilesDAO {
          }
       }
    }
+
+	public int insert(BoardFilesDTO dto) throws Exception {
+		
+		String sql = "insert into board values (board_files_seq, ?, ?, ?)";
+		 
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+	         pstat.setString(1, dto.getOriname());
+	         pstat.setString(2, dto.getSysname());
+	         pstat.setInt(3, dto.getBoard_seq());
+	         return pstat.executeUpdate();
+	      }
+	}
 }

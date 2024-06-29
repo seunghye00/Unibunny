@@ -60,7 +60,7 @@ public class NoticeController extends HttpServlet {
 					result.put("cpage", cpage);
 					result.put("record_count_per_page", Pagination.recordCountPerPage);
 					result.put("navi_count_per_page", Pagination.naviCountPerPage);
-					result.put("record_total_count", dao.getRecordCount());
+					result.put("record_total_count", NoticeDAO.getInstance().getRecordCount());
 
 					String jsonResult = gson.toJson(result);
 					PrintWriter out = response.getWriter();
@@ -72,7 +72,7 @@ public class NoticeController extends HttpServlet {
 					request.setAttribute("cpage", cpage);
 					request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
 					request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
-					request.setAttribute("record_total_count", dao.getRecordCount());
+					request.setAttribute("record_total_count", NoticeDAO.getInstance().getRecordCount());
 					request.getRequestDispatcher("/user/crud/notice.jsp").forward(request, response);
 				}
 			} else if (cmd.equals("/view.notice")) {
@@ -97,7 +97,7 @@ public class NoticeController extends HttpServlet {
 					result.put("cpage", cpage);
 					result.put("record_count_per_page", Pagination.recordCountPerPage);
 					result.put("navi_count_per_page", Pagination.naviCountPerPage);
-					result.put("record_total_count", dao.getRecordCount());
+					result.put("record_total_count", NoticeDAO.getInstance().getRecordCount());
 
 					String jsonResult = gson.toJson(result);
 					PrintWriter out = response.getWriter();
@@ -109,7 +109,7 @@ public class NoticeController extends HttpServlet {
 					request.setAttribute("cpage", cpage);
 					request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
 					request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
-					request.setAttribute("record_total_count", dao.getRecordCount());
+					request.setAttribute("record_total_count", NoticeDAO.getInstance().getRecordCount());
 					request.getRequestDispatcher("/user/crud/notice.jsp").forward(request, response);
 				}
 			} else if (cmd.equals("/write.notice")) {

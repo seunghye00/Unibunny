@@ -8,8 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import commons.Pagination;
 import dao.QNADAO;
 import dao.QNAFilesDAO;
 import dto.QNADTO;
@@ -31,44 +31,49 @@ public class QNAController extends HttpServlet {
 
         QNADAO dao = QNADAO.getInstance();
         QNAFilesDAO filesDao = QNAFilesDAO.getInstance();
+        
+        HttpSession session = request.getSession();
 
         try {
-            if (cmd.equals("/write.qna")) {
-                // Q&A 데이터 저장
-                String title = request.getParameter("question_title");
-                String content = request.getParameter("question_content");
-                String userId = request.getParameter("userId");
+        	if (cmd.equals("/write.qna")) {
+        	    // Q&A 데이터 저장
+        	    String title = request.getParameter("question_title");
+        	    String content = request.getParameter("question_content");
+        	    String userId = (String) request.getSession().getAttribute("loginID");
 
-                // 디버깅용 출력
-                System.out.println("Title: " + title);
-                System.out.println("Content: " + content);
-                System.out.println("UserId: " + userId);
+        	    // 디버깅용 출력
+        	    System.out.println("Title: " + title);
+        	    System.out.println("Content: " + content);
+        	    System.out.println("UserId: " + userId);
 
-                if (title == null || title.trim().isEmpty()) {
-                    throw new Exception("Title cannot be null or empty");
-                }
-                if (content == null || content.trim().isEmpty()) {
-                    throw new Exception("Content cannot be null or empty");
-                }
+        	    if (userId == null || userId.trim().isEmpty()) {
+        	        throw new Exception("User ID cannot be null or empty");
+        	    }
+        	    if (title == null || title.trim().isEmpty()) {
+        	        throw new Exception("Title cannot be null or empty");
+        	    }
+        	    if (content == null || content.trim().isEmpty()) {
+        	        throw new Exception("Content cannot be null or empty");
+        	    }
 
-                Timestamp writeDate = new Timestamp(System.currentTimeMillis());
+        	    Timestamp writeDate = new Timestamp(System.currentTimeMillis());
 
-                QNADTO dto = new QNADTO();
-                dto.setQuestion_title(title);
-                dto.setQuestion_content(content);
-                dto.setWrite_date(writeDate);
-                dto.setUserid(userId);
+        	    QNADTO dto = new QNADTO();
+        	    dto.setQuestion_title(title);
+        	    dto.setQuestion_content(content);
+        	    dto.setWrite_date(writeDate);
+        	    dto.setUserid(userId);
 
-                int result = dao.insertQnA(dto);
+        	    int result = dao.insertQnA(dto);
 
-                if (result > 0) {
-                    // 마지막으로 삽입된 Q&A의 ID를 가져옴
-                    int question_seq = dao.getLastInsertedId();
-                    response.getWriter().write("{\"status\":\"success\", \"question_seq\":" + question_seq + "}");
-                } else {
-                    response.getWriter().write("{\"status\":\"failure\"}");
-                }
-            } else if (cmd.equals("/list.qna")) {
+        	    if (result > 0) {
+        	        // 마지막으로 삽입된 Q&A의 ID를 가져옴
+        	        int question_seq = dao.getLastInsertedId();
+        	        response.getWriter().write("{\"status\":\"success\", \"question_seq\":" + question_seq + "}");
+        	    } else {
+        	        response.getWriter().write("{\"status\":\"failure\"}");
+        	    }
+        	} else if (cmd.equals("/list.qna")) {
                 List<QNADTO> qnaList = dao.selectAllQnA();
                 request.setAttribute("qnaList", qnaList);
                 request.getRequestDispatcher("/manager/qna.jsp").forward(request, response);

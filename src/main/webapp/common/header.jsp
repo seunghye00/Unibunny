@@ -74,10 +74,10 @@
                 </ul>
                 <div class="mob_my">
                     <ul>
-                        <li><a href="javascript:;" class="mob_mypage"><img src="../image/icon/mypage.png"
+                        <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png"
                                                                            alt="마이페이지 로고"></a>
                         </li>
-                        <li><a href="javascript:;" class="mob_login"><img src="../image/icon/login_b.png" alt="로그인 로고"></a>
+                        <li><a href="javascript:;" class="mob_login"><img src="../../image/icon/login_b.png" alt="로그인 로고"></a>
                         </li>
                         <li>
                             <div onclick="history.back();" class="mob_close"></div>

@@ -84,7 +84,7 @@
                 <div class="swiper game_swiper">
                   <div class="swiper-wrapper">
                     <div class="swiper-slide">
-					  <a href="javascript:;" onclick="window.open('../game/flappyCirby/index.jsp', 'GameWindow', 'width=288,height=505')" class="game_box">
+					  <a href="javascript:;" onclick="window.open('../game/flappyCirby/index.jsp')" class="game_box">
 					    <img src="../image/main/gameimg1.png" alt="">
 					  </a>
                     </div>
@@ -145,7 +145,7 @@
                 <!-- 타이틀 박스 공통 -->
                 <div class="title_box">
                   <p class="title">인기글</p>
-                  <a href="/list.board?api=/view.board&page=1&gameId=game_id"></a>
+                  <a href="http://localhost/list.board?api=/like.board&page=1"></a>
                 </div>
                 <div class="list_table main_list_table">
                   <div class="table_row table_header">

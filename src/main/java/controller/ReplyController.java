@@ -109,9 +109,10 @@ public class ReplyController extends HttpServlet {
 				
 			} else if(cmd.equals("/deleteYN_Y_To_N.reply")) {
 				
-				int reply_seq = Integer.parseInt(request.getParameter("reply_seq"));
+				int reply_seq = Integer.parseInt(request.getParameter("replySeq"));
 				
 				ReplyDAO.getInstance().updateToN(reply_seq);
+				response.sendRedirect("/deletedreply.reply");
 			}
 			
 		} catch(Exception e) {
