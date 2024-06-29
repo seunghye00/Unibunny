@@ -1,21 +1,19 @@
 var EndGameFunctions = {
-    sendScore: function(score, gameId, logSeq) {
+    sendScore: function(score, gameId) {
+        console.log('Sending score:', score, 'for game ID:', gameId, 'with log sequence:', game.logSeq);
         $.ajax({
             url: '/submit.score',
             type: 'POST',
             data: {
                 score: score,
                 gameID: gameId,
-                log_seq: logSeq
+                log_seq: game.logSeq // game 객체의 logSeq 속성 사용
             },
             success: function(response) {
-                console.log('Score submitted successfully:', response);
             },
             error: function(error) {
-                console.error('Error submitting score:', error);
             }
         }).done(function(resp) {
-            console.log(resp);
         });
     }
 };
@@ -29,19 +27,11 @@ var StartGameFunctions = {
                 gameID: gameId
             },
             success: function(response) {
-                console.log('Game log submitted successfully:', response);
-                var logSeq = JSON.parse(response).log_seq; // 서버에서 받은 로그 시퀀스
-                // 게임 종료 시에 점수 전송
-                gameEngine.on('end', function(score) {
-                    EndGameFunctions.sendScore(score, gameId, logSeq);
-                });
+                game.logSeq = JSON.parse(response).log_seq; // 서버에서 받은 로그 시퀀스를 game 객체의 속성으로 할당
             },
             error: function(error) {
-                console.error('Error submitting game log:', error);
             }
         }).done(function(resp) {
-            console.log(resp);
         });
     }
 };
-
