@@ -170,23 +170,27 @@ public class NoticeController extends HttpServlet {
 				} else {
 					response.sendRedirect("/error.jsp");
 				}
-			} else if (cmd.equals("/admin_list.notice")) {
-				String pcpage = request.getParameter("cpage");
-				if (pcpage == null) {
-					pcpage = "1";
+			} else if (cmd.equals("/manager/total.notice")) {
+				// 관리자 페이지 공지사항 영역에서 공지 사항의 총 갯수를 확인하는 메서드
+				Map<String, Object> result = new HashMap<>();
+				result.put("total_data", dao.getRecordCount());
+				result.put("record_count_per_page", Pagination.recordCountPerPage);
+				result.put("navi_count_per_page", Pagination.naviCountPerPage);
+				response.getWriter().append(gson.toJson(result));
+
+			} else if (cmd.equals("/manager/list.notice")) {
+				// 관리자 페이지에서 해당 페이지의 공지사항 목록를 구하는 경로
+
+				String cpage = request.getParameter("cpage");
+
+				if (cpage == null) {
+					cpage = "1";
 				}
-				int cpage = Integer.parseInt(pcpage);
+				int pcpage = Integer.parseInt(cpage);
+				int start_num = pcpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1);
+				int end_num = pcpage * Pagination.recordCountPerPage;
 
-				List<NoticeDTO> list = dao.selectListAll(
-						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-						cpage * Pagination.recordCountPerPage);
-
-				request.setAttribute("noticelist", list);
-				request.setAttribute("cpage", cpage);
-				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
-				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
-				request.setAttribute("record_total_count", dao.getRecordCount());
-				request.getRequestDispatcher("/manager/notice.jsp").forward(request, response);
+				pw.append(gson.toJson(dao.selectListView(start_num, end_num)));
 
 			} else if (cmd.equals("/user/detail.notice")) { // 사용자 상세 조회 기능 추가
 				String noticeSeq = request.getParameter("notice_seq");
@@ -212,7 +216,7 @@ public class NoticeController extends HttpServlet {
 					request.setAttribute("notice", notice);
 					request.getRequestDispatcher("/manager/ntc_detail.jsp").forward(request, response);
 				} else {
-					response.sendRedirect("/admin_list.notice");
+					response.sendRedirect("/manager/notice.jsp");
 				}
 			} else if (cmd.equals("/delete.notice")) {
 				int noticeSeq = Integer.parseInt(request.getParameter("notice_seq"));

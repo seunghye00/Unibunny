@@ -394,7 +394,7 @@ public class BoardController extends HttpServlet {
 				response.sendRedirect("/admin_list.board");
 			} else if(cmd.equals("/restoreUpdateToN.board")) {
 				// 임시 보관된 게시물 서블릿
-				int board_seq = Integer.parseInt(request.getParameter("boardSeq"));
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				System.out.println(board_seq);
 				BoardDAO.getInstance().restoreUpdateToN(board_seq);
 				// 다시 임시 보관된 게시물 페이지로 이동
