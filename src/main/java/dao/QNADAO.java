@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,5 +117,35 @@ public class QNADAO {
             return ps.executeUpdate();
         }
     }
+    
+
+  	public List<QNADTO> searchMyQNAList(String id) throws Exception {
+ 	    String sql = "select * from qna where userid = ? order by 1 desc";
+ 	    try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+ 	        List<QNADTO> list = new ArrayList<>();
+ 	        pstat.setString(1, id);
+ 	       
+
+ 	        try (ResultSet rs = pstat.executeQuery();) {
+ 	            while (rs.next()) {
+ 	                int question_seq = rs.getInt("question_seq");
+ 	                String question_title = rs.getString("question_title");
+ 	                String question_content = rs.getString("question_content");
+ 	                Timestamp write_date = rs.getTimestamp("write_date");
+ 	                String answer_yn = rs.getString("answer_yn");
+ 	                String answer_content = rs.getString("answer_content");
+ 	                Timestamp answer_date = rs.getTimestamp("answer_date");
+ 	                String userid = rs.getString("userid");
+ 	                list.add(new QNADTO(question_seq, question_title, question_content, write_date, answer_yn, answer_content, answer_date, userid));
+ 	            }
+ 	        }
+ 	        return list;
+ 	    }
+ 	}
+	
+    
+    
+    
+    
 }
 

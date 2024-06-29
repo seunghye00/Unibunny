@@ -372,6 +372,7 @@ function get_member_list(grade, cpage) {
 		dataType: "json",
 		data: { grade: grade }
 	}).done(function(resp) {
+
 		let record_count_per_page = resp.record_count_per_page;
 		let navi_count_per_page = resp.navi_count_per_page;
 		let record_total_count = resp.total_data;
@@ -819,13 +820,13 @@ $('#del_btn').on('click', function() {
 });
 
 // 임시보관 게시물 페이지에서 복구 버튼 클릭 시
-$(document).on("click", "#restore_board", function() {
+$(document).on("click", ".restore_board", function() {
 	if (confirm('해당 게시물을 복구 시킵니까?')) {
-		let boardSeq = $(this).data("board-seq");
+		let board_seq = $(this).closest(".table_row").find("input").val();
 		$.ajax({
 			url: "/restoreUpdateToN.board",
 			method: "POST",
-			data: { boardSeq: boardSeq },
+			data: { board_seq: board_seq },
 			success: function(response) {
 				// 복구 성공 시 추가 처리
 				location.reload();
@@ -843,9 +844,13 @@ $(document).on("click", "#restore_board", function() {
 
 
 // 임시보관 댓글 페이지에서 복구 버튼 클릭 시
-$(document).on("click", "#restore_reply", function() {
+$(document).on("click", ".restore_reply", function(e) {
+	// 상위 태그인 a 태그의 href 속성으로 이동 동작을 막기 위한 코드
+	e.stopPropagation(); 
+	e.preventDefault();
+	
 	if (confirm('해당 댓글을 복구 시킵니까?')) {
-		let replySeq = $(this).data("reply-seq");
+		let replySeq = $(this).closest(".table_row").find(".reply_seq span").text();
 		$.ajax({
 			url: "/deleteYN_Y_To_N.reply",
 			method: "POST",
@@ -888,6 +893,7 @@ function get_community_list(choice, cpage, deleted) {
 		dataType: "json",
 		data : { deleted : deleted }
 	}).done(function(resp) {
+		
 		let record_count_per_page = resp.record_count_per_page;
 		let navi_count_per_page = resp.navi_count_per_page;
 		let record_total_count = resp.total_data;
@@ -957,10 +963,26 @@ function get_community_list(choice, cpage, deleted) {
 					deleted : deleted
 				}
 			}).done(function(resp) {
+				
 				let index = cpage * 10 - 9;
+				
 				for (let i of resp) {
-					let a = $("<a>", { "href" : "/manager/detail.jsp?board_seq="+resp.board_seq});
-					let row = $("<div>", { "class": "table_row" });
+					if(choice == "board" || choice == "notice") {
+						// 게시글 목록을 출력할 조회할 경우
+					let row = $("<div>", { "class": "table_row" });	
+					let hidden_input = $("<input>", { "type" : "hidden" });
+					let a = $("<a>");
+					
+					if(choice == "board"){
+						// 게시글을 조회한 경우
+						hidden_input.val(i.board_seq);
+						a.attr("href", "/manager/detail.board?board_seq="+i.board_seq);
+					} else if (choice == "notice"){
+						// 공지사항을 조회한 경우
+						hidden_input.val(i.notice_seq);
+						a.attr("href", "/admin_detail.notice?notice_seq="+i.notice_seq);
+					}
+					
 					let col = $("<div>", { "class" : "table_col" });
 					let span = $("<span>");
 					
@@ -986,21 +1008,84 @@ function get_community_list(choice, cpage, deleted) {
 					// table_col 네번째 요소에 write_date 값 삽입
 					col = $("<div>", { "class": "table_col" });
 					span = $("<span>");
-					span.text(i.write_date);
+					
+					if (deleted == "N"){
+						span.text(i.write_date);
+					} else {
+						span.text(i.delete_date)
+					}
+					
 					col.append(span);
 					row.append(col);
 
-					// table_col 다섯번째 요소에 member_seq 및 버튼 삽입
+					// table_col 다섯번째 요소에 조회수 or 버튼 삽입
+					col = $("<div>", { "class": "table_col" });
+					
+					if (deleted == "N"){
+						span = $("<span>");
+						span.text(i.view_count);
+						col.append(span);
+					} else {
+						col.addClass("restore");
+						let btn = $("<button>", { "class" : "restore_btn restore_board", "type" : "button" })
+						btn.text("복구");
+						col.append(btn);
+					}
+					row.append(col);
+					row.append(hidden_input);
+					// 테이블에 데이터 출력
+					if(deleted == "N"){
+						a.append(row)
+						$(".list_table").append(a);
+					} else {
+						$(".list_table").append(row);
+					}
+				} else {
+					// 댓글 목록을 출력할 조회할 경우
+					let a = $("<a>", { "href" : "/manager/detail.board?board_seq="+i.board_seq});
+					
+					let row = $("<div>", { "class": "table_row" });	
+					let col = $("<div>", { "class" : "table_col" });
+					let span = $("<span>");
+					
+					// table_col 첫번째 요소에 board_seq 값 삽입
+					span.text(i.board_seq);
+					col.append(span);
+					row.append(col);
+
+					// table_col 두번째 요소에 reply_seq 값 삽입
+					col = $("<div>", { "class": "table_col reply_seq" });
+					span = $("<span>");
+					span.text(i.reply_seq);
+					col.append(span);
+					row.append(col);
+
+					// table_col 세번째 요소에 content 값 삽입
 					col = $("<div>", { "class": "table_col" });
 					span = $("<span>");
-					span.text(i.view_count);
+					span.text(i.content);
 					col.append(span);
 					row.append(col);
 
-					// 테이블에 데이터 출력
-					a.append(row)
+					// table_col 네번째 요소에 nickname 값 삽입
+					col = $("<div>", { "class": "table_col" });
+					span = $("<span>");
+					span.text(i.nickname);					
+					col.append(span);
+					row.append(col);
+
+					// table_col 다섯번째 요소에 버튼 삽입
+					col = $("<div>", { "class": "table_col" });
+					col.addClass("restore");
+					let btn = $("<button>", { "class" : "restore_btn restore_reply", "type" : "button" })
+					btn.text("복구");
+					col.append(btn);	
+					row.append(col);
+				
+					a.append(row);
 					$(".list_table").append(a);
 				}
+			}
 			});
 			
 		} else {

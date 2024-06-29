@@ -39,7 +39,7 @@
 										<div style="padding: 5px;"></div>
 										<ul>
 											<li class="sub_title not_link">게시글</li>
-											<li><a href="javascript:;" id="board_all">전체 게시글</a></li>
+											<li><a href="javascript:;" class="cpage" id="board_all">전체 게시글</a></li>
 											<li><a href="javascript:;" id="game1">게임1</a></li>
 											<li><a href="javascript:;" id="game2">게임2</a></li>
 											<li><a href="javascript:;" id="game3">게임3</a></li>
@@ -150,36 +150,26 @@
 		});
 
 		// 게임 선택 및 전체 보기 버튼 클릭 시 이벤트 처리
-		$('#board_all').click(function() {
-		    currentGameId = 'game_id'; // 전체 보기를 위한 gameId 초기화
-		    searchTxt = null; // 검색어 초기화
-		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-		});
-		$('#game1').click(function() {
-		    currentGameId = 1; // 현재 게임 ID를 1로 설정
-		    searchTxt = null; // 검색어 초기화
-		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-		});
-		$('#game2').click(function() {
-		    currentGameId = 2; // 현재 게임 ID를 2로 설정
-		    searchTxt = null; // 검색어 초기화
-		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-		});
-		$('#game3').click(function() {
-		    currentGameId = 3; // 현재 게임 ID를 3로 설정
-		    searchTxt = null; // 검색어 초기화
-		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-		});
-		$('#game4').click(function() {
-		    currentGameId = 4; // 현재 게임 ID를 4로 설정
-		    searchTxt = null; // 검색어 초기화
-		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-		});
-		$('#game5').click(function() {
-		    currentGameId = 5; // 현재 게임 ID를 5로 설정
-		    searchTxt = null; // 검색어 초기화
-		    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-		});
+		// 게임 버튼 클릭 시 이벤트 처리
+$('#board_all').click(function() {
+    currentGameId = 'game_id'; // 전체 보기를 위한 gameId 초기화
+    searchTxt = null; // 검색어 초기화
+    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+    
+    if (!$('#board_all').hasClass('cpage')) {
+        $('.cpage').removeClass('cpage'); // 다른 페이지의 cpage 클래스 제거
+        $('#board_all').addClass('cpage'); // 현재 페이지에 cpage 클래스 추가
+    }
+});
+
+$('#game1, #game2, #game3, #game4, #game5').click(function() {
+    var gameId = $(this).attr('id').replace('game', ''); // 클릭된 게임 버튼의 ID에서 숫자 부분 추출
+    currentGameId = parseInt(gameId); // 현재 게임 ID 설정
+    searchTxt = null; // 검색어 초기화
+    updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
+    $('.cpage').removeClass('cpage'); // cpage 클래스 제거
+    $(this).addClass('cpage'); // 클릭된 게임 버튼에 cpage 클래스 추가
+});
 		
 		$('#sub_menu').on('change', function() {
 		    let selectedValue = $(this).val();

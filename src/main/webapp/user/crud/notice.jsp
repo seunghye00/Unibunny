@@ -35,7 +35,7 @@
 									<div class="sub_box">
 										<div style="padding: 3px;"></div>
 										<ul>
-											<li class="sub_title"><a href="/list.notice">공지사항</a></li>
+											<li class="sub_title"><a class="cpage" href="/list.notice">공지사항</a></li>
 										</ul>
 										<div style="padding: 5px;"></div>
 										<ul>

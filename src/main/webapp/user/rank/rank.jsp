@@ -31,11 +31,11 @@
 							</div>
 							<div class="dropdown-btn">Game</div>
 							<div class="game_list">
-								<a href="javascript:;" title="게임1로 이동" gamelistNum=1>FlappyCirby</a>
-								<a href="javascript:;" title="게임2로 이동" gamelistNum=2>호두러너</a> <a
-									href="javascript:;" title="게임3로 이동" gamelistNum=3>게임3</a> <a
-									href="javascript:;" title="게임4로 이동" gamelistNum=4>게임4</a> <a
-									href="javascript:;" title="게임5로 이동" gamelistNum=5>게임5</a>
+								<a href="javascript:;" class="cpage" title="게임1로 이동" gamelistNum=1>FlappyCirby</a>
+								<a href="javascript:;" title="게임2로 이동" gamelistNum=2>4096</a> <a
+									href="javascript:;" title="게임3로 이동" gamelistNum=3>슛팅월넛</a> <a
+									href="javascript:;" title="게임4로 이동" gamelistNum=4>블랙잭</a> <a
+									href="javascript:;" title="게임5로 이동" gamelistNum=5>Doodle Jump</a>
 							</div>
 							<div class="top_rank">
 								<div class="podium">
@@ -94,18 +94,33 @@
 	
 	let gameLinks = document.querySelectorAll('.game_list a');
 	let gamelistNum = 1;
-    gameLinks.forEach(function(link) {
-        link.addEventListener('click', function(event) {
-        	gamelistNum = this.getAttribute('gamelistNum');
-        	loadTableData();
-            if (gamelistNum) {
-                console.log('Clicked game ID:', gamelistNum);
-                // 여기서 gameId를 사용하여 추가 작업을 수행할 수 있습니다.
-            } else {
-                console.log('No gameId attribute found for this link');
-            }
-        });
-    });
+
+	gameLinks.forEach(function(link) {
+	    link.addEventListener('click', function(event) {
+	        // Prevent the default link behavior if needed
+	        event.preventDefault();
+	        
+	        // Update gamelistNum
+	        gamelistNum = this.getAttribute('gamelistNum');
+	        
+	        // Load the table data
+	        loadTableData();
+	        
+	        if (gamelistNum) {
+	            // Remove 'cpage' class from all game links
+	            gameLinks.forEach(function(link) {
+	                link.classList.remove('cpage');
+	            });
+	            
+	            // Add 'cpage' class to the clicked link
+	            this.classList.add('cpage');
+	            
+	            // Additional actions using gamelistNum if needed
+	        } else {
+	            // Handle cases where gamelistNum is not set
+	        }
+	    });
+	});
     // AJAX 요청을 통해 데이터를 가져오는 함수
     function loadTableData() {
         $.ajax({

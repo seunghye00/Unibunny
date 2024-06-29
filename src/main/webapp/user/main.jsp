@@ -40,7 +40,7 @@
           </div>
           <div class="swiper-slide">
             <a href="javascript:;" class="swiper_bg">
-              <img src="../image/main/Asset6.png" alt="">
+              <img src="../image/main/main_banner4.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
@@ -100,7 +100,7 @@
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/gameimg4.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
@@ -110,12 +110,12 @@
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/dummy_game.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/dummy_game2.png" alt="">
                       </a>
                     </div>
                   </div>

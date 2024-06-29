@@ -14,6 +14,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="../js/manager.js"></script>
 </head>
 
 <body>
@@ -35,13 +36,10 @@
 				<li class="snb_cate"><a href="javascript:;"> <span>게임
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>회원
+				<li class="snb_cate"><a href="/manager/member.jsp"> <span>회원
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>게시판
-							관리</span>
-				</a></li>
-				<li class="snb_cate"><a href="/admin_list.notice"> <span>공지사항
+				<li class="snb_cate"><a href="/manager/board.jsp"> <span class="cpage">게시판
 							관리</span>
 				</a></li>
 				<li class="snb_cate"><a href="javascript:;"> <span>고객센터</span>
@@ -78,8 +76,7 @@
 								<div class="ntc select_subject">
 									<ul>
 										<li><a href="/manager/notice.jsp" class="cpage">공지사항</a></li>
-										<li><a href="/manager/community.jsp">전체
-												게시물</a></li>
+										<li><a href="/manager/community.jsp">전체 게시물</a></li>
 										<li><a href="/manager/keepboard.jsp">임시보관 게시물</a></li>
 										<li><a href="/manager/keepreply.jsp">임시보관 댓글</a></li>
 									</ul>
@@ -103,29 +100,7 @@
 										<div class="table_col">
 											<span>조회수</span>
 										</div>
-									</div>
-									<c:forEach var="notice" items="${noticelist}">
-										<div class="table_row">
-											<div class="table_col">
-												<span>${notice.notice_seq}</span>
-											</div>
-											<div class="table_col">
-												<a
-													href="admin_detail.notice?notice_seq=${notice.notice_seq}">${notice.title}</a>
-											</div>
-
-											<div class="table_col">
-												<span>${notice.nickname}</span>
-											</div>
-											<div class="table_col">
-												<span><fmt:formatDate value="${notice.write_date}"
-														pattern="yyyy-MM-dd" /></span>
-											</div>
-											<div class="table_col">
-												<span>${notice.view_count}</span>
-											</div>
-										</div>
-									</c:forEach>
+									</div>			
 								</div>
 								<div class="ntc">
 									<div class="ntc btn">
@@ -133,65 +108,18 @@
 											onclick="location.href='ntc_write.jsp'">작성하기</button>
 									</div>
 								</div>
-								<div class="pagination">
-									<a href="javascript:;" class="btn_prev btn_disabled"></a>
-									<c:forEach var="i" begin="1"
-										end="${record_total_count / record_count_per_page + 1}">
-										<a href="/admin_list.notice?cpage=${i}"
-											class="<c:if test="${i == cpage}">active_page</c:if>">${i}</a>
-									</c:forEach>
-									<a href="javascript:;" class="btn_next"></a>
-								</div>
+								<div class="pagination"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 푸터 영역 -->
+			<jsp:include page="../common/footer.jsp" />
 		</div>
-		<div class="footer_area">
-			<div class="footer">
-				<div class="wrap">
-					<div class="footer_info">
-						<ul class="footer_link">
-							<li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
-							<li><a href="javascript:;">이용약관</a></li>
-						</ul>
-						<ul class="footer_address">
-							<li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호
-							</li>
-							<li>Tel : 010-5482-9107</li>
-						</ul>
-					</div>
-					<div class="footer_service">
-						<strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
-						<ul class="copy_desc">
-							<li class="footer_copy">Copyright Team HoduGwaja. All Right
-								Reserved</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let rows = document.querySelectorAll('.table_row:not(.table_header)');
-        let totalRows = rows.length;
-
-        // 행들을 배열로 변환하고 최신순으로 정렬
-        let sortedRows = Array.from(rows).sort((a, b) => {
-            let dateA = new Date(a.querySelector('.table_col:nth-child(4) span').textContent);
-            let dateB = new Date(b.querySelector('.table_col:nth-child(4) span').textContent);
-            return dateB - dateA; // 최신순으로 정렬
-        });
-
-        // 정렬된 순서대로 번호 재지정 및 화면에 다시 배치
-        sortedRows.forEach((row, index) => {
-            let numberCell = row.querySelector('.table_col:nth-child(1) span');
-            numberCell.textContent = index + 1;
-            row.parentNode.appendChild(row); // 다시 배치
-        });
-    });
-</script>
+	</div>
+	<script>
+  		get_community_list("notice", 1, "N");
+	</script>
 </body>
 
 </html>
