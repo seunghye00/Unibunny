@@ -59,7 +59,7 @@
 													</div>
 													<div class="btn_box">
 														<button class="write_btn" id="backs_btn" type="button"
-															onclick="location.href='admin_detail.notice'">목록</button>
+															onclick="location.href='/manager/notice.jsp'">목록</button>
 													</div>
 												</div>
 											</div>

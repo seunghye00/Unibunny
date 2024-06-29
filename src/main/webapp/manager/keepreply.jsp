@@ -14,27 +14,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script defer src="../js/manager.js"></script>
-<style type="text/css">
-.ntc_con_reply .keep .table_col:nth-child(1) {
-	width: 10%
-}
 
-.ntc_con_reply .keep .table_col:nth-child(2) {
-	width: 10%
-}
-
-.ntc_con_reply .keep .table_col:nth-child(3) {
-	width: 60%
-}
-
-.ntc_con_reply .keep .table_col:nth-child(4) {
-	width: 10%
-}
-
-.ntc_con_reply .keep .table_col:nth-child(5) {
-	width: 10%
-}
-</style>
 </head>
 
 <body>
@@ -56,13 +36,10 @@
 				<li class="snb_cate"><a href="javascript:;"> <span>게임
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>회원
+				<li class="snb_cate"><a href="/manager/member.jsp"> <span>회원
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>게시판
-							관리</span>
-				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>공지사항
+				<li class="snb_cate"><a href="/manager/board.jsp"> <span class="cpage">게시판
 							관리</span>
 				</a></li>
 				<li class="snb_cate"><a href="javascript:;"> <span>고객센터</span>
@@ -122,70 +99,24 @@
 											<span>작성자</span>
 										</div>
 										<div class="table_col">
-											<span>되돌리기</span>
+											<span>복구</span>
 										</div>
 									</div>
-									<c:forEach var="deletedreply" items="${deletedreply}">
-										<div class="table_row">
-											<div class="table_col">
-												<span>${deletedreply.board_seq}</span>
-											</div>
-											<div class="table_col">
-												<span>${deletedreply.reply_seq }</span>
-											</div>
-											<div class="table_col">
-												<span>${deletedreply.content }</span>
-											</div>
-											<div class="table_col">
-												<span>${deletedreply.nickname }</span>
-											</div>
-											<div class="table_col">
-												<button class="restore_btn" id="restore_reply"
-													data-reply-seq="${deletedreply.reply_seq}">복구</button>
-											</div>
-										</div>
-									</c:forEach>
-
 								</div>
-								<div class="pagination">
-									<a href="javascript:;" class="btn_prev btn_disabled"></a>
-									<c:forEach var="i" begin="1"
-										end="${record_total_count / record_count_per_page + 1}">
-										<a href="/deletedreply.reply?cpage=${i}"
-											class="<c:if test="${i == cpage}">active_page</c:if>">${i}</a>
-									</c:forEach>
-									<a href="javascript:;" class="btn_next"></a>
-								</div>
+								<div class="pagination"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 푸터 영역 -->
-		</div>
-		<div class="footer_area">
-			<div class="footer">
-				<div class="wrap">
-					<div class="footer_info">
-						<ul class="footer_link">
-							<li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
-							<li><a href="javascript:;">이용약관</a></li>
-						</ul>
-						<ul class="footer_address">
-							<li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호
-							</li>
-							<li>Tel : 010-5482-9107</li>
-						</ul>
-					</div>
-					<div class="footer_service">
-						<strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
-						<ul class="copy_desc">
-							<li class="footer_copy">Copyright Team HoduGwaja. All Right
-								Reserved</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+		  </div>
+		<jsp:include page="../common/footer.jsp" />
+	</div>
+	<script>
+		$(document).ready(function () {
+			get_community_list("reply" , 1 ,"Y");
+		});
+	</script>
 </body>
-
+	
 </html>
