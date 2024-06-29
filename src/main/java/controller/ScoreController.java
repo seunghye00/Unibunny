@@ -48,15 +48,16 @@ public class ScoreController extends HttpServlet {
 			}
 			else if(cmd.equals("/submit.score")) {
 				String user_id = (String)request.getSession().getAttribute("loginID");
+				int log_seq = Integer.parseInt(request.getParameter("log_seq"));
+				System.out.println(log_seq);
 				if(user_id != null) {
 					String nickname = MemberDAO.getInstance().getNickname(user_id);
 					// gamelog에 저장된 log_seq 저장
-					int log_seq = Integer.parseInt(request.getParameter("log_seq"));
-					System.out.println(log_seq);
 					// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
 					//System.out.println(request.getParameter("score"));
 					//System.out.println(request.getParameter("gameId"));
 					int score = Integer.parseInt(request.getParameter("score"));
+					System.out.println(score);
 					int gameId = Integer.parseInt(request.getParameter("gameId"));
 					dao.insertScore(new ScoreDTO(0,score,gameId,nickname, null, log_seq)); 
 				} else {

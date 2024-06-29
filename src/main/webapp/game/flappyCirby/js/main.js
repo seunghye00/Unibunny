@@ -169,7 +169,7 @@ game.States.play = function() {
 	};
 	this.startGame = function() {
 		// 게임 로그 전송
-		StartGameFunctions.sendScore(gameId);
+		StartGameFunctions.sendGameid(gameId);
 		this.gameSpeed = 200;
 		this.gameIsOver = false;
 		this.hasHitGround = false;
