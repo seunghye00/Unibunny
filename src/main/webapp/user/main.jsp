@@ -110,12 +110,12 @@
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/dummy_game.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
                       <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                        <img src="../image/main/dummy_game2.png" alt="">
                       </a>
                     </div>
                   </div>
