@@ -76,4 +76,38 @@ public class ScoreDAO {
 			}
 		}
 	}
+	
+	// 해당 회원의 score를 출력하는 메서드
+	public List<ScoreDTO> MyGameList(String id) throws Exception {
+		// 내부 조인으로 desc 순으로 번호 출력
+		String sql = "SELECT s.* " +
+                "FROM Score s " +
+                "INNER JOIN Member m ON s.NICKNAME = m.NICKNAME " +
+                "WHERE m.USERID = ? " +
+                "ORDER BY s.SCORE_SEQ DESC";
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql)) {
+
+			pstat.setString(1, id);
+
+			List<ScoreDTO> list = new ArrayList<>();
+			try (ResultSet rs = pstat.executeQuery()) {
+				while (rs.next()) {
+					int score_seq = rs.getInt("score_seq");
+					int score = rs.getInt("score");
+					int game_id = rs.getInt("game_id");
+					String nickname = rs.getString("nickname");
+					Timestamp end_time = rs.getTimestamp("end_time");
+					int log_seq = rs.getInt("log_seq");
+					
+					ScoreDTO scoreDTO = new ScoreDTO(score_seq, score, game_id, nickname, end_time, log_seq);
+							
+					list.add(scoreDTO);
+				}
+				return list;
+			}
+		}
+	}
+	
+	
+	
 }
