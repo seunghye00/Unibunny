@@ -64,6 +64,34 @@ public class BoardDAO {
 		}
 	}
 
+	// 삭제된 게시글 조회
+	// 최근순으로 리스트 정렬
+	public List<BoardDTO> selectListDeleteAll(int startNum, int endNum) throws Exception {
+		// 내부 조인으로 desc 순으로 번호 출력
+		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) as rown from board where delete_yn = 'Y') where rown between ? and ?";
+		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			List<BoardDTO> list = new ArrayList<>();
+			pstat.setInt(1, startNum);
+			pstat.setInt(2, endNum);
+			try (ResultSet rs = pstat.executeQuery();) {
+				while (rs.next()) {
+					int board_seq = rs.getInt("board_seq");
+					String title = rs.getString("title");
+					String content = rs.getString("content");
+					Timestamp write_date = rs.getTimestamp("write_date");
+					int view_count = rs.getInt("view_count");
+					String delete_yn = rs.getString("delete_yn");
+					Timestamp delete_date = rs.getTimestamp("delete_date");
+					int game_id = rs.getInt("game_id");
+					String nickname = rs.getString("nickname");
+					list.add(new BoardDTO(board_seq, title, content, write_date, view_count, delete_yn, delete_date,
+							game_id, nickname));
+				}
+				return list;
+			}
+		}
+	}
+
 	// 최근순으로 게임별 정렬
 	public List<BoardDTO> selectListAllGame(int startNum, int endNum, String game_num) throws Exception {
 		// 내부 조인으로 desc 순으로 번호 출력
@@ -276,18 +304,17 @@ public class BoardDAO {
 			return rs.getInt(1);
 		}
 	}
-	
+
 	// 삭제된 게시글 카운트 조회
-		public int getDeletedRecordCount() throws Exception {
-			String sql = "select count(*) from board where delete_yn = 'Y'";
-			try (Connection con = this.getconnection();
-					PreparedStatement pstat = con.prepareStatement(sql);
-					ResultSet rs = pstat.executeQuery();) {
-				rs.next();
-				return rs.getInt(1);
-			}
+	public int getDeletedRecordCount() throws Exception {
+		String sql = "select count(*) from board where delete_yn = 'Y'";
+		try (Connection con = this.getconnection();
+				PreparedStatement pstat = con.prepareStatement(sql);
+				ResultSet rs = pstat.executeQuery();) {
+			rs.next();
+			return rs.getInt(1);
 		}
-	
+	}
 
 	// 게임 별 카운트 조회
 	public int getRecordCountGame(String game_id) throws Exception {
@@ -304,13 +331,13 @@ public class BoardDAO {
 	// 검색 별 카운트 조회
 	public int getRecordCountSearch(String game_id, String title_txt) throws Exception {
 		String sql;
-		if(game_id == null || game_id.equals("game_id")) {
+		if (game_id == null || game_id.equals("game_id")) {
 			sql = "select count(*) from board where delete_yn = 'N' and (game_id = ? or 1=1) and title like ?";
 		} else {
 			sql = "select count(*) from board where delete_yn = 'N' and game_id = ? and title like ?";
 		}
 		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
-			
+
 			pstat.setString(1, game_id);
 			pstat.setString(2, "%" + title_txt.toLowerCase() + "%");
 			try (ResultSet rs = pstat.executeQuery();) {
@@ -496,7 +523,7 @@ public class BoardDAO {
 
 //	관리자가 deleteYN = Y인 삭제된게시물(임시 보관 게시물)을 조회하는 메서드
 	public List<BoardDTO> searchDeletedList(int startNum, int endNum) throws Exception {
-		
+
 		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) as rown from board where delete_yn = 'Y') where rown between ? and ?";
 		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			List<BoardDTO> list = new ArrayList<>();
@@ -524,43 +551,44 @@ public class BoardDAO {
 //	해당 게시물의 deleteYN을 Y로
 	public int updateToY(int board_id) throws Exception {
 
-			String sql = "update board set delete_yn = 'Y', delete_date = sysdate where board_seq = ?";
-			try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
+		String sql = "update board set delete_yn = 'Y', delete_date = sysdate where board_seq = ?";
+		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
 
-			) {
-			
-				pstat.setInt(1, board_id);
+		) {
 
-				return pstat.executeUpdate();
-			}
+			pstat.setInt(1, board_id);
+
+			return pstat.executeUpdate();
 		}
-	
+	}
+
 //	해당 게시물의 deleteYN을 N으로
 	public int updateToN(int board_id) throws Exception {
 
-			String sql = "update board set delete_yn = 'N' where board_seq = ?";
-			try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
+		String sql = "update board set delete_yn = 'N' where board_seq = ?";
+		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
 
-			) {
-			
-				pstat.setInt(1, board_id);
+		) {
 
-				return pstat.executeUpdate();
-			}
+			pstat.setInt(1, board_id);
+
+			return pstat.executeUpdate();
 		}
-	//	해당 게시물의 deleteYN을 N로
+	}
+
+	// 해당 게시물의 deleteYN을 N로
 	public int restoreUpdateToN(int board_seq) throws Exception {
 
-			String sql = "update board set delete_yn = 'N' where board_seq = ?";
-			try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
+		String sql = "update board set delete_yn = 'N' where board_seq = ?";
+		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);
 
-			) {
-				System.out.println(board_seq);
-				pstat.setInt(1, board_seq);
-				return pstat.executeUpdate();
-			}
+		) {
+			System.out.println(board_seq);
+			pstat.setInt(1, board_seq);
+			return pstat.executeUpdate();
 		}
-		
+	}
+
 	// 게시글 작성 메서드 후 해당 열의 seq 값을 받아오는 메서드
 	public int insert(int game_id, String title, String content, String writer) throws Exception {
 
@@ -580,7 +608,7 @@ public class BoardDAO {
 		}
 	}
 
-	// 게시글 조회수 증가 메서드 
+	// 게시글 조회수 증가 메서드
 	public int addViews(int board_seq) throws Exception {
 		String sql = "update board set view_count = view_count + 1 where board_seq = ?";
 		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
