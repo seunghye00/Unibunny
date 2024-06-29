@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.directory.SearchControls;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -197,24 +196,40 @@ public class BoardController extends HttpServlet {
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
+			} else if (cmd.equals("/write.board")) {
+				// 게시글 등록
+				int game_id = Integer.parseInt(request.getParameter("game_id"));
+				String title = request.getParameter("title");
+				String content = request.getParameter("content");
+				String writer = (String) request.getSession().getAttribute("loginID");
+				writer = "default";
+				int board_seq = dao.insert(game_id, title, content, writer);
+				Gson g = new Gson();
+				// 등록한 게시물의 seq 값 반환
+				pw.append(g.toJson(board_seq));
+			
 			} else if (cmd.equals("/user/detail.board")) {
 				// 게시글 상세 페이지
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				dao.addViews(board_seq);
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
 				String loginID = (String) request.getSession().getAttribute("loginID");
 				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
 				request.getRequestDispatcher("/user/crud/detail.jsp").forward(request, response);
+			
 			} else if (cmd.equals("/tryUpdate.board")) {
 				// 게시글 수정 페이지로 이동
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
 				request.getRequestDispatcher("/user/crud/modi_board.jsp").forward(request, response);
+			
 			} else if (cmd.equals("/update.board")) {
 				// 게시글 수정
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				System.out.println(request.getParameter("edit_content"));
 				dao.update(board_seq, request.getParameter("edit_title"), request.getParameter("edit_content"));
 				response.sendRedirect("/user/detail.board?board_seq=" + board_seq);
+			
 			} else if (cmd.equals("/delete.board")) {
 				// 게시글 삭제
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
@@ -229,6 +244,7 @@ public class BoardController extends HttpServlet {
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
+			
 			} else if (cmd.equals("/myboard.board")) {
 				String id = (String) request.getSession().getAttribute("loginID");
 				System.out.println("진입");
