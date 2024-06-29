@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +12,6 @@ import com.google.gson.Gson;
 
 import dao.GameLogDAO;
 import dao.MemberDAO;
-import dto.ScoreDTO;
 
 
 @WebServlet("*.gamelog")
@@ -34,7 +32,6 @@ public class GameLogController extends HttpServlet {
 		try {
 			if(cmd.equals("/submit.gamelog")){
 				String user_id = (String)request.getSession().getAttribute("loginID");
-				System.out.println(user_id);
 				String nickname = "guest";
 				if(user_id != null) {
 					nickname = MemberDAO.getInstance().getNickname(user_id);
@@ -43,8 +40,10 @@ public class GameLogController extends HttpServlet {
 				int log_seq = dao.insertGameLog(gameID, nickname);
 				
 				System.out.println(log_seq);
-				// gamelog에 저장된 log_seq submit.score에 전달 
-				response.sendRedirect("/submit.score?log_seq=" + log_seq);
+				// JSON 응답 생성
+                LogSeqResponse logSeqResponse = new LogSeqResponse(log_seq);
+                String jsonResponse = g.toJson(logSeqResponse);
+                response.getWriter().write(jsonResponse);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -55,5 +54,22 @@ public class GameLogController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		doGet(request, response);
 	}
+	
+	 // 응답 객체를 위한 클래스
+    class LogSeqResponse {
+        private int log_seq;
+        
+        public LogSeqResponse(int log_seq) {
+            this.log_seq = log_seq;
+        }
+
+        public int getLog_seq() {
+            return log_seq;
+        }
+
+        public void setLog_seq(int log_seq) {
+            this.log_seq = log_seq;
+        }
+    }
 
 }

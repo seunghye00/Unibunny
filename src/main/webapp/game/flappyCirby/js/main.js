@@ -169,7 +169,7 @@ game.States.play = function() {
 	};
 	this.startGame = function() {
 		// 게임 로그 전송
-		StartGameFunctions.sendScore(gameId);
+		StartGameFunctions.sendGameid(gameId);
 		this.gameSpeed = 200;
 		this.gameIsOver = false;
 		this.hasHitGround = false;
@@ -215,11 +215,14 @@ game.States.play = function() {
 	};
 
 	this.gameOver = function(show_text) {
+		
 		this.gameIsOver = true;
 		this.stopGame();
 		if (show_text) this.showGameOverText();
 	};
 	this.showGameOverText = function() {
+		// 점수 전송
+		EndGameFunctions.sendScore(this.score, gameId);
 		this.scoreText.destroy();
 		game.bestScore = game.bestScore || 0;
 		if (this.score > game.bestScore) game.bestScore = this.score;
@@ -268,9 +271,7 @@ game.States.play = function() {
 		scoreboard.anchor.setTo(0.5, 0);
 		replayBtn.anchor.setTo(0.5, 0);
 		this.gameOverGroup.y = 30;
-
-		// 점수 전송
-		EndGameFunctions.sendScore(this.score, gameId);
+		
 	};
 
 	this.resetPipe = function(topPipeY, bottomPipeY) {
