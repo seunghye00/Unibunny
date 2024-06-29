@@ -56,7 +56,28 @@ public class NoticeDAO {
 			}
 		}
 	}
-
+	// 게시판 게시글 최신순 조회
+		public List<NoticeDTO> selectListView (int startNum, int endNum) throws Exception {
+			// 내부 조인으로 desc 순으로 번호 출력
+			String sql = "select * from (select notice.*, row_number() over(order by view_count desc) rown from notice) where rown between ? and ?";
+			try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+				List<NoticeDTO> list = new ArrayList<>();
+				pstat.setInt(1, startNum);
+				pstat.setInt(2, endNum);
+				try (ResultSet rs = pstat.executeQuery();) {
+					while (rs.next()) {
+						int notice_seq = rs.getInt("notice_seq");
+						String title = rs.getString("title");
+						String content = rs.getString("content");
+						Timestamp write_date = rs.getTimestamp("write_date");
+						int view_count = rs.getInt("view_count");
+						String nickname = rs.getString("nickname");
+						list.add(new NoticeDTO(notice_seq, title, content, write_date, view_count, nickname));
+					}
+					return list;
+				}
+			}
+		}
 	// 전체 게시글 카운트 조회
 	public int getRecordCount() throws Exception {
 		String sql = "select count(*) from notice";

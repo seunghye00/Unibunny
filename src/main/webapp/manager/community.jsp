@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 
@@ -100,10 +101,10 @@
                             <div class="con">
                                 <div class="ntc select_subject">
                                     <ul>
-                                        <li><a href="../manager/notice.jsp">공지사항</a></li>
-                                        <li><a href="../manager/community.jsp">전체 게시물</a></li>
-                                        <li><a href="../manager/keepboard.jsp">임시보관 게시물</a></li>
-                                        <li><a href="../manager/keepreply.jsp">임시보관 댓글</a></li>
+                                        <li><a href="/admin_list.notice">공지사항</a></li>
+                                        <li><a href="/admin_list.board" class="cpage">전체 게시물</a></li>
+                                        <li><a href="/deletedboard.board">임시보관 게시물</a></li>
+                                        <li><a href="/deletedreply.reply">임시보관 댓글</a></li>
                                     </ul>
                                 </div>
 
@@ -126,79 +127,32 @@
                                             <span>조회수</span>
                                         </div>
                                     </div>
-                                    <a href="index.html" class="table_row_link">
-                                        <div class="table_row">
-                                            <div class="table_col"><span>1</span></div>
-                                            <div class="table_col"><span>블랙알리오</span></div>
-                                            <div class="table_col"><span>관리자</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
-                                        </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
-                                        <div class="table_row">
-                                            <div class="table_col"><span>2</span></div>
-                                            <div class="table_col"><span>고추마요</span></div>
-                                            <div class="table_col"><span>관리자</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
-                                        </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
-                                        <div class="table_row">
-                                            <div class="table_col"><span>3</span></div>
-                                            <div class="table_col"><span>콘소메이징</span></div>
-                                            <div class="table_col"><span>관리자</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
-                                        </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
-                                        <div class="table_row">
-                                            <div class="table_col"><span>4</span></div>
-                                            <div class="table_col"><span>크크크</span></div>
-                                            <div class="table_col"><span>관리자</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
-                                        </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
-                                        <div class="table_row">
-                                            <div class="table_col"><span>5</span></div>
-                                            <div class="table_col"><span>크랑이</span></div>
-                                            <div class="table_col"><span>관리자</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
-                                        </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
-                                        <div class="table_row">
-                                            <div class="table_col"><span>6</span></div>
-                                            <div class="table_col"><span>하하핫</span></div>
-                                            <div class="table_col"><span>관리자</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
-                                        </div>
-                                    </a>
-                                    <a href="index.html" class="table_row_link">
-                                        <div class="table_row">
-                                            <div class="table_col"><span>7</span></div>
-                                            <div class="table_col"><span>푸하핫</span></div>
-                                            <div class="table_col"><span>관리자</span></div>
-                                            <div class="table_col"><span>24.06.24</span></div>
-                                            <div class="table_col"><span>1</span></div>
-                                        </div>
-                                    </a>
+                                
+                                    
+                                    <c:forEach var="board" items="${boardlist}">
+                          				<div class="table_row">
+                           				<div class="table_col"><span>${board.board_seq}</span></div>
+                            			<div class="table_col"><a href="/manager/detail.board?board_seq=${board.board_seq}">${board.title}</a></div>
+                            			<div class="table_col"><span>${board.nickname}</span></div>
+                            			<div class="table_col"><span><fmt:formatDate value="${board.write_date}" pattern="yyyy.MM.dd" /></span></div>
+                            			<div class="table_col"><span>${board.view_count}</span></div>
+                         				 </div>
+                        			</c:forEach>
+                                    
+                                    
+                                    
+                                    
                                 </div>
                                 <div class="pagination">
-                                    <a href="javascript:;" class="btn_prev btn_disabled"></a>
-                                    <a href="javascript:;" class="active_page">1</a>
-                                    <a href="javascript:;">2</a>
-                                    <a href="javascript:;">3</a>
-                                    <a href="javascript:;">4</a>
-                                    <a href="javascript:;">5</a>
-                                    <a href="javascript:;" class="btn_next"></a>
-                                </div>
+									<a href="javascript:;" class="btn_prev btn_disabled"></a>
+									<c:forEach var="i" begin="1"
+										end="${record_total_count / record_count_per_page + 1}">
+										<a href="/admin_list.board?cpage=${i}"
+											class="<c:if test="${i == cpage}">active_page</c:if>">${i}</a>
+									</c:forEach>
+									<a href="javascript:;" class="btn_next"></a>
+								</div>
+                                
                             </div>
                         </div>
                     </div>

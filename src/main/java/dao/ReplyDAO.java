@@ -11,7 +11,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-
+import dto.BoardDTO;
+import dto.MemberDTO;
 import dto.ReplyDTO;
 
 public class ReplyDAO {
@@ -164,6 +165,79 @@ public class ReplyDAO {
 	    }
 	    return 0;  // 기본값으로 0을 반환
 	}
+	
+	
+	// 삭제된 댓글의 수 조회
+	public int getDeletedReplyCount() throws Exception {
+	    String sql = "select count(*) from reply where delete_yn = 'Y'";
+	    try (
+	        Connection con = this.getConnection();  
+	        PreparedStatement pstat = con.prepareStatement(sql);
+	    ) {
+	        try (ResultSet rs = pstat.executeQuery()) {
+	            if (rs.next()) {  // rs.next()를 호출하여 커서를 첫 번째 행으로 이동
+	                return rs.getInt(1);
+	            } else {
+	                return 0;  // 결과가 없는 경우 0을 반환
+	            }
+	        }
+	    }
+	}
+	
+	
+//	관리자가 deleteYN = Y인 삭제된게시물(임시 보관 게시물)을 조회하는 메서드
+	public List<ReplyDTO> searchDeletedReply(int startNum, int endNum) throws Exception {
+		
+		String sql = "select * from (select reply.*, row_number() over(order by reply_seq desc) as rown from reply where delete_yn = 'Y') where rown between ? and ?";
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			List<ReplyDTO> list = new ArrayList<>();
+			pstat.setInt(1, startNum);
+			pstat.setInt(2, endNum);
+			try (ResultSet rs = pstat.executeQuery();) {
+				while (rs.next()) {
+					int reply_seq = rs.getInt("reply_seq");
+					String nickname = rs.getString("nickname");
+					String content = rs.getString("content");
+					Timestamp write_date = rs.getTimestamp("write_date");
+					int board_seq = rs.getInt("board_seq");
+					String delete_yn = rs.getString("delete_yn");
+					
+					list.add(new ReplyDTO(reply_seq, nickname, content, write_date, board_seq, delete_yn));
+				}
+				return list;
+			}
+		}
+	}
+	
+	
+//	해당 댓글의 deleteYN을 Y로
+	public int updateToY(int reply_id) throws Exception {
+
+			String sql = "update reply set delete_yn = 'Y' where reply_seq = ?";
+			try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);
+
+			) {
+			
+				pstat.setInt(1, reply_id);
+
+				return pstat.executeUpdate();
+			}
+		}
+	
+	
+//	해당 댓글의 deleteYN을 N으로
+	public int updateToN(int reply_id) throws Exception {
+
+			String sql = "update reply set delete_yn = 'N' where reply_seq = ?";
+			try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);
+
+			) {
+			
+				pstat.setInt(1, reply_id);
+
+				return pstat.executeUpdate();
+			}
+		}
 	
 	
 	

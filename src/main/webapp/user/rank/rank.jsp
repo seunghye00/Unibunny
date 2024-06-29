@@ -38,21 +38,17 @@
 									href="javascript:;" title="게임5로 이동" gamelistNum=5>게임5</a>
 							</div>
 							<div class="top_rank">
-								매월 첫째 주 월요일 업데이트 !!!
 								<div class="podium">
 									<div class="second">
 										<div class="second-2">
-											<img src="../../image/rank/silver.png" alt="로고">
 										</div>
 									</div>
 									<div class="first">
 										<div class="first-2">
-											<img src="../../image/rank/gold.png" alt="로고">
 										</div>
 									</div>
 									<div class="third">
 										<div class="third-2">
-											<img src="../../image/rank/bronze.png" alt="로고">
 										</div>
 									</div>
 									<img src="../../image/rank/podium.png" alt="단상">
@@ -79,30 +75,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="footer_area">
-			<div class="footer">
-				<div class="wrap">
-					<div class="footer_info">
-						<ul class="footer_link">
-							<li class="personal"><a href="javascript:;">개인정보처리방침</a></li>
-							<li><a href="javascript:;">이용약관</a></li>
-						</ul>
-						<ul class="footer_address">
-							<li>서울 동대문구 한빛로 12 <br class="mob_visible">5층 505호
-							</li>
-							<li>Tel : 010-5482-9107</li>
-						</ul>
-					</div>
-					<div class="footer_service">
-						<strong class="service_center"><span class="ico_chat">고객센터</span>010-5482-9107</strong>
-						<ul class="copy_desc">
-							<li class="footer_copy">Copyright Team HoduSnack. All Right
-								Reserved</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
+		<jsp:include page="../../common/footer.jsp" />
 	</div>
 	<script>
 	// select로 변경 될 예정

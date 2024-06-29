@@ -148,39 +148,37 @@
 				</div>
 			</div>
 		</div>
-		<script>
-			$(document)
-					.ready(
-							function() {
-								$('#summernote').summernote({
-									height : 500, // 에디터 높이 설정
-									minHeight : null, // 최소 높이 설정
-									maxHeight : null, // 최대 높이 설정
-									focus : true
-								// 초기 포커스 설정
-								});
+<script>
+	$(document).ready(function() {
+		$('#summernote').summernote({
+			height: 500, // 에디터 높이 설정
+			minHeight: null, // 최소 높이 설정
+			maxHeight: null, // 최대 높이 설정
+			focus: true // 초기 포커스 설정
+		});
 
-								$('#file')
-										.on(
-												'click',
-												function() {
-													var fileInputWrapper = $('<div class="file-input-wrapper">'
-															+ '<input type="file" name="file">'
-															+ '<button type="button" class="removeFileInput">-</button>'
-															+ '</div>');
-													$('#filebox').append(
-															fileInputWrapper);
-												});
+		var fileClickCount = 0;
+		var maxFiles = 5;
 
-								$('#filebox').on(
-										'click',
-										'.removeFileInput',
-										function() {
-											$(this).closest(
-													'.file-input-wrapper')
-													.remove();
-										});
-							});
-		</script>
+		$('#file').on('click', function() {
+			if (fileClickCount < maxFiles) {
+				var fileInputWrapper = $('<div class="file-input-wrapper">' +
+					'<input type="file" name="file">' +
+					'<button type="button" class="removeFileInput">-</button>' +
+					'</div>');
+				$('#filebox').append(fileInputWrapper);
+				fileClickCount++;
+			} else {
+				alert('최대 5개의 파일만 업로드할 수 있습니다.');
+			}
+		});
+
+		$('#filebox').on('click', '.removeFileInput', function() {
+			$(this).closest('.file-input-wrapper').remove();
+			fileClickCount--;
+		});
+	});
+</script>
+
 </body>
 </html>

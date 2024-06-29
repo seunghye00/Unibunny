@@ -19,6 +19,7 @@ import commons.Pagination;
 import dao.BoardDAO;
 import dao.MemberDAO;
 import dto.BoardDTO;
+import dto.NoticeDTO;
 
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
@@ -111,12 +112,10 @@ public class BoardController extends HttpServlet {
 						result.put("cpage", cpage);
 						result.put("record_count_per_page", Pagination.recordCountPerPage);
 						result.put("navi_count_per_page", Pagination.naviCountPerPage);
-						System.out.println(search_Txt);
 						result.put("record_total_count",
 								(game_Id == null || game_Id.equals("game_id")) ?
 								        (search_Txt == null ? dao.getRecordCount() : dao.getRecordCountSearch(game_Id, search_Txt)) :
 								        dao.getRecordCountGame(game_Id));
-						System.out.println(search_Txt);
 						String jsonResult = gson.toJson(result);
 						pw.print(jsonResult);
 					} else if (list != null) {
@@ -317,30 +316,77 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("activeTab", "bookmarks");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
 
-			} else if (cmd.equals("/deletedboard.board")) {
-
-//				System.out.println("진입");
-//				String pcpage = request.getParameter("cpage");
-//				if( pcpage == null) {
-//					pcpage = "1";
-//				}
-//				int cpage = Integer.parseInt(pcpage);
-//				List<BoardDTO> list = dao.selectListAll(cpage * pagination.recordCountPerPage - (pagination.recordCountPerPage -1),
-//						cpage * pagination.recordCountPerPage);
-//				request.setAttribute("boardlist", list);
-//				request.setAttribute("cpage", cpage);
-//				request.setAttribute("record_count_per_page", pagination.recordCountPerPage);
-//				request.setAttribute("navi_count_per_page", pagination.naviCountPerPage);
-//				request.setAttribute("record_total_count", dao.getRecordCount());
-
-				List<BoardDTO> list = dao.searchDeletedList();
-				request.setAttribute("deletedlist", list);
-				System.out.println("가져오기 완료");
-//				request.setAttribute("activeTab", "draft-posts");
+			}else if(cmd.equals("/admin_list.board")) {
+				
+				// 리스트 최신순 정렬 정렬
+				// 현재 페이지 조회
+				String pcpage = request.getParameter("cpage");
+				if (pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				// 리스트 배열에 dto 값 저장
+				List<BoardDTO> list = dao.selectListAll(
+						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+						cpage * Pagination.recordCountPerPage);
+				
+				request.setAttribute("boardlist", list);
+				request.setAttribute("cpage", cpage);
+				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
+				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
+				request.setAttribute("record_total_count", dao.getRecordCount());
 				request.getRequestDispatcher("/manager/community.jsp").forward(request, response);
-
+				
+				
+			}else if (cmd.equals("/manager/detail.board")) {
+				// 게시글 상세 페이지
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				request.setAttribute("dto", dao.selectBySeq(board_seq));
+				String loginID = (String) request.getSession().getAttribute("loginID");
+				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
+				request.getRequestDispatcher("/manager/detail.jsp").forward(request, response);
+			} else if (cmd.equals("/deletedboard.board")) {
+				
+				String pcpage = request.getParameter("cpage");
+				if (pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				// 리스트 배열에 dto 값 저장
+				List<BoardDTO> list = dao.searchDeletedList(
+						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+						cpage * Pagination.recordCountPerPage);
+				
+				request.setAttribute("deletedboard", list);
+				request.setAttribute("cpage", cpage);
+				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
+				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
+				request.setAttribute("record_total_count", dao.getDeletedRecordCount());
+				request.getRequestDispatcher("/manager/keepboard.jsp").forward(request, response);
+				
+			}else if(cmd.equals("/deleteYN_N_To_Y.board")) {
+				
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				
+				BoardDAO.getInstance().updateToY(board_seq);
+				
+				response.sendRedirect("/admin_list.board");
+				
+			}else if(cmd.equals("/deleteYN_Y_To_N.board")) {
+				
+				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				
+				BoardDAO.getInstance().updateToN(board_seq);
+				
+				response.sendRedirect("/admin_list.board");
+			} else if(cmd.equals("/restoreUpdateToN.board")) {
+				// 임시 보관된 게시물 서블릿
+				int board_seq = Integer.parseInt(request.getParameter("boardSeq"));
+				System.out.println(board_seq);
+				BoardDAO.getInstance().restoreUpdateToN(board_seq);
+				// 다시 임시 보관된 게시물 페이지로 이동
+				response.sendRedirect("/deletedboard.board");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");

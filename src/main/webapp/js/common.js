@@ -170,25 +170,7 @@ $(document).ready(function() {
 	});
 });
 
-// 커뮤니티 게시판 테이블 조회 스크립트
-// 테이블 담을 컨테이너 변수
-let listContainer = $('.crud_table');
-let listNoticeContainer = $('.notice_table');
-// 초기 값 설정
-let currentGameId = 'game_id';
-//  search값 넘기기 위한 변수
-let searchTxt;
-// 페이지네이션 변수 설정
-let cpage,
-	record_total_count,
-	record_count_per_page = 10,
-	navi_count_per_page = 5;
 
-// 초기 페이지네이션 변수 설정
-function initPaginationVariables(cpageParam, recordTotalCount) {
-	cpage = cpageParam;
-	record_total_count = recordTotalCount;
-}
 
 // 최신순 버튼 클릭 시
 $('#recent_btn').on('click', function() {

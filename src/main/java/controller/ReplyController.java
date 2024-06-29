@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import commons.Pagination;
 import dao.MemberDAO;
 import dao.ReplyDAO;
+import dto.BoardDTO;
 import dto.ReplyDTO;
 
 
@@ -78,6 +81,38 @@ public class ReplyController extends HttpServlet {
 				// 댓글 삭제
 				int reply_seq = Integer.parseInt(request.getParameter("reply_seq"));
 				dao.deleteBySeq(reply_seq);
+			} else if(cmd.equals("/deletedreply.reply")) {
+				
+				String pcpage = request.getParameter("cpage");
+				if (pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				// 리스트 배열에 dto 값 저장
+				List<ReplyDTO> list = dao.searchDeletedReply(
+						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+						cpage * Pagination.recordCountPerPage);
+				
+				request.setAttribute("deletedreply", list);
+				request.setAttribute("cpage", cpage);
+				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
+				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
+				request.setAttribute("record_total_count", dao.getDeletedReplyCount());
+				request.getRequestDispatcher("/manager/keepreply.jsp").forward(request, response);
+				
+				
+			} else if(cmd.equals("/deleteYN_N_To_Y.reply")) {
+				
+				int reply_seq = Integer.parseInt(request.getParameter("reply_seq"));
+				
+				ReplyDAO.getInstance().updateToY(reply_seq);
+				
+			} else if(cmd.equals("/deleteYN_Y_To_N.reply")) {
+				
+				int reply_seq = Integer.parseInt(request.getParameter("replySeq"));
+				
+				ReplyDAO.getInstance().updateToN(reply_seq);
+				response.sendRedirect("/deletedreply.reply");
 			}
 			
 		} catch(Exception e) {

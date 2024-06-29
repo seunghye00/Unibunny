@@ -39,12 +39,14 @@ public class NoticeController extends HttpServlet {
 
 		try {
 			if (cmd.equals("/list.notice")) {
+				// 리스트 최신순 정렬 정렬
+				// 현재 페이지 조회
 				String pcpage = request.getParameter("cpage");
 				if (pcpage == null) {
 					pcpage = "1";
 				}
 				int cpage = Integer.parseInt(pcpage);
-
+				// 리스트 배열에 dto 값 저장
 				List<NoticeDTO> list = dao.selectListAll(
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
@@ -58,7 +60,7 @@ public class NoticeController extends HttpServlet {
 					result.put("cpage", cpage);
 					result.put("record_count_per_page", Pagination.recordCountPerPage);
 					result.put("navi_count_per_page", Pagination.naviCountPerPage);
-					result.put("record_total_count", dao.getRecordCount());
+					result.put("record_total_count", NoticeDAO.getInstance().getRecordCount());
 
 					String jsonResult = gson.toJson(result);
 					PrintWriter out = response.getWriter();
@@ -70,7 +72,44 @@ public class NoticeController extends HttpServlet {
 					request.setAttribute("cpage", cpage);
 					request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
 					request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
-					request.setAttribute("record_total_count", dao.getRecordCount());
+					request.setAttribute("record_total_count", NoticeDAO.getInstance().getRecordCount());
+					request.getRequestDispatcher("/user/crud/notice.jsp").forward(request, response);
+				}
+			} else if (cmd.equals("/view.notice")) {
+				// 조회수 순으로 정렬
+				// 현재 페이지 조회
+				String pcpage = request.getParameter("cpage");
+				if (pcpage == null) {
+					pcpage = "1";
+				}
+				int cpage = Integer.parseInt(pcpage);
+				// 리스트 배열에 dto 값 저장
+				List<NoticeDTO> list = dao.selectListView(
+						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
+						cpage * Pagination.recordCountPerPage);
+
+				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+
+					Map<String, Object> result = new HashMap<>();
+					result.put("data", list);
+					result.put("cpage", cpage);
+					result.put("record_count_per_page", Pagination.recordCountPerPage);
+					result.put("navi_count_per_page", Pagination.naviCountPerPage);
+					result.put("record_total_count", NoticeDAO.getInstance().getRecordCount());
+
+					String jsonResult = gson.toJson(result);
+					PrintWriter out = response.getWriter();
+					out.print(jsonResult);
+					out.flush();
+					out.close();
+				} else {
+					request.setAttribute("noticelist", list);
+					request.setAttribute("cpage", cpage);
+					request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
+					request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
+					request.setAttribute("record_total_count", NoticeDAO.getInstance().getRecordCount());
 					request.getRequestDispatcher("/user/crud/notice.jsp").forward(request, response);
 				}
 			} else if (cmd.equals("/write.notice")) {
