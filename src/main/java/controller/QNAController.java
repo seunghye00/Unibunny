@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import commons.Pagination;
 import dao.QNADAO;
 import dao.QNAFilesDAO;
 import dto.QNADTO;
@@ -94,7 +96,26 @@ public class QNAController extends HttpServlet {
                 } else {
                     response.sendRedirect("/index.jsp");
                 }
-            }
+            } else if(cmd.equals("/myqna.qna")) {
+				
+				String id = (String)request.getSession().getAttribute("loginID");
+
+				System.out.println("회원의 북마크 조회");
+				
+				List<QNADTO> list = QNADAO.getInstance().searchMyQNAList(id);
+				System.out.println("북마크 게시글 조회 완료");
+				
+				request.setAttribute("myqna", list);	
+				request.setAttribute("activeTab", "questions");
+				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
+				
+				
+				
+			}
+
+            
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("/index.jsp");
