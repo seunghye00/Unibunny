@@ -221,7 +221,7 @@ game.States.play = function() {
 		if (show_text) this.showGameOverText();
 	};
 	this.showGameOverText = function() {
-				// 점수 전송
+		// 점수 전송
 		EndGameFunctions.sendScore(this.score, gameId);
 		this.scoreText.destroy();
 		game.bestScore = game.bestScore || 0;
