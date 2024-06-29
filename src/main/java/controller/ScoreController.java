@@ -62,7 +62,20 @@ public class ScoreController extends HttpServlet {
 					System.out.println("로그인이 안된 사용자입니다.");
 				}
 				
+            } else if(cmd.equals("/mylist.score")) {
+            	
+            	String id = (String) request.getSession().getAttribute("loginID");
+                System.out.println("Session loginID: " + id);
+
+                List<ScoreDTO> list = dao.MyGameList(id);  
+
+                request.setAttribute("myscore", list);
+                request.setAttribute("activeTab", "myScore");
+                System.out.println("Setting myscore attribute with list size: " + list.size());
+                request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
             }
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
