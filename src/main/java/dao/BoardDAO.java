@@ -3,6 +3,8 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -498,6 +500,34 @@ public class BoardDAO {
 				}
 				return list;
 			}
+		}
+	}
+
+	// 게시글 작성 메서드 후 해당 열의 seq 값을 받아오는 메서드
+	public int insert(int game_id, String title, String content, String writer) throws Exception {
+
+		String sql = "insert into board values (board_seq.nextval, ?, ? , sysdate, 0, 'N', null, ? , ?)";
+
+		try (Connection con = this.getconnection();
+				PreparedStatement pstat = con.prepareStatement(sql, new String[] { "board_seq" })) {
+			pstat.setString(1, title);
+			pstat.setString(2, content);
+			pstat.setInt(3, game_id);
+			pstat.setString(4, writer);
+			pstat.executeUpdate();
+			try (ResultSet rs = pstat.getGeneratedKeys();) {
+				rs.next();
+				return rs.getInt(1);
+			}
+		}
+	}
+
+	// 게시글 조회수 증가 메서드 
+	public int addViews(int board_seq) throws Exception {
+		String sql = "update board set view_count = view_count + 1 where board_seq = ?";
+		try (Connection con = this.getconnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
+			pstat.setInt(1, board_seq);
+			return pstat.executeUpdate();
 		}
 	}
 
