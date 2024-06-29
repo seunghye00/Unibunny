@@ -427,7 +427,7 @@ function get_member_list(grade, cpage) {
 			}
 
 			// '다음 페이지로' 버튼
-			let next_btn = $("<a>", { "class": "page_navi arr_navi end_arr", "href": "javascript:get_member_list(`" + grade + "`, " + (end_navi - 1) + ")" });
+			let next_btn = $("<a>", { "class": "page_navi arr_navi end_arr", "href": "javascript:get_member_list(`" + grade + "`, " + (end_navi + 1) + ")" });
 			let next_img = $("<img>", { "class": "navi_icon end_navi", "src": "../image/icon/pagination.png", "alt": "end navi 로고" });
 			if (!need_next) {
 				next_btn.addClass("disabled");
@@ -514,7 +514,7 @@ function get_member_list(grade, cpage) {
 			});
 
 		} else {
-			// 검색한 결과가 없을 경우
+			// 조회 결과가 없을 경우
 			let row = $("<div>", { "class": "table_row" });
 			row.css({
 				"font-size": "16px",
@@ -522,12 +522,10 @@ function get_member_list(grade, cpage) {
 				"color": "var(--color-white)",
 				"padding": "15px"
 			});
-			row.text("검색한 결과가 존재하지 않습니다");
+			row.text("등록된 회원이 존재하지 않습니다");
 			$(".list_table").append(row);
 		}
 	});
-
-
 }
 
 
@@ -865,3 +863,157 @@ $(document).on("click", "#restore_reply", function() {
 		});
 	}
 });
+
+
+// 게시판 관리 페이지의  목록을 불러오는 메서드 
+function get_community_list(choice, cpage, deleted) {
+	// 테이블 헤더 영역을 제외한 데이터 비우기
+	$(".list_table>a").remove();
+
+	if (choice === undefined) {
+		// 페이지 첫 시작이거나 변수가 정의되지 않았을 경우 초기값 설정
+		choice = "board";
+	}
+	if (cpage === undefined) {
+		// 페이지 첫 시작이거나 변수가 정의되지 않았을 경우 초기값 설정
+		cpage = 1;
+	}
+	if (deleted === undefined) {
+		// 페이지 첫 시작이거나 변수가 정의되지 않았을 경우 초기값 설정
+		deleted = "N";
+	}
+	// 해당 등급의 총 회원 수를 불러오기 위한 코드
+	$.ajax({
+		url: "/manager/total." + choice,
+		dataType: "json",
+		data : { deleted : deleted }
+	}).done(function(resp) {
+		let record_count_per_page = resp.record_count_per_page;
+		let navi_count_per_page = resp.navi_count_per_page;
+		let record_total_count = resp.total_data;
+
+		if (record_total_count > 0) {
+			// 필요한 Page navigator의 수
+			let page_total_count = 0;
+
+			if (record_total_count % record_count_per_page > 0) {
+				// 전체 게시글을 한 페이지 당 노출할 게시글 수로 나눴을 때 나머지가 존재한다면 navi 수는 (전체 게시글 / 한 페이지 당 게시글 + 1)
+				page_total_count = record_total_count / record_count_per_page + 1;
+			} else {
+				// 나머지가 존재하지 않는다면 navi 수는 (전체 게시글 / 한 페이지 당 게시글)
+				page_total_count = record_total_count / record_count_per_page;
+			}
+
+			// 현재 페이지의 Page Navigator들 중 시작 번호
+			let start_navi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+			// 현재 페이지의 Page Navigator들 중 끝 번호
+			let end_navi = start_navi + navi_count_per_page - 1;
+
+			if (end_navi > page_total_count) {
+				end_navi = page_total_count;
+			}
+
+			let need_next = end_navi < page_total_count;
+			let need_prev = start_navi > 1;
+
+			// 페이지네이션 HTML 생성
+			let page_nation = $(".pagination");
+			page_nation.empty();
+
+			// '이전 페이지로' 버튼
+			let prev_btn = $("<a>", { "class": "page_navi arr_navi start_arr", "href": "javascript:get_community_list(`" + choice + "`, " + (start_navi - 1) + ", '" + deleted + "')" });
+			let prev_img = $("<img>", { "class": "navi_icon start_navi", "src": "../image/icon/pagination.png", "alt": "start navi 로고" });
+			if (!need_prev) {
+				prev_btn.addClass("disabled");
+			}
+			prev_btn.append(prev_img);
+			page_nation.append(prev_btn);
+
+
+			// 페이지 번호
+			for (let i = start_navi; i <= end_navi; i++) {
+				let page_navi = $("<a>", { "class": "page_navi", "href": "javascript:get_community_list(`" + choice + "`, " + i + ", '" + deleted + "')" });
+				page_navi.text(i);
+				if (cpage == i) {
+					page_navi.addClass("active");
+				}
+				page_nation.append(page_navi);
+			}
+
+			// '다음 페이지로' 버튼
+			let next_btn = $("<a>", { "class": "page_navi arr_navi end_arr", "href": "javascript:get_community_list(`" + choice + "`, " + (end_navi + 1) + ", '" + deleted + "')" });
+			let next_img = $("<img>", { "class": "navi_icon end_navi", "src": "../image/icon/pagination.png", "alt": "end navi 로고" });
+			if (!need_next) {
+				next_btn.addClass("disabled");
+			}
+			next_btn.append(next_img);
+			page_nation.append(next_btn);
+
+			$.ajax({
+				url: "/manager/list." + choice,
+				dataType: "json",
+				data: {
+					cpage: cpage,
+					deleted : deleted
+				}
+			}).done(function(resp) {
+				let index = cpage * 10 - 9;
+				for (let i of resp) {
+					let a = $("<a>", { "href" : "/manager/detail.jsp?board_seq="+resp.board_seq});
+					let row = $("<div>", { "class": "table_row" });
+					let col = $("<div>", { "class" : "table_col" });
+					let span = $("<span>");
+					
+					// table_col 첫번째 요소에 index 값 삽입
+					span.text(index++);
+					col.append(span);
+					row.append(col);
+
+					// table_col 두번째 요소에 title 값 삽입
+					col = $("<div>", { "class": "table_col title" });
+					span = $("<span>");
+					span.text(i.title);
+					col.append(span);
+					row.append(col);
+
+					// table_col 세번째 요소에 nickname 값 삽입
+					col = $("<div>", { "class": "table_col" });
+					span = $("<span>");
+					span.text(i.nickname);
+					col.append(span);
+					row.append(col);
+
+					// table_col 네번째 요소에 write_date 값 삽입
+					col = $("<div>", { "class": "table_col" });
+					span = $("<span>");
+					span.text(i.write_date);
+					col.append(span);
+					row.append(col);
+
+					// table_col 다섯번째 요소에 member_seq 및 버튼 삽입
+					col = $("<div>", { "class": "table_col" });
+					span = $("<span>");
+					span.text(i.view_count);
+					col.append(span);
+					row.append(col);
+
+					// 테이블에 데이터 출력
+					a.append(row)
+					$(".list_table").append(a);
+				}
+			});
+			
+		} else {
+			// 검색한 결과가 없을 경우
+			let row = $("<div>", { "class": "table_row" });
+			row.css({
+				"font-size": "16px",
+				"justify-content": "center",
+				"color": "var(--color-white)",
+				"padding": "15px"
+			});
+			row.text("등록된 결과가 존재하지 않습니다");
+			$(".list_table").append(row);
+		}
+	});
+}

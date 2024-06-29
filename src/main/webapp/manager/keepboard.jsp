@@ -15,7 +15,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script defer src="../../js/manager.js"></script>
+<script defer src="../js/manager.js"></script>
 </head>
 
 <body>
@@ -79,11 +79,11 @@
 							<div class="con">
 								<div class="ntc select_subject">
 									<ul>
-										<li><a href="/admin_list.notice">공지사항</a></li>
-										<li><a href="/admin_list.board">전체 게시물</a></li>
-										<li><a href="/deletedboard.board" class="cpage">임시보관
+										<li><a href="/manager/notice.jsp">공지사항</a></li>
+										<li><a href="/manager/community.jsp">전체
 												게시물</a></li>
-										<li><a href="/deletedreply.reply">임시보관 댓글</a></li>
+										<li><a href="/manager/keepboard.jsp" class="cpage">임시보관 게시물</a></li>
+										<li><a href="/manager/keepreply.jsp">임시보관 댓글</a></li>
 									</ul>
 								</div>
 

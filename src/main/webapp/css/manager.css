@@ -1017,7 +1017,7 @@
 
 /* 관리자 공지사항 */
 .body_area .con .ntc.select_subject::after {
-  width: 75%;
+  width: 85%;
 }
 
 .ntc .table_col:nth-child(1) {

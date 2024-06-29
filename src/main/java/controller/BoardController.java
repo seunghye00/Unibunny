@@ -316,29 +316,42 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("activeTab", "bookmarks");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
 
-			}else if(cmd.equals("/admin_list.board")) {
-				
-				// 리스트 최신순 정렬 정렬
-				// 현재 페이지 조회
-				String pcpage = request.getParameter("cpage");
-				if (pcpage == null) {
-					pcpage = "1";
+			} else if (cmd.equals("/manager/total.board")) {
+				// 관리자 페이지에서 전체 게시글의 수를 구하는 경로
+
+				String delete_yn = request.getParameter("deleted");
+
+				Map<String, Object> result = new HashMap<>();
+				if (delete_yn.equals("N")) {
+					result.put("total_data", dao.getRecordCount());
+				} else {
+					result.put("total_data", dao.getDeletedRecordCount());
 				}
-				int cpage = Integer.parseInt(pcpage);
-				// 리스트 배열에 dto 값 저장
-				List<BoardDTO> list = dao.selectListAll(
-						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-						cpage * Pagination.recordCountPerPage);
-				
-				request.setAttribute("boardlist", list);
-				request.setAttribute("cpage", cpage);
-				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
-				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
-				request.setAttribute("record_total_count", dao.getRecordCount());
-				request.getRequestDispatcher("/manager/community.jsp").forward(request, response);
-				
-				
-			}else if (cmd.equals("/manager/detail.board")) {
+				result.put("record_count_per_page", Pagination.recordCountPerPage);
+				result.put("navi_count_per_page", Pagination.naviCountPerPage);
+				Gson g = new Gson();
+				pw.append(g.toJson(result));
+
+			} else if (cmd.equals("/manager/list.board")) {
+				// 관리자 페이지에서 해당 페이지의 게시글의 목록를 구하는 경로
+
+				String delete_yn = request.getParameter("deleted");
+				String cpage = request.getParameter("cpage");
+
+				if (cpage == null) {
+					cpage = "1";
+				}
+				int pcpage = Integer.parseInt(cpage);
+				int start_num = pcpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1);
+				int end_num = pcpage * Pagination.recordCountPerPage;
+
+				if (delete_yn.equals("N")) {
+					pw.append(gson.toJson(dao.selectListAll(start_num, end_num)));
+				} else {
+					pw.append(gson.toJson(dao.selectListDeleteAll(start_num, end_num)));
+				}
+
+			} else if (cmd.equals("/manager/detail.board")) {
 				// 게시글 상세 페이지
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
