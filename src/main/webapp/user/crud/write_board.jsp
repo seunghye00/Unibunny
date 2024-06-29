@@ -90,15 +90,25 @@
       <div class="body for_pc">
         <div class="wrap">
           <div class="con_wrap">
-            <div class="con write_con">
+            <div class="con write_con board_write">
               <div class="title_box">
                 <p class="title">게시글 작성하기</p>
+                <select name="choi_menu" id="choi_menu" class="choi_menu">
+                	<option value="">-------- 카테고리 --------</option>
+					<option value="1">게임1</option>
+					<option value="2">게임2</option>
+					<option value="3">게임3</option>
+					<option value="4">게임4</option>
+					<option value="5">게임5</option>
+				</select>
               </div>
+              <form action="/upload.boardfile"  method="post" enctype="multipart/form-data" id="board_write_form">
               <div class="list_table">
                 <div class="table_row table_header">
                   <span>제목</span>
                   <div style="padding: 5px;"></div>
-                  <input type="text">
+                  <input type="text" id="insert_title">
+                  <input type="hidden" id="board_seq" name="board_seq">
                 </div>
                 <div style="padding: 10px;"></div>
                 <div id="addfile">
@@ -113,9 +123,10 @@
                 </div>
               </div>
               <div class="btns">
-                <button class="write_btn">작성하기</button>
-                <button class="list_btn" onclick="location.href='/index/crud/list.html'">돌아가기</button>
+                <button class="write_btn" type="button" id="write_board">작성하기</button>
+                <button class="list_btn" onclick="location.href='/user/crud/list.jsp'" type="button">돌아가기</button>
               </div>
+              </form>
             </div>
           </div>
         </div>
@@ -145,24 +156,7 @@
     </div>
     <script>
       $(document).ready(function () {
-        $('#summernote').summernote({
-          height: 500,                 // 에디터 높이 설정
-          minHeight: null,             // 최소 높이 설정
-          maxHeight: null,             // 최대 높이 설정
-          focus: true                  // 초기 포커스 설정
-        });
-
-        $('#file').on('click', function () {
-          var fileInputWrapper = $('<div class="file-input-wrapper">' +
-            '<input type="file" name="file">' +
-            '<button type="button" class="removeFileInput">-</button>' +
-            '</div>');
-          $('#filebox').append(fileInputWrapper);
-        });
-
-        $('#filebox').on('click', '.removeFileInput', function () {
-          $(this).closest('.file-input-wrapper').remove();
-        });
+       	editer_setting();
       });
     </script>
 </body>

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.directory.SearchControls;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -197,24 +196,40 @@ public class BoardController extends HttpServlet {
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
+			} else if (cmd.equals("/write.board")) {
+				// 게시글 등록
+				int game_id = Integer.parseInt(request.getParameter("game_id"));
+				String title = request.getParameter("title");
+				String content = request.getParameter("content");
+				String writer = (String) request.getSession().getAttribute("loginID");
+				writer = "default";
+				int board_seq = dao.insert(game_id, title, content, writer);
+				Gson g = new Gson();
+				// 등록한 게시물의 seq 값 반환
+				pw.append(g.toJson(board_seq));
+			
 			} else if (cmd.equals("/user/detail.board")) {
 				// 게시글 상세 페이지
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
+				dao.addViews(board_seq);
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
 				String loginID = (String) request.getSession().getAttribute("loginID");
 				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
 				request.getRequestDispatcher("/user/crud/detail.jsp").forward(request, response);
+			
 			} else if (cmd.equals("/tryUpdate.board")) {
 				// 게시글 수정 페이지로 이동
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
 				request.getRequestDispatcher("/user/crud/modi_board.jsp").forward(request, response);
+			
 			} else if (cmd.equals("/update.board")) {
 				// 게시글 수정
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				System.out.println(request.getParameter("edit_content"));
 				dao.update(board_seq, request.getParameter("edit_title"), request.getParameter("edit_content"));
 				response.sendRedirect("/user/detail.board?board_seq=" + board_seq);
+			
 			} else if (cmd.equals("/delete.board")) {
 				// 게시글 삭제
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
@@ -229,6 +244,7 @@ public class BoardController extends HttpServlet {
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
+			
 			} else if (cmd.equals("/myboard.board")) {
 				String id = (String) request.getSession().getAttribute("loginID");
 				System.out.println("진입");
@@ -300,29 +316,42 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("activeTab", "bookmarks");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
 
-			}else if(cmd.equals("/admin_list.board")) {
-				
-				// 리스트 최신순 정렬 정렬
-				// 현재 페이지 조회
-				String pcpage = request.getParameter("cpage");
-				if (pcpage == null) {
-					pcpage = "1";
+			} else if (cmd.equals("/manager/total.board")) {
+				// 관리자 페이지에서 전체 게시글의 수를 구하는 경로
+
+				String delete_yn = request.getParameter("deleted");
+
+				Map<String, Object> result = new HashMap<>();
+				if (delete_yn.equals("N")) {
+					result.put("total_data", dao.getRecordCount());
+				} else {
+					result.put("total_data", dao.getDeletedRecordCount());
 				}
-				int cpage = Integer.parseInt(pcpage);
-				// 리스트 배열에 dto 값 저장
-				List<BoardDTO> list = dao.selectListAll(
-						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-						cpage * Pagination.recordCountPerPage);
-				
-				request.setAttribute("boardlist", list);
-				request.setAttribute("cpage", cpage);
-				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
-				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
-				request.setAttribute("record_total_count", dao.getRecordCount());
-				request.getRequestDispatcher("/manager/community.jsp").forward(request, response);
-				
-				
-			}else if (cmd.equals("/manager/detail.board")) {
+				result.put("record_count_per_page", Pagination.recordCountPerPage);
+				result.put("navi_count_per_page", Pagination.naviCountPerPage);
+				Gson g = new Gson();
+				pw.append(g.toJson(result));
+
+			} else if (cmd.equals("/manager/list.board")) {
+				// 관리자 페이지에서 해당 페이지의 게시글의 목록를 구하는 경로
+
+				String delete_yn = request.getParameter("deleted");
+				String cpage = request.getParameter("cpage");
+
+				if (cpage == null) {
+					cpage = "1";
+				}
+				int pcpage = Integer.parseInt(cpage);
+				int start_num = pcpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1);
+				int end_num = pcpage * Pagination.recordCountPerPage;
+
+				if (delete_yn.equals("N")) {
+					pw.append(gson.toJson(dao.selectListAll(start_num, end_num)));
+				} else {
+					pw.append(gson.toJson(dao.selectListDeleteAll(start_num, end_num)));
+				}
+
+			} else if (cmd.equals("/manager/detail.board")) {
 				// 게시글 상세 페이지
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				request.setAttribute("dto", dao.selectBySeq(board_seq));

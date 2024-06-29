@@ -349,10 +349,10 @@ public class MemberDAO {
 	public int toChageGrade(String grade, String user_id) throws Exception {
 		// 해당 회원의 현재 등급 확인 후 변경할 등급을 변수로 저장
 		String change_grade = "";
-		if (grade.equals("일반회원")) {
-			change_grade = "블랙리스트";
-		} else if (grade.equals("블랙리스트")) {
-			change_grade = "일반회원";
+		if (grade.equals("회원")) {
+			change_grade = "정지된 회원";
+		} else if (grade.equals("정지된 회원")) {
+			change_grade = "회원";
 		}
 		String sql = "update member set memcode = (select memcode from memcode where grade = ?) where userid = ?";
 
