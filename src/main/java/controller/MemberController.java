@@ -506,6 +506,10 @@ public class MemberController extends HttpServlet {
 			        MemberDAO.getInstance().updateProfileImage(userid, sysName);
 			    }
 			    
+			    Map<String, String> map = mdao.getAccount(userid);
+
+                session.setAttribute("profileImg", map.get("profile_img"));
+                
 			    // 파일 업로드 완료 후 마이페이지로 리디렉션
 			    response.sendRedirect("/mypage.member");
 			

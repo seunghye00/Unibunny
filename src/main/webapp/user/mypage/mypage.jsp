@@ -234,7 +234,7 @@
                 </form>
 
                 <!-- 게임 기록 확인 -->
-                <div class="profile_contents_wrap">
+                <div class="profile_contents_wrap" id="myScore">
                   <div class="profile_title">게임 기록 확인</div>
 
                   <select class="tab-dropdown dropdown">
@@ -268,6 +268,16 @@
                           <div class="table_col"><span>점수</span></div>
                           <div class="table_col"><span>플레이 날짜</span></div>
                         </div>
+                        
+                        <c:forEach var="dto" items="${myscore}">
+                          <div class="table_row">
+                            <div class="table_col"><span>${dto.score_seq}</span></div>
+                            <div class="table_col"><span>${dto.game_id}</span></div>
+                            <div class="table_col"><span>${dto.score}</span></div>
+                            <div class="table_col"><span><fmt:formatDate value="${dto.end_time}" pattern="yyyy.MM.dd" /></span></div>
+                          </div>
+                        </c:forEach>
+                        
                         
                       </div>
                     </div>
@@ -589,6 +599,9 @@
               document.getElementById("btnMyAccount").addEventListener("click", function() {
                 window.location.href = "/account.member";
               });
+              document.getElementById("btnMyRecord").addEventListener("click", function() {
+                  window.location.href = "/mylist.score";
+                });
               document.getElementById("btnMyPosts").addEventListener("click", function() {
                 window.location.href = "/myboard.board";
               });
