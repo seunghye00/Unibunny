@@ -42,7 +42,7 @@
 											<li><a href="javascript:;" class="cpage" id="board_all">전체 게시글</a></li>
 											<li><a href="javascript:;" id="game1">Flappy Cirby</a></li>
 											<li><a href="javascript:;" id="game2">4096</a></li>
-											<li><a href="javascript:;" id="game3">슛팅월넛</a></li>
+											<li><a href="javascript:;" id="game3">shooting walnut</a></li>
 											<li><a href="javascript:;" id="game4">블랙잭</a></li>
 											<li><a href="javascript:;" id="game5">Doodle Jump</a></li>
 										</ul>
@@ -53,7 +53,7 @@
 									<option value="board_all">전체 게시글</option>
 									<option value="game1">Flappy Cirby</option>
 									<option value="game2">4096</option>
-									<option value="game3">슛팅월넛</option>
+									<option value="game3">shooting walnut</option>
 									<option value="game4">블랙잭</option>
 									<option value="game5">Doodle Jump</option>
 								</select>

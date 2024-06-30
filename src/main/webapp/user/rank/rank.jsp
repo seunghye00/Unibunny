@@ -158,21 +158,24 @@
             $first2.empty(); // 기존 내용 지우기
             var $score = $('<p>').text(topData.score + '점');
             var $nickname = $('<p>').text(topData.nickname);
-            $first2.append($score).append($nickname);
+            var $rankimg= $('<img src="../../image/rank/gold.png" alt="로고">')
+            $first2.append($score).append($nickname).append($rankimg);
         } else if (i === 1) {
             // 두 번째 데이터를 .second-2에 추가
             var $second2 = $('.second-2');
             $second2.empty(); // 기존 내용 지우기
             var $score = $('<p>').text(topData.score + '점');
             var $nickname = $('<p>').text(topData.nickname);
-            $second2.append($score).append($nickname);
+            var $rankimg= $('<img src="../../image/rank/silver.png" alt="로고">')
+            $second2.append($score).append($nickname).append($rankimg);
         } else if (i === 2) {
             // 세 번째 데이터를 .third-2에 추가
             var $third2 = $('.third-2');
             $third2.empty(); // 기존 내용 지우기
             var $score = $('<p>').text(topData.score + '점');
             var $nickname = $('<p>').text(topData.nickname);
-            $third2.append($score).append($nickname);
+            var $rankimg= $('<img src="../../image/rank/bronze.png" alt="로고">')
+            $third2.append($score).append($nickname).append($rankimg);
         }
     }
 
