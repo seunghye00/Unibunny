@@ -99,7 +99,7 @@
                       </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="game_box">
+                      <a href="javascript:;" onclick="window.open('../game/BlackJack/index.jsp')" class="game_box">
                         <img src="../image/main/gameimg4.png" alt="">
                       </a>
                     </div>
