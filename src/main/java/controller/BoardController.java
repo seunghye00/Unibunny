@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 
 import commons.Pagination;
 import dao.BoardDAO;
+import dao.BoardFilesDAO;
 import dao.MemberDAO;
 import dto.BoardDTO;
 import dto.NoticeDTO;
@@ -227,25 +228,18 @@ public class BoardController extends HttpServlet {
 			} else if (cmd.equals("/update.board")) {
 				// 게시글 수정
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-				System.out.println(request.getParameter("edit_content"));
-				dao.update(board_seq, request.getParameter("edit_title"), request.getParameter("edit_content"));
-				response.sendRedirect("/user/detail.board?board_seq=" + board_seq);
-			
+				int result = dao.update(board_seq, request.getParameter("title"), request.getParameter("content"));
+				Gson g = new Gson();
+				// 수정한 게시물의 결과 값 반환
+				pw.append(g.toJson(result));
+				
 			} else if (cmd.equals("/delete.board")) {
 				// 게시글 삭제
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				dao.deleteBySeq(board_seq);
+				BoardFilesDAO.getInstance().deleteByBoardSeq(board_seq);
 				response.sendRedirect("/list.board");
-				String pcpage = request.getParameter("cpage");
-				if (pcpage == null) {
-					pcpage = "1";
-				}
-				int cpage = Integer.parseInt(pcpage);
-				List<BoardDTO> list = dao.selectListAll(
-						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-						cpage * Pagination.recordCountPerPage);
-				request.setAttribute("boardlist", list);
-			
+				
 			} else if (cmd.equals("/myboard.board")) {
 				String id = (String) request.getSession().getAttribute("loginID");
 				System.out.println("진입");

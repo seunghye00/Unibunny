@@ -602,7 +602,7 @@ function imageUploader(file, el) {
 	});
 }
 */
-// 게시글 작성 페이지에서 파일 첨부 버튼 클릭 시
+// 게시글 작성 & 수정 페이지에서 파일 첨부 버튼 클릭 시
 $("#addfile #file").on("click", function() {
 	// 현재 요소의 파일 갯수 확인 후 5개 이상 추가 방지	
 	if ($(".file-input-wrapper").length > 4) {
@@ -667,20 +667,40 @@ $('#edit_btn').on('click', function() {
 });
 
 // 게시글 수정 페이지에서 완료 버튼 클릭 시
-$('#update_btn').on('click', function(e) {
-	e.preventDefault();
+$("#update_board_btn").on("click", function() {
 
-	let trimmedHtml = $('#summernote').html().trim();
-	$('#summernote').html(trimmedHtml);
-	console.log($('#summernote').text());
-	$('#update_board').submit();
-	// return false;
+	if ($("#edit_title").val().trim() == "") {
+		alert("제목을 먼저 입력해주세요");
+		$("#edit_title").focus();
+		return false;
+	}
+	/*
+	if ($(".note-editable").text().trim() == "") {
+		alert("내용를 먼저 입력해주세요");
+		$(".note-editable").focus();
+		return false;
+	}*/
+	$.ajax({
+		url: '/update.board',
+		dataType: 'json',
+		data: {
+			board_seq : get_board_seq(),
+			title: $("#edit_title").val(),
+			content: "아오"
+		}
+	}).done(function(resp) {
+		console.log(resp)
+		 // 성공 시 form 제출
+		 $("#board_update_form").submit();
+	});
+	
+	
 });
 
 // 게시글 수정 페이지에서 취소 버튼 클릭 시
 $('#cancel_btn').on('click', function() {
 	if (confirm('수정하신 내용은 저장되지 않습니다.')) {
-		location.href = '/user/detail.board?board_seq=' + board_seq;
+		location.href = '/user/detail.board?board_seq=' + get_board_seq();
 	}
 });
 
@@ -762,7 +782,7 @@ function get_reply_likes(reply_seq) {
 	});
 }
 
-// 게시글의 파일 목록을 받아오는 메서드
+// 게시글 상세 페이지에서 파일 목록을 받아오는 메서드
 function get_file_list() {
 	console.log(get_board_seq());
 	$.ajax({
@@ -781,24 +801,55 @@ function get_file_list() {
 		file_list.empty();
 
 		for (let i of resp) {
-			let file = $('<div>', { class: 'files' });
-			let file_name = $('<button>', { class: 'down_file' });
+			let file = $('<div>', { "class": 'files' });
+			let file_name = $('<a>', { "href": '/download.boardfile?sysname=' + i.sysname + "&oriname=" + i.oriname });
+			file_name.css({ "display": "flex", "padding": "10px" });
 			file_name.text(i.oriname);
 			file.append(file_name);
 			file_list.append(file);
+		}
+	});
+}
 
-			file_name.off().on('click', function() {
-				console.log("click");
-				$.ajax({
-					url: '/download.boardfile',
-					dataType: 'json',
-					data: {
-						oriname: i.oriname,
-						sysname: i.sysname,
-					},
-				}).done(function(resp) {
-					console(resp);
-				});
+// 게시글 수정 페이지에서 파일 목록을 받아오는 메서드
+function get_files() {
+	console.log(get_board_seq());
+	$.ajax({
+		url: '/list.boardfile',
+		dataType: 'json',
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp) {
+		console.log(resp);
+		if (resp.length == 0) {
+			// 파일이 존재하지 않는 경우 메서드 종료
+			return false;
+		}
+
+		for (let i = 0; i < resp.length; i++) {
+
+			let file_input_wrapper = $("<div>", { "class": "file-input-wrapper" });
+			let input_file = $("<div>", {
+				"name": "file" + (i + 1),
+				"id": "file" + (i + 1)
+			});
+			input_file.text(resp[i].oriname);
+			let remove_btn = $("<button>", { "type": "button", "class": "remove_file_input" });
+			remove_btn.text("-");
+			file_input_wrapper.append(input_file, remove_btn);
+			$("#filebox").append(file_input_wrapper);
+
+			// 제거 버튼 클릭 시 해당 파일 선택 요소 삭제
+			$(".remove_file_input").off().on("click", function() {
+				if (confirm("정말로 삭제하시겠습니까 ? \n수정하기를 취소하셔도 파일 삭제는 유지됩니다.")) {
+					$.ajax({
+						url: '/delete.boardfile',
+						dataType: 'json',
+						data: {
+							sysname: $(this).prev().text()
+						}
+					});
+					$(this).closest('.file-input-wrapper').remove();
+				}
 			});
 		}
 	});
@@ -1127,12 +1178,12 @@ $('#back_btn').on('click', function() {
 
 // 게시글 작성 버튼 클릭 시
 $('#board_write_btn').on('click', function() {
-	
+
 	if ($(".header_my:nth-child(2) a").text().slice(0, -1) == "") {
 		alert("회원만 이용 가능한 서비스 입니다.");
 		return false;
 	}
-	
+
 	location.href = '/user/crud/write_board.jsp';
 });
 
