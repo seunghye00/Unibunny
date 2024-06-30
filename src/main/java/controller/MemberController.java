@@ -576,9 +576,15 @@ public class MemberController extends HttpServlet {
 				
 				print_writer.append(gson.toJson(mdao.searchMemAndSelectNtoM(start_num, end_num, grade, user_info)));
 				
-			}
-
-		} catch (Exception e) {
+			}else if (cmd.equals("/checkSession.member")) {
+	                if (request.getSession().getAttribute("loginID") != null) {
+	                    response.getWriter().write("logged_in");
+	                } else {
+	                    response.getWriter().write("logged_out");
+	                }
+	                return; // 이 부분에서 메서드를 종료합니다.
+	            }
+		}catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
 		}
