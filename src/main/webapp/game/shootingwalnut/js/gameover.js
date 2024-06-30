@@ -1,6 +1,7 @@
 class gameover extends Phaser.Scene {
     constructor() {
         super({ key: "gameover" });
+      	EndGameFunctions.sendScore(score,gameId)
     }
 
     preload() {
