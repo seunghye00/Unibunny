@@ -178,7 +178,7 @@ public class NoticeController extends HttpServlet {
 				result.put("navi_count_per_page", Pagination.naviCountPerPage);
 				response.getWriter().append(gson.toJson(result));
 
-			} else if (cmd.equals("/manager/list.notice")) {
+			} else if (cmd.equals("/admin/list.notice")) {
 				// 관리자 페이지에서 해당 페이지의 공지사항 목록를 구하는 경로
 
 				String cpage = request.getParameter("cpage");
@@ -214,7 +214,7 @@ public class NoticeController extends HttpServlet {
 					dao.increaseViewCount(Integer.parseInt(noticeSeq));
 					NoticeDTO notice = dao.getNoticeById(Integer.parseInt(noticeSeq));
 					request.setAttribute("notice", notice);
-					request.getRequestDispatcher("/manager/ntc_detail.jsp").forward(request, response);
+					request.getRequestDispatcher("/admin/ntc_detail.jsp").forward(request, response);
 				} else {
 					response.sendRedirect("/admin/notice.jsp");
 				}

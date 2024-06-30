@@ -64,8 +64,8 @@ public class FAQController extends HttpServlet {
                 // 관리자인지 사용자인지 확인 (여기서는 간단히 파라미터로 확인)
                 String userType = request.getParameter("userType");
                 
-                if ("manager".equals(userType)) {
-                    request.getRequestDispatcher("/manager/faq.jsp").forward(request, response);
+                if ("admin".equals(userType)) {
+                    request.getRequestDispatcher("/admin/faq.jsp").forward(request, response);
                 } else {
                     request.getRequestDispatcher("/user/crud/faq.jsp").forward(request, response);
                 }

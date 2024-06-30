@@ -67,11 +67,11 @@
 							<div class="con">
 								<div class="ntc select_subject">
 									<ul>
-										<li><a href="/manager/notice.jsp">공지사항</a></li>
-										<li><a href="/manager/community.jsp" class="cpage">전체
+										<li><a href="/admin/notice.jsp">공지사항</a></li>
+										<li><a href="/admin/community.jsp" class="cpage">전체
 												게시물</a></li>
-										<li><a href="/manager/keepboard.jsp">임시보관 게시물</a></li>
-										<li><a href="/manager/keepreply.jsp">임시보관 댓글</a></li>
+										<li><a href="/admin/keepboard.jsp">임시보관 게시물</a></li>
+										<li><a href="/admin/keepreply.jsp">임시보관 댓글</a></li>
 									</ul>
 								</div>
 
