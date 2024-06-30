@@ -172,355 +172,6 @@ $(document).ready(function() {
 
 
 
-// 최신순 버튼 클릭 시
-$('#recent_btn').on('click', function() {
-	let apiUrl = '/list.board';
-	updateUrlAndFetchData(apiUrl, 1, currentGameId);
-	$('#recent_btn, #likes_btn, #views_btn').removeClass('active');
-	$(this).addClass('active');
-});
-
-// 좋아요 버튼 클릭 시
-$('#likes_btn').on('click', function() {
-	let apiUrl = '/like.board';
-	updateUrlAndFetchData(apiUrl, 1, currentGameId);
-	$('#recent_btn, #likes_btn, #views_btn').removeClass('active');
-	$(this).addClass('active');
-});
-
-// 조회수 버튼 클릭 시
-$('#views_btn').on('click', function() {
-	let apiUrl = '/view.board';
-	updateUrlAndFetchData(apiUrl, 1, currentGameId);
-	$('#recent_btn, #likes_btn, #views_btn').removeClass('active');
-	$(this).addClass('active');
-});
-
-// 게임 선택 및 전체 보기 버튼 클릭 시 이벤트 처리
-$('#board_all').click(function() {
-	currentGameId = 'game_id';
-	updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-});
-$('#game1').click(function() {
-	currentGameId = 1; // 현재 게임 ID를 1로 설정
-	updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-});
-$('#game2').click(function() {
-	currentGameId = 2; // 현재 게임 ID를 2로 설정
-	updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-});
-$('#game3').click(function() {
-	currentGameId = 3; // 현재 게임 ID를 3로 설정
-	updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-});
-$('#game4').click(function() {
-	currentGameId = 4; // 현재 게임 ID를 4로 설정
-	updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-});
-$('#game5').click(function() {
-	currentGameId = 5; // 현재 게임 ID를 5로 설정
-	updateUrlAndFetchData('/list.board', 1, currentGameId); // 최신순 목록 불러오기
-});
-
-// 클릭 이벤트 핸들러
-$('#list_search_btn').on('click', function() {
-	let apiUrl = '/search.board';
-	searchTxt = $('#search_input').val();
-	console.log(searchTxt);
-	updateUrlAndFetchData(apiUrl, 1, currentGameId, searchTxt);
-	$('#search_input').attr('value', '');
-});
-
-// 엔터 키 이벤트 핸들러
-$('#search_input').on('keypress', function(event) {
-	if (event.key === 'Enter' || event.keyCode === 13) {
-		let apiUrl = '/search.board';
-		searchTxt = $('#search_input').val();
-		console.log(searchTxt);
-		updateUrlAndFetchData(apiUrl, 1, currentGameId, searchTxt);
-		$('#search_input').attr('value', '');
-	}
-});
-//
-
-$('#sub_menu').on('change', function() {
-	// 선택된 옵션의 값 가져오기
-	let selectedValue = $(this).val();
-
-	// 선택된 옵션 값에 따라 분기 처리
-	if (selectedValue === 'board_all') {
-		currentGameId = 'game_id';
-		updateUrlAndFetchData('/list.board', 1, currentGameId);
-	} else if (selectedValue === 'notice') {
-		// 공지사항을 선택한 경우, 해당 페이지로 이동
-		window.location.href = '/list.notice';
-	} else if (selectedValue.startsWith('game')) {
-		// 게임을 선택한 경우, 해당 페이지로 이동
-		let gameId = selectedValue.replace('game', '');
-		currentGameId = gameId;
-		updateUrlAndFetchData('/list.board', 1, currentGameId);
-	} else {
-		// 기타 경우, 기본 페이지로 이동
-		window.location.href = '/list.board';
-	}
-});
-
-// 데이터 가져오고 테이블 렌더링 함수
-function fetchAndRenderData(apiUrl, page, gameId, search_txt) {
-	if (gameId == 'default') {
-		// 정렬 기준이 dafault면 최신순으로 설정
-		gameId = 'gameId';
-	}
-	$.ajax({
-		url: apiUrl,
-		method: 'POST',
-		dataType: 'json',
-		data: {
-			cpage: page,
-			recordCountPerPage: record_count_per_page,
-			gameId: gameId,
-			searchTxt: searchTxt
-		}, // 페이지 번호를 쿼리 파라미터로 전달
-	})
-		.done(function(resp) {
-			console.log(resp); // 받은 데이터 확인
-
-			// 페이지네이션 변수 초기화
-			initPaginationVariables(page, resp.record_total_count);
-
-			// 기존의 목록 컨테이너를 비웁니다.
-			listContainer.empty();
-
-			// 테이블의 헤더 부분 생성
-			let headerRow = $('<div>').addClass('table_row table_header');
-			let headerCol1 = $('<div>')
-				.addClass('table_col mob_hidden')
-				.append($('<span>').text('번호'));
-			let headerCol2 = $('<div>')
-				.addClass('table_col')
-				.append($('<span>').text('제목'));
-			let headerCol3 = $('<div>')
-				.addClass('table_col mob_hidden')
-				.append($('<span>').text('작성자'));
-			let headerCol4 = $('<div>')
-				.addClass('table_col mob_hidden')
-				.append($('<span>').text('작성일'));
-			let headerCol5 = null;
-			let headerCol6 = null;
-
-			// 버튼에 따라 추가되는 열 처리
-			if (apiUrl === '/list.board') {
-				headerCol5 = $('<div>')
-					.addClass('table_col mob_hidden views_column')
-					.append($('<span>').text('조회수'));
-			} else if (apiUrl === '/like.board') {
-				headerCol5 = $('<div>')
-					.addClass('table_col mob_hidden likes_column')
-					.append($('<span>').text('추천수'));
-			} else if (apiUrl === '/view.board') {
-				headerCol5 = $('<div>')
-					.addClass('table_col mob_hidden views_column')
-					.append($('<span>').text('조회수'));
-			}
-
-			headerRow.append(
-				headerCol1,
-				headerCol2,
-				headerCol3,
-				headerCol4,
-				headerCol5,
-				headerCol6
-			);
-			listContainer.append(headerRow);
-
-			// 데이터 반복 처리
-			if (Array.isArray(resp.data)) {
-				let startNumber = (page - 1) * record_count_per_page + 1; // 시작 번호 계산
-
-				for (let i = 0; i < resp.data.length; i++) {
-					let dto = resp.data[i];
-					let row = $('<div>').addClass('table_row');
-					let link = $('<a>').attr(
-						'href',
-						'/user/detail.board?board_seq=' + dto.board_seq
-					);
-					let col1 = $('<div>')
-						.addClass('table_col mob_hidden')
-						.append($('<span>').text(startNumber + i));
-					let col2 = $('<div>')
-						.addClass('table_col')
-						.append($('<span>').text(dto.title));
-					let col3 = $('<div>')
-						.addClass('table_col')
-						.append($('<span>').text(dto.nickname));
-					let col4 = $('<div>')
-						.addClass('table_col')
-						.append($('<span>').text(dto.write_date));
-					let col5 = null;
-					let col6 = null;
-
-					// 버튼에 따라 추가되는 열 처리
-					if (apiUrl === '/list.board') {
-						col5 = $('<div>')
-							.addClass('table_col mob_hidden views_column')
-							.append($('<span>').text(dto.view_count));
-					} else if (apiUrl === '/like.board') {
-						col5 = $('<div>')
-							.addClass('table_col mob_hidden likes_column')
-							.append($('<span>').text(dto.like_count));
-					} else if (apiUrl === '/view.board') {
-						col5 = $('<div>')
-							.addClass('table_col mob_hidden views_column')
-							.append($('<span>').text(dto.view_count));
-					}
-
-					link.append(col1, col2, col3, col4, col5, col6);
-					row.append(link);
-					listContainer.append(row);
-				}
-			} else {
-				console.error(
-					'데이터 형식이 올바르지 않습니다. 데이터가 배열이 아닙니다.'
-				);
-			}
-
-			// 페이지네이션 생성
-			renderPagination(apiUrl, page);
-
-			// URL 업데이트
-			updateUrl(apiUrl, page);
-
-			// 버튼의 active 클래스 설정
-			$('#recent_btn, #likes_btn, #views_btn').removeClass('active'); // 모든 버튼의 active 클래스 제거
-			if (apiUrl === '/list.board') {
-				$('#recent_btn').addClass('active');
-			} else if (apiUrl === '/like.board') {
-				$('#likes_btn').addClass('active');
-			} else if (apiUrl === '/view.board') {
-				$('#views_btn').addClass('active');
-			}
-		})
-
-}
-
-// 페이지네이션 생성 함수
-function renderPagination(apiUrl, currentPage) {
-	// 페이지네이션 초기 설정
-	let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
-	let startNavi =
-		Math.floor((currentPage - 1) / navi_count_per_page) * navi_count_per_page +
-		1;
-	let endNavi = startNavi + navi_count_per_page - 1;
-
-	if (endNavi > pageTotalCount) {
-		endNavi = pageTotalCount;
-	}
-
-	let needNext = endNavi < pageTotalCount;
-	let needPrev = startNavi > 1;
-
-	// 페이지네이션 HTML 생성
-	let pageNation = $('#pagination');
-	pageNation.empty();
-
-	// '첫 페이지로' 버튼
-	pageNation.append(
-		"<a class='page_navi arr_navi start_arr" +
-		(needPrev ? '' : ' disabled') +
-		"' href='" +
-		(needPrev ? '#' : 'javascript:void(0);') +
-		"' data-page='" +
-		(needPrev ? startNavi - 1 : '') +
-		"'><img class='navi_icon start_navi' src='../../image/icon/pagination.png' alt='start navi 로고'></a>"
-	);
-
-	// 페이지 번호
-	for (let i = startNavi; i <= endNavi; i++) {
-		if (currentPage === i) {
-			pageNation.append(
-				"<a class='page_navi active' href='javascript:void(0);' data-page='" +
-				i +
-				"'>" +
-				i +
-				'</a> '
-			);
-		} else {
-			pageNation.append(
-				"<a class='page_navi' href='#' data-page='" + i + "'>" + i + '</a> '
-			);
-		}
-	}
-
-	// '마지막 페이지로' 버튼
-	pageNation.append(
-		"<a class='page_navi arr_navi end_arr" +
-		(needNext ? '' : ' disabled') +
-		"' href='" +
-		(needNext ? '#' : 'javascript:void(0);') +
-		"' data-page='" +
-		(needNext ? endNavi + 1 : '') +
-		"'><img class='navi_icon end_navi' src='../../image/icon/pagination.png' alt='end navi 로고'></a>"
-	);
-}
-
-// 페이지네이션 클릭 이벤트 처리
-$(document).on('click', '.page_navi:not(.disabled)', function(event) {
-	event.preventDefault(); // 기본 동작 방지
-	let nextPage = $(this).data('page');
-	let currentApiUrl = getCurrentApiUrl();
-	let gameId = getCurrentGameId();
-	updateUrlAndFetchData(currentApiUrl, nextPage, gameId);
-});
-
-// 현재 선택된 API 경로 반환 함수
-function getCurrentApiUrl() {
-	if ($('#recent_btn').hasClass('active')) {
-		return '/list.board';
-	} else if ($('#likes_btn').hasClass('active')) {
-		return '/like.board';
-	} else if ($('#views_btn').hasClass('active')) {
-		return '/view.board';
-	}
-	// 기본적으로 최신순으로 설정
-	return '/list.board';
-}
-
-// 현재 선택된 게임 ID 반환 함수
-function getCurrentGameId() {
-	return currentGameId;
-}
-
-// URL 업데이트 및 데이터 가져오는 함수
-function updateUrlAndFetchData(apiUrl, page, gameId) {
-	updateUrl(apiUrl, page, gameId);
-	fetchAndRenderData(apiUrl, page, gameId);
-}
-// URL 업데이트 함수
-function updateUrl(apiUrl, page) {
-	history.pushState(null, null, '?api=' + apiUrl + '&page=' + page);
-}
-
-// 초기 페이지 로드 시 실행
-function listLoad() {
-	// 초기에 URL 파라미터에 따라 데이터 불러오기
-	let urlParams = new URLSearchParams(window.location.search);
-	let apiUrl = urlParams.has('api') ? urlParams.get('api') : '/list.board';
-	let page = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
-	currentGameId = urlParams.has('gameId') ? urlParams.get('gameId') : 'game_id';
-
-	fetchAndRenderData(apiUrl, page, currentGameId); // 초기에는 최신순 데이터를 가져오도록 설정
-
-	// 버튼의 active 클래스 설정
-	$('#recent_btn, #likes_btn, #views_btn').removeClass('active'); // 모든 버튼의 active 클래스 제거
-	if (apiUrl === '/list.board') {
-		$('#recent_btn').addClass('active');
-	} else if (apiUrl === '/like.board') {
-		$('#likes_btn').addClass('active');
-	} else if (apiUrl === '/view.board') {
-		$('#views_btn').addClass('active');
-	}
-}
-
 // 문서 로드 시 listLoad 함수 실행
 // $(document).ready(function() {
 //   listLoad();
@@ -559,143 +210,26 @@ $('#likes_btn').on('click', function() {
 	$('.views_list, .recent_list').hide();
 });*/
 
-// 서머노트 에디터 초기 설정
-function editer_setting() {
-	$('#summernote').summernote({
-		height: 600,                 // 에디터 높이 설정
-		minHeight: null,             // 최소 높이 설정
-		maxHeight: null,             // 최대 높이 설정
-		focus: true,                 // 초기 포커스 설정
-		lang: "ko-KR",				 // 한글 설정
-		// 이미지 업로드 시 실행할 함수
-		callbacks: {
-			onImageUpload: function(files, editor, welEditable) {
-				imageUploader(files[0], this);
-			}
-		}
-	});
-}
-
-// 서머노트 이미지 업로드 메서드
-function imageUploader(file, editor) {
-	
-	data = new FormData();
-	data.append('uploadFile', file);
-
-	$.ajax({
-		data: data,
-		type: "POST",
-		url: '/imageUpload.boardfile',
-		enctype: 'multipart/form-data',
-		cache: false,
-		contentType: false,
-		processData: false,
-		dataType: 'json',
-		success: function(data) {
-			$("#summernote").summernote('insertImage', data);
-		}
-	});
-}
-
-// 게시글 작성 & 수정 페이지에서 파일 첨부 버튼 클릭 시
-$("#addfile #file").on("click", function() {
-	// 현재 요소의 파일 갯수 확인 후 5개 이상 추가 방지	
-	if ($(".file-input-wrapper").length > 4) {
-		alert("파일 첨부는 5개까지만 가능합니다.");
-		return false;
-	}
-	let file_input_wrapper = $("<div>", { "class": "file-input-wrapper" });
-	let input_file = $("<input>", {
-		"type": "file",
-		"name": "file" + ($(".file-input-wrapper").length + 1),
-		"id": "file" + ($(".file-input-wrapper").length + 1)
-	});
-	let remove_btn = $("<button>", { "type": "button", "class": "remove_file_input" });
-	remove_btn.text("-");
-	file_input_wrapper.append(input_file, remove_btn);
-	$("#filebox").append(file_input_wrapper);
-
-	// 제거 버튼 클릭 시 해당 파일 선택 요소 삭제
-	$(".remove_file_input").on("click", function() {
-		$(this).closest('.file-input-wrapper').remove();
-	})
-});
-
-
-
-// 게시글 작성 페이지에서 작성하기 버튼 클릭 시
-$("#write_board").on("click", function() {
-
-	if ($("#choi_menu").val() == "") {
-		alert("카테고리를 먼저 선택해주세요");
-		$("#choi_menu").focus();
-		return false;
-	}
-	if ($("#insert_title").val().trim() == "") {
-		alert("제목을 먼저 입력해주세요");
-		$("#insert_title").focus();
-		return false;
-	}
-	if ($(".note-editable").text().trim() == "") {
-		alert("내용를 먼저 입력해주세요");
-		$(".note-editable").focus();
-		return false;
-	}
-
-	$.ajax({
-		url: '/write.board',
-		dataType: 'json',
-		data: {
-			game_id: $("#choi_menu").val(),
-			title: $("#insert_title").val(),
-			content: $(".note-editable").html()
-		}
-	}).done(function(resp) {
-		$("#board_seq").val(resp);
-		$("#board_write_form").submit(); // 성공 시 form 제출
-	});
-});
-
 // 게시글 상세 페이지에서 수정 버튼 클릭 시
 $('#edit_btn').on('click', function() {
 	location.href = '/tryUpdate.board?board_seq=' + get_board_seq();
 });
 
 // 게시글 수정 페이지에서 완료 버튼 클릭 시
-$("#update_board_btn").on("click", function() {
+$('#update_btn').on('click', function(e) {
+	e.preventDefault();
 
-	if ($("#edit_title").val().trim() == "") {
-		alert("제목을 먼저 입력해주세요");
-		$("#edit_title").focus();
-		return false;
-	}
-	
-	if ($(".note-editable").text().trim() == "") {
-		alert("내용를 먼저 입력해주세요");
-		$(".note-editable").focus();
-		return false;
-	}
-	$.ajax({
-		url: '/update.board',
-		dataType: 'json',
-		data: {
-			board_seq: get_board_seq(),
-			title: $("#edit_title").val(),
-			content: $(".note-editable").html()
-		}
-	}).done(function(resp) {
-		console.log(resp)
-		// 성공 시 form 제출
-		$("#board_update_form").submit();
-	});
-
-
+	let trimmedHtml = $('#summernote').html().trim();
+	$('#summernote').html(trimmedHtml);
+	console.log($('#summernote').text());
+	$('#update_board').submit();
+	// return false;
 });
 
 // 게시글 수정 페이지에서 취소 버튼 클릭 시
 $('#cancel_btn').on('click', function() {
 	if (confirm('수정하신 내용은 저장되지 않습니다.')) {
-		location.href = '/user/detail.board?board_seq=' + get_board_seq();
+		location.href = '/user/detail.board?board_seq=' + board_seq;
 	}
 });
 
@@ -714,13 +248,10 @@ function get_board_seq() {
 // 게시글 상세 페이지에서 로그인된 ID의 좋아요 및 북마크 기록을 확인하는 메서드
 function get_user_record() {
 	// 게시글 북마크 기록
-	if ($("#user_nickname").text() == "") {
-		return false;
-	}
 	$.ajax({
 		url: '/check.bookmark',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() }
+		data: { board_seq: get_board_seq() },
 	}).done(function(resp) {
 		if (resp) {
 			$('.fa-regular.fa-bookmark').hide();
@@ -732,7 +263,7 @@ function get_user_record() {
 	$.ajax({
 		url: '/check.boardLike',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() }
+		data: { board_seq: get_board_seq() },
 	}).done(function(resp) {
 		if (resp) {
 			$('.fa-regular.fa-thumbs-up').hide();
@@ -747,7 +278,7 @@ function get_options_record() {
 	$.ajax({
 		url: '/count.bookmark',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() }
+		data: { board_seq: get_board_seq() },
 	}).done(function(resp) {
 		$('.bookmark').text('스크랩 수 : ' + resp);
 	});
@@ -755,7 +286,7 @@ function get_options_record() {
 	$.ajax({
 		url: '/count.boardLike',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() }
+		data: { board_seq: get_board_seq() },
 	}).done(function(resp) {
 		$('#board_like').text(resp);
 	});
@@ -766,7 +297,7 @@ function get_reply_likes(reply_seq) {
 	$.ajax({
 		url: '/count.replyLike',
 		dataType: 'json',
-		data: { reply_seq: reply_seq }
+		data: { reply_seq: reply_seq },
 	}).done(function(resp) {
 		// reply_seq와 일치하는 .comm_seq 요소 선택
 		let comm_seq = $('.comm_seq').filter(function() {
@@ -777,15 +308,13 @@ function get_reply_likes(reply_seq) {
 	});
 }
 
-// 게시글 상세 페이지에서 파일 목록을 받아오는 메서드
+// 게시글의 파일 목록을 받아오는 메서드
 function get_file_list() {
-	console.log(get_board_seq());
 	$.ajax({
-		url: '/list.boardfile',
+		url: '/list.file',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() }
+		data: { board_seq: get_board_seq() },
 	}).done(function(resp) {
-		console.log(resp);
 		if (resp.length == 0) {
 			// 파일이 존재하지 않는 경우 버튼 클릭 불가능
 			$('.file_option').attr('disabled', true).css('cursor', 'default');
@@ -796,55 +325,25 @@ function get_file_list() {
 		file_list.empty();
 
 		for (let i of resp) {
-			let file = $('<div>', { "class": 'files' });
-			let file_name = $('<a>', { "href": '/download.boardfile?sysname=' + i.sysname + "&oriname=" + i.oriname });
-			file_name.css({ "display": "flex", "padding": "10px" });
+			let file = $('<div>', { class: 'files' });
+			let file_name = $('<button>', { class: 'down_file' });
 			file_name.text(i.oriname);
 			file.append(file_name);
 			file_list.append(file);
-		}
-	});
-}
 
-// 게시글 수정 페이지에서 파일 목록을 받아오는 메서드
-function get_files() {
-	console.log(get_board_seq());
-	$.ajax({
-		url: '/list.boardfile',
-		dataType: 'json',
-		data: { board_seq: get_board_seq() }
-	}).done(function(resp) {
-		console.log(resp);
-		if (resp.length == 0) {
-			// 파일이 존재하지 않는 경우 메서드 종료
-			return false;
-		}
-
-		for (let i = 0; i < resp.length; i++) {
-
-			let file_input_wrapper = $("<div>", { "class": "file-input-wrapper" });
-			let input_file = $("<div>", {
-				"name": "file" + (i + 1),
-				"id": "file" + (i + 1)
-			});
-			input_file.text(resp[i].oriname);
-			let remove_btn = $("<button>", { "type": "button", "class": "remove_file_input" });
-			remove_btn.text("-");
-			file_input_wrapper.append(input_file, remove_btn);
-			$("#filebox").append(file_input_wrapper);
-
-			// 제거 버튼 클릭 시 해당 파일 선택 요소 삭제
-			$(".remove_file_input").off().on("click", function() {
-				if (confirm("정말로 삭제하시겠습니까 ? \n수정하기를 취소하셔도 파일 삭제는 유지됩니다.")) {
-					$.ajax({
-						url: '/delete.boardfile',
-						dataType: 'json',
-						data: {
-							sysname: $(this).prev().text()
-						}
-					});
-					$(this).closest('.file-input-wrapper').remove();
-				}
+			file_name.on('click', function() {
+				console.log(i.oriname);
+				console.log(i.sysname);
+				$.ajax({
+					url: '/download.file',
+					dataType: 'json',
+					data: {
+						oriname: i.oriname,
+						sysname: i.sysname,
+					},
+				}).done(function(resp) {
+					console(resp);
+				});
 			});
 		}
 	});
@@ -860,9 +359,7 @@ function click_option(element) {
 				// 게시글 좋아요 취소
 				$.ajax({
 					url: '/delete.boardLike',
-					data: { board_seq: get_board_seq() }
-				}).done(function() {
-					get_options_record();
+					data: { board_seq: get_board_seq() },
 				});
 			} else {
 				// 댓글 좋아요 취소
@@ -870,7 +367,7 @@ function click_option(element) {
 				let reply_seq = comm.closest('.comm').find('.comm_seq').text();
 				$.ajax({
 					url: '/delete.replyLike',
-					data: { reply_seq: reply_seq }
+					data: { reply_seq: reply_seq },
 				}).done(function() {
 					console.log('좋아요 취소');
 					get_reply_likes(reply_seq);
@@ -878,14 +375,14 @@ function click_option(element) {
 			}
 		} else if ($(element).hasClass('mark_option')) {
 			// 북마크 취소 기능
+			console.log('북마크 취소');
 			$.ajax({
 				url: '/unsave.bookmark',
 				data: { board_seq: get_board_seq() },
-				type: 'POST'
+				type: 'POST',
 			}).done(function() {
 				// 북마크 취소 완료 후 처리
 				$(element).removeClass('active');
-				get_options_record();
 			});
 		} else {
 			// 파일 목록 닫기 기능
@@ -901,9 +398,7 @@ function click_option(element) {
 				// 게시글 좋아요
 				$.ajax({
 					url: '/insert.boardLike',
-					data: { board_seq: get_board_seq() }
-				}).done(function() {
-					get_options_record();
+					data: { board_seq: get_board_seq() },
 				});
 			} else {
 				// 댓글 좋아요
@@ -911,21 +406,22 @@ function click_option(element) {
 				let reply_seq = comm.closest('.comm').find('.comm_seq').text();
 				$.ajax({
 					url: '/insert.replyLike',
-					data: { reply_seq: reply_seq }
+					data: { reply_seq: reply_seq },
 				}).done(function() {
 					get_reply_likes(reply_seq);
 				});
 			}
 		} else if ($(element).hasClass('mark_option')) {
 			// 북마크 기능
+			console.log('북마크 등록');
 			$.ajax({
 				url: '/save.bookmark',
 				data: { board_seq: get_board_seq() },
-				type: 'POST'
+				type: 'POST',
 			}).done(function(resp) {
 				// 북마크 저장 전송
+				console.log(resp);
 				$(element).addClass('active');
-				get_options_record();
 			});
 		} else {
 			// 파일이 존재하는 경우 파일 목록 열기 기능
@@ -936,17 +432,18 @@ function click_option(element) {
 		$(element).children('.fa-regular').hide();
 		$(element).children('.fa-solid').show();
 	}
+	get_options_record();
 }
 
 // 추천 or 북마크 or 파일 버튼 클릭 시
 $('.option_btn').on('click', function() {
-	if ($("#user_nickname").text() == "") {
-		alert("회원만 이용 가능한 서비스 입니다.");
-		return false;
-	}
 	click_option($(this));
 });
 
+// 댓글 좋아요 버튼 클릭 시
+$('#comm_likes_btn').click(function() {
+	get_comm_list('thumbs_up'); // 추천수에 따라 정렬된 목록 불러오기
+});
 
 // 댓글 목록 불러오는 메서드
 function get_comm_list(order_by) {
@@ -959,12 +456,15 @@ function get_comm_list(order_by) {
 		dataType: 'json',
 		data: {
 			board_seq: get_board_seq(),
-			order_by: order_by
+			order_by: order_by,
 		},
 	}).done(function(resp) {
+		// console.log("${loginID}");
+
 		let comm_list = $('.comm_list');
 		comm_list.empty();
-		if ((resp.board_info.length) == 0) {
+		console.log(resp);
+		if (resp.length == 0) {
 			// 댓글이 존재하지 않는 경우
 			let no_comm = $('<div>', { class: 'no_comm' });
 			no_comm.text('댓글이 존재하지 않습니다.');
@@ -972,7 +472,7 @@ function get_comm_list(order_by) {
 			return;
 		}
 
-		for (let i of resp.board_info) {
+		for (let i of resp) {
 			let comm = $('<div>', { class: 'comm' });
 
 			let comm_info = $('<div>', { class: 'comm_info' });
@@ -989,8 +489,10 @@ function get_comm_list(order_by) {
 				contenteditable: 'false',
 			});
 			comm_cont.text(i.content);
+
 			let edit_box = $('<div>', { class: 'edit_box' });
-			if (i.nickname == resp.nickname) {
+			if (true) {
+				// if (i.writer == "${nickname}") {
 				let btn_box1 = $('<div>', { class: 'btn_box' });
 				let edit_btn = $('<button>', {
 					class: 'write_btn comm_btn',
@@ -1046,7 +548,7 @@ function get_comm_list(order_by) {
 			$.ajax({
 				url: '/check.replyLike',
 				dataType: 'json',
-				data: { reply_seq: i.reply_seq }
+				data: { reply_seq: i.reply_seq },
 			}).done(function(resp) {
 				if (resp) {
 					icon1.hide();
@@ -1060,10 +562,6 @@ function get_comm_list(order_by) {
 			$('.option_btn')
 				.off()
 				.on('click', function() {
-					if ($("#user_nickname").text() == "") {
-						alert("회원만 이용 가능한 서비스 입니다.");
-						return false;
-					}
 					click_option(this);
 				});
 			$('.comm .write_btn')
@@ -1129,18 +627,15 @@ $('#write_comm').on('click', function() {
 		$('.input_box').html('');
 		return;
 	}
-	if ($("#user_nickname").text() == "") {
-		alert("회원만 이용 가능한 서비스 입니다.");
-		return false;
-	}
+	console.log('test');
 	// 작성한 댓글 내용 ajax로 전달
 	$.ajax({
 		url: '/write.reply',
 		method: 'post',
 		data: {
-			content: $('.input_box').text(),
-			board_seq: get_board_seq()
-		}
+			content: $('.input_box').html(),
+			board_seq: get_board_seq(),
+		},
 	}).done(function() {
 		location.reload();
 	});
@@ -1171,12 +666,8 @@ $('#back_btn').on('click', function() {
 	location.href = '/list.board';
 });
 
-// 게시글 작성 버튼 클릭 시
-$('#board_write_btn').on('click', function() {
-	if ($(".header_my:nth-child(2) a").text().trim() == "") {
-		alert("회원만 이용 가능한 서비스 입니다.");
-		return false;
-	}
+// 작성 버튼 클릭 시
+$('#write_btn').on('click', function() {
 	location.href = '/user/crud/write_board.jsp';
 });
 
@@ -1200,3 +691,5 @@ $(document).ready(function() {
 	//     lang: 'ko-KR'
 	// });
 });
+
+
