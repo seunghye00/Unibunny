@@ -234,55 +234,40 @@
                 </form>
 
                 <!-- 게임 기록 확인 -->
-                <div class="profile_contents_wrap" id="myScore">
-                  <div class="profile_title">게임 기록 확인</div>
+<div class="profile_contents_wrap" id="myScore">
+  <div class="profile_title">게임 기록 확인</div>
 
-                  <select class="tab-dropdown dropdown">
-                    <option value="">카테고리 선택.</option>
-                    <option value="내 프로필">내 프로필</option>
-                    <option value="계정관리">계정관리</option>
-                    <option value="게임 기록 확인">게임 기록 확인</option>
-                    <option value="작성한 글">작성한 글</option>
-                    <option value="작성한 댓글">작성한 댓글</option>
-                    <option value="북마크">북마크</option>
-                    <option value="1:1문의">1:1문의</option>
-                  </select>
+  <select class="tab-dropdown dropdown">
+    <option value="">카테고리 선택.</option>
+    <option value="내 프로필">내 프로필</option>
+    <option value="계정관리">계정관리</option>
+    <option value="게임 기록 확인">게임 기록 확인</option>
+    <option value="작성한 글">작성한 글</option>
+    <option value="작성한 댓글">작성한 댓글</option>
+    <option value="북마크">북마크</option>
+    <option value="1:1문의">1:1문의</option>
+  </select>
 
-                  <div class="profile_contents">
-                    <div class="my_score">
-                      <div class="dropdown-container">
-                        <select id="dropdown" class="dropdown">
-                          <option value="">게임을 선택하세요.</option>
-                          <option value="option1">Game 1</option>
-                          <option value="option2">Game 2</option>
-                          <option value="option3">Game 3</option>
-                          <option value="option4">Game 4</option>
-                          <option value="option5">Game 5</option>
-                        </select>
-                      </div>
+  <div class="profile_contents">
+    <div class="my_score">
+      <div class="dropdown-container">
+        <select name="gameid" id="gameSelect" required>
+          <option value="all">전체 게임</option>
+        </select>
+      </div>
 
-                      <div class="list_table">
-                        <div class="table_row table_header">
-                          <div class="table_col"><span>번호</span></div>
-                          <div class="table_col"><span>게임명</span></div>
-                          <div class="table_col"><span>점수</span></div>
-                          <div class="table_col"><span>플레이 날짜</span></div>
-                        </div>
-                        
-                        <c:forEach var="dto" items="${myscore}">
-                          <div class="table_row">
-                            <div class="table_col"><span>${dto.score_seq}</span></div>
-                            <div class="table_col"><span>${dto.game_id}</span></div>
-                            <div class="table_col"><span>${dto.score}</span></div>
-                            <div class="table_col"><span><fmt:formatDate value="${dto.end_time}" pattern="yyyy.MM.dd" /></span></div>
-                          </div>
-                        </c:forEach>
-                        
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div class="list_table" id="scoreTable">
+        <div class="table_row table_header">
+          <div class="table_col"><span>번호</span></div>
+          <div class="table_col"><span>게임명</span></div>
+          <div class="table_col"><span>점수</span></div>
+          <div class="table_col"><span>플레이 날짜</span></div>
+        </div>
+        <!-- 점수 목록이 여기에 동적으로 추가됩니다 -->
+      </div>
+    </div>
+  </div>
+</div>
 
                 <!-- 작성한 글 -->
                 <div class="profile_contents_wrap" id="myPosts">
@@ -495,6 +480,26 @@
         $('.cancel_changes_btn').hide();
         $('.profile_edit_btn').show();
     });
+    
+    
+    $.ajax({
+        url: '/getgames.game',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var gameSelect = $('#gameSelect');
+            gameSelect.empty();
+            gameSelect.append('<option value="all">전체 게임</option>'); // 전체 게임 옵션 추가
+            $.each(data, function (index, game) {
+                gameSelect.append('<option value="' + game.game_id + '">' + game.game_name + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('게임 데이터를 가져오는데 실패했습니다:', status, error);
+        }
+    });
+    
+    
 });
 
             
