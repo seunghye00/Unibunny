@@ -75,28 +75,37 @@ public class MemberDAO {
 
 	// 회원가입 정규표현식
 	public boolean isExist(Duptype dup, String value) throws Exception {
-		String sql = "SELECT * FROM member WHERE ";
-		String column = "";
-		if (dup == Duptype.Userid) {
-			column = "userid = ?"; // 그럼 여기 sql문에 ? 부분에 value값이 들어가서 쿼리됨. 그리고 이 값을 true, false 값 리턴시킴.
-		} else if (dup == Duptype.Nickname) {
-			column = "nickname = ?";
-		} else if (dup == Duptype.Phone) {
-			column = "phone = ?";
-		} else if (dup == Duptype.Email) {
-			column = "email = ?";
-		} else {
-			return false;
-		}
+	    String sql = "SELECT * FROM member WHERE ";
+	    String column = "";
+	    
+	    // '-' 이후 문자 제거
+	    if (dup == Duptype.Reg_num && value.indexOf("-") != -1) {
+	        value = value.substring(0, value.indexOf("-"));
+	    }
 
-		sql += column;
-		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-			pst.setString(1, value);
-			try (ResultSet rs = pst.executeQuery()) {
-				return rs.next();
-			}
-		}
+	    if (dup == Duptype.Userid) {
+	        column = "userid = ?"; // 그럼 여기 sql문에 ? 부분에 value값이 들어가서 쿼리됨. 그리고 이 값을 true, false 값 리턴시킴.
+	    } else if (dup == Duptype.Nickname) {
+	        column = "nickname = ?";
+	    } else if (dup == Duptype.Phone) {
+	        column = "phone = ?";
+	    } else if (dup == Duptype.Email) {
+	        column = "email = ?";
+	    } else if (dup == Duptype.Reg_num) {
+	        column = "reg_num = ?";
+	    } else {
+	        return false;
+	    }
+
+	    sql += column;
+	    try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+	        pst.setString(1, value);
+	        try (ResultSet rs = pst.executeQuery()) {
+	            return rs.next();
+	        }
+	    }
 	}
+
 
 	public MemberDTO searchProfileInfo(String id) throws Exception {
         // 마이페이지 프로필 정보 조회(해당하는 아이디의 닉네임, 가입날짜 등)

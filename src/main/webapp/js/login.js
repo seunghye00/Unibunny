@@ -4,7 +4,7 @@ $(document).ready(function() {
    let isid = false;
    let isemail = false;
    let isphone = false;
-
+   let input_first =false
    // 폼 제출 버튼 클릭 핸들러
    $("#signup_form button").on("click", function(event) {
       if (!isid) {
@@ -23,46 +23,53 @@ $(document).ready(function() {
    });
 
    // 닉네임 유효성 검사
-   $("#input_nickname").keyup(function() {
-      const nickname_pattern = /^[A-Za-z0-9가-힣]{3,10}$/;
-      const nickname = $(this).val();
-      const h2 = $(this).parent().children()[1];
+$("#input_nickname").keyup(function() {
+    const nickname_pattern = /^[A-Za-z0-9가-힣]{3,10}$/;
+    const input = $(this);
+    let nickname = input.val();
+    
+    // 특수문자 제거
+    nickname = nickname.replace(/[^A-Za-z0-9가-힣]/g, '');
+    input.val(nickname);
+    
+    const h2 = input.parent().children()[1];
 
-      if (nickname === "" || !nickname_pattern.test(nickname)) {
-         h2.style.color = "#ff3737";
-         h2.textContent =
-            "＊영어 대소문자, 숫자, 한글을 포함하여 3~10글자 사이를 입력하세요.*";
-         isnickname = false;
-         return;
-      }
+    if (nickname === "" || !nickname_pattern.test(nickname)) {
+        h2.style.color = "#ff3737";
+        h2.textContent = "＊영어 대소문자, 숫자, 한글을 포함하여 3~10글자 사이를 입력하세요.(특수문자 사용 불가)*";
+        isnickname = false;
+        return;
+    }
 
-      // Ajax 요청
-      $.ajax({
-         url: "/check.member",
-         type: "get",
-         data: {
+    // Ajax 요청
+    $.ajax({
+        url: "/check.member",
+        type: "get",
+        data: {
             mode: "nickname",
             value: nickname,
-         },
-         dataType: "json", // JSON 형식으로 받음
-         success: function(response) {
+        },
+        dataType: "json", // JSON 형식으로 받음
+        success: function(response) {
             if (response.exists) {
-               h2.style.color = "#ff3737";
-               h2.textContent = "이미 사용 중인 닉네임 입니다.";
-               isnickname = false;
+                h2.style.color = "#ff3737";
+                h2.textContent = "이미 사용 중인 닉네임 입니다.";
+                isnickname = false;
             } else {
-               h2.style.color = "#18ff18";
-               h2.textContent = "사용 가능한 닉네임 입니다.";
-               isnickname = true;
+                h2.style.color = "#18ff18";
+                h2.textContent = "사용 가능한 닉네임 입니다.";
+                isnickname = true;
             }
-         },
-         error: function() {
+        },
+        error: function() {
             h2.style.color = "#ff3737";
             h2.textContent = "서버 오류가 발생했습니다.";
             isnickname = false;
-         },
-      });
-   });
+        },
+    });
+});
+
+
 
    // 아이디 유효성 검사
    $("#input_id").keyup(function() {
@@ -151,7 +158,7 @@ $(document).ready(function() {
       if (phone_number === "" || !phone_pattern.test(phone_number)) {
          h2.style.color = "#ff3737";
          h2.textContent =
-            "＊숫자만 입력하고 -생략하며 모든 번호의 시작은 01입니다.*";
+            "＊숫자만 입력하고 -생략하며 모든 번호의 시작은 010입니다.*";
          isphone = false;
       } else {
          // Ajax 요청
@@ -197,9 +204,6 @@ $(document).ready(function() {
    });
 
 
-
-
-
    // 입력 필드의 색상 변경
    // $("#input_identify").keyup(function() {
    //
@@ -230,18 +234,52 @@ $(document).ready(function() {
    });
 
    // 입력 필드의 값 변경 감지
-   $("#input_first").on("input", function() {
+   $("#input_first").on("keyup", function() {
       let firstPart = $(this).val().trim();
 
+      // 숫자 이외의 문자 제거
       firstPart = firstPart.replace(/\D/g, "");
 
-      if (firstPart.length > 6) {
-         firstPart = firstPart.substring(0, 6);
-      }
-
+      // 입력 값 업데이트
       $(this).val(firstPart);
-   });
 
+      // h2 요소 선택
+      const h2 = $(this).siblings("h2")[0];
+
+      // 입력 값이 6자리가 아닌 경우 경고 메시지 표시
+      if (firstPart.length !== 6) {
+         h2.style.color = "#ff3737";
+         h2.textContent = "정확히 6자리 숫자를 입력해야 합니다.";
+         input_first = false;
+      } else {
+         // 경고 메시지 제거
+         h2.textContent = "";
+         input_first = true;
+
+         // Ajax 요청
+         $.ajax({
+            url: "/check.member",
+            type: "GET",
+            data: { value: firstPart },
+            success: function(response) {
+               if (response.valid) {
+                  h2.style.color = "#18ff18";
+                  h2.textContent = "사용 가능한 입력입니다.";
+                  input_first = true;
+               } else {
+                  h2.style.color = "#ff3737";
+                  h2.textContent = "유효하지 않은 입력입니다.";
+                  input_first = false;
+               }
+            },
+            error: function() {
+               h2.style.color = "#ff3737";
+               h2.textContent = "서버 오류가 발생했습니다.";
+               input_first = false;
+            }
+         });
+      }
+   });
 
    $("#input_identify").on("input", function() {
       let identifyPart = $(this).val().trim();

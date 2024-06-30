@@ -70,7 +70,7 @@
 							</div>
 							<div class="message" id="ssn_message"></div>
 						</div>
-						<h2>＊숫자만 입력가능합니다.*</h2>
+						<h2>＊생년월이 6자리를 입력하여 주세요. (숫자만 입력가능합니다)*</h2>
 					</div>
 					<!-- 이메일 -->
 					<div class="signup">
