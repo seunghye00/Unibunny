@@ -170,7 +170,7 @@ public class NoticeController extends HttpServlet {
 				} else {
 					response.sendRedirect("/error.jsp");
 				}
-			} else if (cmd.equals("/manager/total.notice")) {
+			} else if (cmd.equals("/admin/total.notice")) {
 				// 관리자 페이지 공지사항 영역에서 공지 사항의 총 갯수를 확인하는 메서드
 				Map<String, Object> result = new HashMap<>();
 				result.put("total_data", dao.getRecordCount());
@@ -216,7 +216,7 @@ public class NoticeController extends HttpServlet {
 					request.setAttribute("notice", notice);
 					request.getRequestDispatcher("/manager/ntc_detail.jsp").forward(request, response);
 				} else {
-					response.sendRedirect("/manager/notice.jsp");
+					response.sendRedirect("/admin/notice.jsp");
 				}
 			} else if (cmd.equals("/delete.notice")) {
 				int noticeSeq = Integer.parseInt(request.getParameter("notice_seq"));
@@ -249,7 +249,7 @@ public class NoticeController extends HttpServlet {
 				// 수정 페이지로 데이터 전달
 				request.setAttribute("notice", notice);
 				request.setAttribute("files", files);
-				request.getRequestDispatcher("/manager/modi_notice.jsp").forward(request, response);
+				request.getRequestDispatcher("/admin/modi_notice.jsp").forward(request, response);
 
 			} else if (cmd.equals("/modify.notice")) {
                 int maxSize = 1024 * 1024 * 10; // 10MB 사이즈 제한

@@ -24,27 +24,27 @@
       <div class="swiper mainSwiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=1" class="swiper_bg">
               <img src="../image/main/main_banner1.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=2" class="swiper_bg">
               <img src="../image/main/main_banner_jh.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=3" class="swiper_bg">
               <img src="../image/main/main_banner_ms.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=4" class="swiper_bg">
               <img src="../image/main/main_banner4.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=5" class="swiper_bg">
               <img src="../image/main/main_banner5.png" alt="">
             </a>
           </div>
@@ -89,12 +89,12 @@
 					  </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="game_box">
+                      <a href="javascript:;" onclick="window.open('../game/4096/index.jsp')" class="game_box">
                         <img src="../image/main/gameimg2.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="game_box">
+                      <a href="javascript:;" onclick="window.open('../game/shootingwalnut/index.jsp')" class="game_box">
                         <img src="../image/main/game_banner_ms.png" alt="">
                       </a>
                     </div>
@@ -145,7 +145,7 @@
                 <!-- 타이틀 박스 공통 -->
                 <div class="title_box">
                   <p class="title">인기글</p>
-                  <a href="http://localhost/list.board?api=/like.board&page=1"></a>
+                  <a href="/list.board?api=/view.board&page=1"></a>
                 </div>
                 <div class="list_table main_list_table">
                   <div class="table_row table_header">
@@ -222,12 +222,11 @@ $(document).ready(function () {
 	});
 });
 $(document).ready(function () {
-	mainList('/view.board', 1 ,'gameId');
+	mainList('/view.board', 1);
 	loadTableData();
 });
 // 메인 인기글 ajax
 function mainList (page, gameId) {
-	// 리스트 테이블을 담을 변수
     let listContainer = $(".main_list_table");
 
     // 초기 리스트 테이블 비우기
@@ -238,10 +237,10 @@ function mainList (page, gameId) {
         url: "/view.board",
         method: "POST",
         dataType: "json",
-        data: { cpage: 1, gameId : gameId }, // 페이지 번호를 쿼리 파라미터로 전달
+        data: { cpage: 1}, // 페이지 번호를 쿼리 파라미터로 전달
     }).done(function (resp) {
         console.log(resp); // 받은 데이터 확인
-
+		
         // 테이블의 헤더 부분 생성
         let headerRow = $("<div>").addClass("table_row table_header");
         let headerCol1 = $("<div>").addClass("table_col").append($("<span>").text("제목"));

@@ -658,7 +658,7 @@
 .cont_box .cont_body .board_head {
   min-height: 100px;
   color: var(--color-text);
-  z-index: 3;
+  z-index: 4;
   position: relative;
 }
 
@@ -767,6 +767,7 @@
 .cont_box .cont_body .board_body .board_cont {
   min-height: 300px;
   padding: 10px;
+  overflow: auto;
 }
 
 .cont_box .cont_body .btn_box .edit_btn {

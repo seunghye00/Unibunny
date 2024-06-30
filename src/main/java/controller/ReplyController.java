@@ -83,7 +83,7 @@ public class ReplyController extends HttpServlet {
 				int reply_seq = Integer.parseInt(request.getParameter("reply_seq"));
 				dao.deleteBySeq(reply_seq);
 			
-			} else if (cmd.equals("/manager/total.reply")) {
+			} else if (cmd.equals("/admin/total.reply")) {
 				// 관리자 페이지에서 삭제된 전체 댓글의 수를 구하는 경로
 
 				Map<String, Object> result = new HashMap<>();
@@ -92,7 +92,7 @@ public class ReplyController extends HttpServlet {
 				result.put("navi_count_per_page", Pagination.naviCountPerPage);
 				response.getWriter().append(g.toJson(result));
 
-			} else if (cmd.equals("/manager/list.reply")) {
+			} else if (cmd.equals("/admin/list.reply")) {
 				// 관리자 페이지에서 해당 페이지 내에 삭제된 전체 댓글의 수를 구하는 경로
 				String cpage = request.getParameter("cpage");
 

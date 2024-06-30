@@ -42,7 +42,7 @@
 									<div class="table_row table_header">
 										<span>제목</span>
 										<div style="padding: 5px;"></div>
-										<input type="text" name="question_title">
+										<input type="text" name="question_title" id="title">
 									</div>
 									<div style="padding: 10px;"></div>
 									<input type="hidden" name="userId" value="${sessionScope.userId}">
@@ -73,77 +73,92 @@
 			<!-- 생략된 푸터 코드 -->
 		</div>
 <script>
-	$(document).ready(function() {
-		$('#summernote').summernote({
-			height: 500,
-			minHeight: null,
-			maxHeight: null,
-			focus: true
-		});
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 500,
+            minHeight: null,
+            maxHeight: null,
+            focus: true
+        });
 
-		var fileClickCount = 0;
-		var maxFiles = 5;
+        var fileClickCount = 0;
+        var maxFiles = 5;
 
-		$('#file').on('click', function() {
-			if (fileClickCount < maxFiles) {
-				var fileInputWrapper = $('<div class="file-input-wrapper">' +
-					'<input type="file" name="file">' +
-					'<button type="button" class="removeFileInput">-</button>' +
-					'</div>');
-				$('#filebox').append(fileInputWrapper);
-				fileClickCount++;
-			} else {
-				alert('최대 5개의 파일만 업로드할 수 있습니다.');
-			}
-		});
+        $('#file').on('click', function() {
+            if (fileClickCount < maxFiles) {
+                var fileInputWrapper = $('<div class="file-input-wrapper">' +
+                    '<input type="file" name="file">' +
+                    '<button type="button" class="removeFileInput">-</button>' +
+                    '</div>');
+                $('#filebox').append(fileInputWrapper);
+                fileClickCount++;
+            } else {
+                alert('최대 5개의 파일만 업로드할 수 있습니다.');
+            }
+        });
 
-		$('#filebox').on('click', '.removeFileInput', function() {
-			$(this).closest('.file-input-wrapper').remove();
-			fileClickCount--;
-		});
+        $('#filebox').on('click', '.removeFileInput', function() {
+            $(this).closest('.file-input-wrapper').remove();
+            fileClickCount--;
+        });
 
-		$('#qnaForm').on('submit', function(event) {
-			event.preventDefault();
-			var form = $(this);
-			$.ajax({
-				url: form.attr('action'),
-				method: 'POST',
-				data: form.serialize(),
-				success: function(response) {
-					alert('Q&A 작성 완료');
-					// Q&A 작성이 완료되면 파일 업로드 처리
-					var question_seq = response.question_seq; // 서버에서 반환된 question_seq 사용
-					var fileInputs = $('#filebox').find('input[type="file"]');
-					if (fileInputs.length > 0) {
-						var formData = new FormData();
-						fileInputs.each(function(index, fileInput) {
-							formData.append('file', fileInput.files[0]);
-						});
-						formData.append('question_seq', question_seq);
-						$.ajax({
-							url: '/upload.qnafile',
-							method: 'POST',
-							data: formData,
-							processData: false,
-							contentType: false,
-							success: function(fileResponse) {
-								window.location.href = '/list.faq';
-							},
-							error: function() {
-								alert('파일 업로드 중 오류 발생');
-							}
-						});
-					} else {
-						window.location.href = '/list.faq';
-					}
-				},
-				error: function() {
-					alert('Q&A 작성 중 오류 발생');
-				}
-			});
-		});
-	});
+        $('#qnaForm').on('submit', function(event) {
+            event.preventDefault();
+            
+            var questionTitle = $('#title').val().trim();
+            var questionContent = $('#summernote').summernote('code').trim();
+
+            if (!questionTitle) {
+                alert('제목을 입력하세요.');
+                return false;
+            }
+
+            if ($('#summernote').summernote('isEmpty')) {
+                alert('내용을 입력하세요.');
+                return false;
+            }
+
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    alert('Q&A 작성 완료');
+                    // Q&A 작성이 완료되면 파일 업로드 처리
+                    var question_seq = response.question_seq; // 서버에서 반환된 question_seq 사용
+                    var fileInputs = $('#filebox').find('input[type="file"]');
+                    if (fileInputs.length > 0) {
+                        var formData = new FormData();
+                        fileInputs.each(function(index, fileInput) {
+                            formData.append('file', fileInput.files[0]);
+                        });
+                        formData.append('question_seq', question_seq);
+                        $.ajax({
+                            url: '/upload.qnafile',
+                            method: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(fileResponse) {
+                                window.location.href = '/list.faq';
+                            },
+                            error: function() {
+                                alert('파일 업로드 중 오류 발생');
+                            }
+                        });
+                    } else {
+                        window.location.href = '/list.faq';
+                    }
+                },
+                error: function() {
+                    alert('Q&A 작성 중 오류 발생');
+                }
+            });
+        });
+    });
 </script>
+
 
 	</div>
 </body>
