@@ -300,12 +300,11 @@ public class MemberDAO {
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 			pstat.setObject(1, id);
 			try (ResultSet rs = pstat.executeQuery();) {
-				// 수정할 코드
 				if (rs.next()) {
 					return rs.getString("nickname");
 				}
 				// 임시 데이터 리턴
-				return "test_user";
+				return null;
 			}
 		}
 	}

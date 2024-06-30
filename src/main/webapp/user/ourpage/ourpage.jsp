@@ -64,10 +64,10 @@
                       <a href="javascript:;" class="our_box">
                         <div class="our_tit">
                           <div class="img_box">
-                            <img src="../../image/ourpage/문경원 증명사진.jpg" alt="">
+                            <img src="../../image/ourpage/제리.png" alt="">
                           </div>
                           <div class="our_cont">
-                            <span class="our_name">문경원</span>
+                            <span class="our_name">한승혜</span>
                             <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> moontari_96</span>
                             <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-5482-9107</span>
                             <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, React, SQL</span>

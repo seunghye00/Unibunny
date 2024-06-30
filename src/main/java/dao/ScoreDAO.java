@@ -43,7 +43,7 @@ public class ScoreDAO {
 			pstat.setString(3, dto.getNickname());
 			pstat.setInt(4, dto.getLog_seq());
 			int rowsAffected = pstat.executeUpdate();
-			if (pstat.executeUpdate() > 0)
+			if (rowsAffected > 0)
 				return true;
 		}
 		return false;

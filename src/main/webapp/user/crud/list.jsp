@@ -86,7 +86,7 @@
 									<div class="bottom_box">
 										<div class="navi_box" id="pagination"></div>
 										<div class="btn_box">
-											<button class="write_btn" id="write_btn" type="button">작성하기</button>
+											<button class="write_btn" id="board_write_btn" type="button">작성하기</button>
 										</div>
 									</div>
 								</div>
