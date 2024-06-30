@@ -170,9 +170,9 @@ $(".member_con .input_tag").on("keydown", function(e) {
 });
 
 // 검색한 회원을 출력하는 메서드
-function search_user(cpage) {
+function search_user(cpage, moment) {
 
-	if ($(".input_tag").val() == "") {
+	if ($(".input_tag").val() == "" && moment == 'first') {
 		alert("검색할 내용을 먼저 입력해주세요");
 		return;
 	}
@@ -184,7 +184,11 @@ function search_user(cpage) {
 		// 페이지 첫 시작이거나 변수가 정의되지 않았을 경우 초기값 설정
 		cpage = 1;
 	}
-	let grade = $("a.grade.cpage").text();
+	let grade = "회원";
+	if($("a.grade.cpage").text() == "블랙리스트"){
+		grade = "정지된 회원";
+	}
+	
 	let user_info = $(".input_tag").val();
 
 	$.ajax({
@@ -230,7 +234,7 @@ function search_user(cpage) {
 			page_nation.empty();
 
 			// '이전 페이지로' 버튼
-			let prev_btn = $("<a>", { "class": "page_navi arr_navi start_arr", "href": "javascript:search_user(" + (start_navi - 1) + ")" });
+			let prev_btn = $("<a>", { "class": "page_navi arr_navi start_arr", "href": "javascript:search_user(" + (start_navi - 1) + ", 'no_first')" });
 			let prev_img = $("<img>", { "class": "navi_icon start_navi", "src": "../image/icon/pagination.png", "alt": "start navi 로고" });
 			if (!need_prev) {
 				prev_btn.addClass("disabled");
@@ -241,7 +245,7 @@ function search_user(cpage) {
 
 			// 페이지 번호
 			for (let i = start_navi; i <= end_navi; i++) {
-				let page_navi = $("<a>", { "class": "page_navi", "href": "javascript:search_user(" + i + ")" });
+				let page_navi = $("<a>", { "class": "page_navi", "href": "javascript:search_user(" + i + ", 'no_first')" });
 				page_navi.text(i);
 				if (cpage == i) {
 					page_navi.addClass("active");
@@ -250,7 +254,7 @@ function search_user(cpage) {
 			}
 
 			// '다음 페이지로' 버튼
-			let next_btn = $("<a>", { "class": "page_navi arr_navi end_arr", "href": "javascript:search_user(" + (end_navi - 1) + ")" });
+			let next_btn = $("<a>", { "class": "page_navi arr_navi end_arr", "href": "javascript:search_user(" + (end_navi + 1) + ",'no_first')" });
 			let next_img = $("<img>", { "class": "navi_icon end_navi", "src": "../image/icon/pagination.png", "alt": "end navi 로고" });
 			if (!need_next) {
 				next_btn.addClass("disabled");
@@ -870,7 +874,7 @@ $(document).on("click", ".restore_reply", function(e) {
 });
 
 
-// 게시판 관리 페이지의  목록을 불러오는 메서드 
+// 게시판 관리 페이지의 각 데이터 목록을 불러오는 메서드 
 function get_community_list(choice, cpage, deleted) {
 	// 테이블 헤더 영역을 제외한 데이터 비우기
 	$(".list_table>a").remove();

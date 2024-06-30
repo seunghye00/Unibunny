@@ -34,7 +34,7 @@ public class BoardFilesDAO {
    // board_seq로 해당 게시물의 파일 목록 조회
    public List<BoardFilesDTO> selectByBoardSeq(int board_seq) throws Exception {
       
-      String sql = "select * from files where board_seq = ?";
+      String sql = "select * from board_files where board_seq = ?";
 
       List<BoardFilesDTO> list = new ArrayList<>();
       try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
@@ -53,7 +53,7 @@ public class BoardFilesDAO {
 
 	public int insert(BoardFilesDTO dto) throws Exception {
 		
-		String sql = "insert into board values (board_files_seq, ?, ?, ?)";
+		String sql = "insert into board_files values (board_files_seq.nextval, ?, ?, ?)";
 		 
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);) {
 	         pstat.setString(1, dto.getOriname());

@@ -95,12 +95,10 @@ public class BoardFilesController extends HttpServlet {
 
 				MultipartRequest multi = new MultipartRequest(request, realPath, maxSize, "UTF-8",
 						new DefaultFileRenamePolicy());
-				String a = request.getParameter("board_seq");
-				System.out.println("test : " + a);
+		
 				String board_seq = multi.getParameter("board_seq");
-				System.out.println("test2 : " + board_seq);
 				Enumeration<String> names = multi.getFileNames();
-
+				
 				while (names.hasMoreElements()) {
 
 					String name = names.nextElement();
