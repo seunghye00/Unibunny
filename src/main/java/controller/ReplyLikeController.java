@@ -46,21 +46,14 @@ public class ReplyLikeController extends HttpServlet {
 
 			} else if (cmd.equals("/insert.replyLike")) {
 				// 해당 댓글의 좋아요 기능
-				// 임시 데이터 (수정할 부분)
-				user_id = "user001";
 				dao.insertRecord(reply_seq, user_id);
 
 			} else if (cmd.equals("/delete.replyLike")) {
 				// 해당 댓글의 좋아요 취소 기능
-				// 임시 데이터 추후 삭제 !!!!
-				user_id = "user001";
 				dao.deleteRecord(reply_seq, user_id);
 
 			} else if (cmd.equals("/check.replyLike")) {
 				// 로그인한 ID로 해당 게시글의 북마크 여부 조회
-				// 임시 데이터 추후 삭제 !!!!
-				user_id = "user001";
-				System.out.println((dao.checkLog(reply_seq, user_id)));
 				pw.append(g.toJson(dao.checkLog(reply_seq, user_id)));
 			}
 
