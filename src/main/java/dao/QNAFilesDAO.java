@@ -50,7 +50,7 @@ public class QNAFilesDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     QNAFilesDTO fileDto = new QNAFilesDTO();
-                    fileDto.setQna_file_SEQ(rs.getInt("qna_file_seq"));
+                    fileDto.setQna_files_SEQ(rs.getInt("qna_files_seq"));
                     fileDto.setOriname(rs.getString("oriname"));
                     fileDto.setSysname(rs.getString("sysname"));
                     fileDto.setQuestion_seq(rs.getInt("question_seq"));

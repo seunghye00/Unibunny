@@ -30,7 +30,7 @@
           </div>
           <div class="swiper-slide">
             <a href="javascript:;" class="swiper_bg">
-              <img src="../image/main/main_banner.png" alt="">
+              <img src="../image/main/main_banner_jh.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">

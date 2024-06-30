@@ -81,15 +81,15 @@
                       <a href="javascript:;" class="our_box">
                         <div class="our_tit">
                           <div class="img_box">
-                            <img src="../../image/ourpage/문경원 증명사진.jpg" alt="">
+                            <img src="../../image/ourpage/호두.png" alt="">
                           </div>
                            <div class="our_cont">
-                            <span class="our_name">문경원</span>
-                            <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> moontari_96</span>
-                            <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-5482-9107</span>
+                            <span class="our_name">박종호</span>
+                            <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> jongho_00</span>
+                            <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-2370-1713</span>
                             <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, React, SQL</span>
                             <span class="our_role">GIT 관리 및 UI 관리</span>
-                            <span class="our_txt">유연한 사고와 책임감이 있는 개발자 알파메일 문경원(차은우)입니다.</span>
+                            <span class="our_txt">유연한 사고와 책임감이 있는 개발자<br>박종호 입니다.</span>
                           </div>
                         </div>
                       </a>
@@ -101,7 +101,7 @@
                             <img src="../../image/ourpage/창기.png" alt="">
                           </div>
                            <div class="our_cont">
-                            <span class="our_name">문경원</span>
+                            <span class="our_name">조창기</span>
                             <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> moontari_96</span>
                             <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-5482-9107</span>
                             <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, React, SQL</span>
@@ -115,15 +115,15 @@
                       <a href="javascript:;" class="our_box">
                         <div class="our_tit">
                           <div class="img_box">
-                            <img src="../../image/ourpage/문경원 증명사진.jpg" alt="">
+                            <img src="../../image/ourpage/푸바오.jpg" alt="">
                           </div>
                            <div class="our_cont">
                             <span class="our_name">손민서</span>
                             <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> minseo._.10.17</span>
-                            <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-5482-9107</span>
+                            <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-3824-6685</span>
                             <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, React, SQL</span>
                             <span class="our_role">GIT 관리 및 UI 관리</span>
-                            <span class="our_txt">안녕하세요 풀스택 개발자를 꿈꾸는 손민서입니다.</span>
+                            <span class="our_txt">유연한 사고와 책임감이 있는 개발자<br>손민서 입니다.</span>
                           </div>
                         </div>
                       </a>
