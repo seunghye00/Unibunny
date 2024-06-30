@@ -658,7 +658,7 @@
 .cont_box .cont_body .board_head {
   min-height: 100px;
   color: var(--color-text);
-  z-index: 3;
+  z-index: 4;
   position: relative;
 }
 
