@@ -129,7 +129,7 @@ public class MemberController extends HttpServlet {
                     session.setAttribute("memcode", map.get("memcode"));
 
                     if ("0".equals(map.get("memcode"))) {
-                        response.sendRedirect("admin/main.jsp");
+                        response.sendRedirect("admin/member.jsp");
                     } else if("1".equals(map.get("memcode"))) {
                         response.sendRedirect("user/main.jsp");
                     }else if("2".equals(map.get("memcode"))) {
@@ -154,23 +154,27 @@ public class MemberController extends HttpServlet {
                 String json = "";
 
                 try {
-                    if (mode.equals("userid"))
-                        isExist = mdao.isExist(Duptype.Userid, value);
-                    else if (mode.equals("email"))
-                        isExist = mdao.isExist(Duptype.Email, value);
-                    else if (mode.equals("phone"))
-                        isExist = mdao.isExist(Duptype.Phone, value);
-                    else if (mode.equals("nickname"))
-                        isExist = mdao.isExist(Duptype.Nickname, value);
-                    else if (mode.equals("reg_num"))
-                        isExist = mdao.isExist(Duptype.Reg_num, value);
+                    if(isExist = false) {
+                    	if (mode.equals("userid"))
+                            isExist = mdao.isExist(Duptype.Userid, value);
+                        else if (mode.equals("email"))
+                            isExist = mdao.isExist(Duptype.Email, value);
+                        else if (mode.equals("phone"))
+                            isExist = mdao.isExist(Duptype.Phone, value);
+                        else if (mode.equals("nickname"))
+                            isExist = mdao.isExist(Duptype.Nickname, value);
+                        else if (mode.equals("reg_num"))
+                            isExist = mdao.isExist(Duptype.Reg_num, value);
+                    	JsonObject jsonResponseTest = new JsonObject();
+                    	jsonResponseTest.addProperty("exists", isExist);
+                    	Gson gson = new Gson();
+                    	json = gson.toJson(jsonResponseTest);
+                    	
+                    	pw.println(json);
+                    } else {
+                    	
+                    }
 
-                    JsonObject jsonResponseTest = new JsonObject();
-                    jsonResponseTest.addProperty("exists", isExist);
-                    Gson gson = new Gson();
-                    json = gson.toJson(jsonResponseTest);
-
-                    pw.println(json);
                 } catch (SQLException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     JsonObject errorResponse = new JsonObject();
