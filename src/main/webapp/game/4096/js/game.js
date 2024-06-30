@@ -141,6 +141,7 @@ var playGame = new Phaser.Class({
                 this.handleMove(-1, 0);
             }
         }
+        EndGameFunctions.sendScore(score,gameId)
     },
     // 숫자 2 타일 추가
     addTile: function(){
