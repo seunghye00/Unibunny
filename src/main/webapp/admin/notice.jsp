@@ -66,10 +66,10 @@
 							<div class="con ntc_con">
 								<div class="ntc select_subject">
 									<ul>
-										<li><a href="/manager/notice.jsp" class="cpage">공지사항</a></li>
-										<li><a href="/manager/community.jsp">전체 게시물</a></li>
-										<li><a href="/manager/keepboard.jsp">임시보관 게시물</a></li>
-										<li><a href="/manager/keepreply.jsp">임시보관 댓글</a></li>
+										<li><a href="/admin/notice.jsp" class="cpage">공지사항</a></li>
+										<li><a href="/admin/community.jsp">전체 게시물</a></li>
+										<li><a href="/admin/keepboard.jsp">임시보관 게시물</a></li>
+										<li><a href="/admin/keepreply.jsp">임시보관 댓글</a></li>
 									</ul>
 								</div>
 
@@ -105,8 +105,8 @@
 					</div>
 				</div>
 			</div>
-			<jsp:include page="../common/footer.jsp" />
 		</div>
+		<jsp:include page="../common/footer.jsp" />
 	</div>
 	<script>
   		get_community_list("notice", 1, "N");

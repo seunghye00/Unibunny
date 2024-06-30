@@ -64,8 +64,8 @@
 							<div class="con qa_con">
 								<div class="select_subject">
 									<ul>
-										<li><a href="/list.faq?userType=manager">FAQ</a></li>
-										<li><a href="/list.qna">Q&A</a></li>
+										<li><a href="/list.faq?userType=admin">FAQ</a></li>
+										<li><a href="/list.qna" class="admin">Q&A</a></li>
 									</ul>
 								</div>
 								<div style="padding: 30px;"></div>
