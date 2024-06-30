@@ -1,14 +1,14 @@
 package dto;
 
 public class QNAFilesDTO {
-    private int qna_file_SEQ;
+    private int qna_files_SEQ;
     private String oriname;
     private String sysname;
     private int question_seq;
 
-    public QNAFilesDTO(int qna_file_SEQ, String oriname, String sysname, int question_seq) {
+    public QNAFilesDTO(int qna_files_SEQ, String oriname, String sysname, int question_seq) {
         super();
-        this.qna_file_SEQ = qna_file_SEQ;
+        this.qna_files_SEQ = qna_files_SEQ;
         this.oriname = oriname;
         this.sysname = sysname;
         this.question_seq = question_seq;
@@ -18,12 +18,12 @@ public class QNAFilesDTO {
         super();
     }
 
-    public int getQna_file_SEQ() {
-        return qna_file_SEQ;
+    public int getQna_files_SEQ() {
+        return qna_files_SEQ;
     }
 
-    public void setQna_file_SEQ(int qna_file_SEQ) {
-        this.qna_file_SEQ = qna_file_SEQ;
+    public void setQna_files_SEQ(int qna_files_SEQ) {
+        this.qna_files_SEQ = qna_files_SEQ;
     }
 
     public String getOriname() {

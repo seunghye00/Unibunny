@@ -33,7 +33,7 @@
 							<div class="game_list">
 								<a href="javascript:;" class="cpage" title="게임1로 이동" gamelistNum=1>FlappyCirby</a>
 								<a href="javascript:;" title="게임2로 이동" gamelistNum=2>4096</a> <a
-									href="javascript:;" title="게임3로 이동" gamelistNum=3>슛팅월넛</a> <a
+									href="javascript:;" title="게임3로 이동" gamelistNum=3>shooting walnut</a> <a
 									href="javascript:;" title="게임4로 이동" gamelistNum=4>블랙잭</a> <a
 									href="javascript:;" title="게임5로 이동" gamelistNum=5>Doodle Jump</a>
 							</div>
