@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -21,6 +23,9 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import dao.BoardFilesDAO;
 import dto.BoardFilesDTO;
 
+/**
+ * Servlet implementation class BoardFilesController
+ */
 @WebServlet("*.boardfile")
 public class BoardFilesController extends HttpServlet {
 
@@ -47,20 +52,15 @@ public class BoardFilesController extends HttpServlet {
 				// 파일 목록 조회
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 
-				// 댓글 목록을 담은 데이터 직렬화
+				// 파일 목록을 담은 데이터 직렬화
 				String file_list = g.toJson(dao.selectByBoardSeq(board_seq));
 				// 직렬화한 데이터 전송
 				response.getWriter().append(file_list);
 
 			} else if (cmd.equals("/download.boardfile")) {
-				// 파일 다운로드 (추후 수정 작업 필요)
 				String filepath = request.getServletContext().getRealPath("files"); // 파일이 저장되어 있는 위치
 				String sysname = request.getParameter("sysname"); // 다운 받을 파일이 하드디스크에 저장된 이름
 				String oriname = request.getParameter("oriname"); // 다운 받을 파일의 원래 이름
-
-				System.out.println(oriname);
-				System.out.println(sysname);
-				System.out.println(filepath);
 
 				oriname = new String(oriname.getBytes("UTF-8"), "ISO-8859-1"); // 인코딩 방식 수정. 크롬의 인코딩 방식
 
@@ -81,9 +81,9 @@ public class BoardFilesController extends HttpServlet {
 					sos.write(fileContents); // 파일의 내용을 전송
 					sos.flush();
 				}
-			} else if (cmd.equals("/upload.boardfile")) {
+			} else if (cmd.equals("/upload.boardfile") || cmd.equals("/update.boardfile")) {
 
-				int maxSize = 1024 * 1024 * 10; // 10 메가 사이즈 제한
+				int maxSize = 1024 * 1024 * 50; // 50 메가 사이즈 제한
 
 				String realPath = request.getServletContext().getRealPath("files"); // 파일이 저장될 위치
 				File uploadPath = new File(realPath); // 저장 위치 폴더를 파일 인스턴스로 생성
@@ -95,10 +95,8 @@ public class BoardFilesController extends HttpServlet {
 
 				MultipartRequest multi = new MultipartRequest(request, realPath, maxSize, "UTF-8",
 						new DefaultFileRenamePolicy());
-				String a = request.getParameter("board_seq");
-				System.out.println("test : " + a);
+
 				String board_seq = multi.getParameter("board_seq");
-				System.out.println("test2 : " + board_seq);
 				Enumeration<String> names = multi.getFileNames();
 
 				while (names.hasMoreElements()) {
@@ -113,18 +111,45 @@ public class BoardFilesController extends HttpServlet {
 						dao.insert(new BoardFilesDTO(0, oriName, sysName, Integer.parseInt(board_seq)));
 					}
 				}
-				response.sendRedirect("/user/crud/list.jsp");
+				if (cmd.equals("/upload.boardfile")) {
+					response.sendRedirect("/user/crud/list.jsp");
+				} else if (cmd.equals("/update.boardfile")){
+					response.sendRedirect("/user/detail.board?board_seq=" + board_seq);
+				}
+
+			} else if (cmd.equals("/delete.boardfile")) {
+				
+			    // 삭제할 파일의 절대 경로 생성
+				String realPath = request.getServletContext().getRealPath("files");
+				String sysname = request.getParameter("sysname");
+				String filePath = realPath + "/" + sysname;
+				System.out.println(realPath);
+				System.out.println(sysname);
+				System.out.println(filePath);
+			    File fileToDelete = new File(filePath);
+
+			    // 파일이 존재하면 삭제
+			    if (fileToDelete.exists()) {
+			        if (fileToDelete.delete()) {
+			            System.out.println("파일 삭제 성공: " + sysname);
+			            dao.deleteBySysname(sysname);
+			        } else {
+			            System.out.println("파일 삭제 실패: " + sysname);
+			        }
+			    } else {
+			        System.out.println("삭제할 파일이 존재하지 않습니다: " + sysname);
+			    }
 
 			} else if (cmd.equals("/imageUpload.boardfile")) {
-
+				
 				// 최대 사이즈 제한
-				int maxSize = 1024 * 1024 * 10;
+				int maxSize = 1024 * 1024 * 50;
 
 				// 서버에 저장할 경로
 				String realPath = request.getServletContext().getRealPath("/uploadImage");
 				// 저장 위치의 폴더를 파일 인스턴스로 생성
 				File uploadPath = new File(realPath);
-
+				System.out.println(realPath);
 				// 파일(폴더)의 존재여부 검사 후 존재하지 않는다면 폴더 생성
 				if (!uploadPath.exists()) {
 					uploadPath.mkdir();
@@ -133,19 +158,21 @@ public class BoardFilesController extends HttpServlet {
 						new DefaultFileRenamePolicy());
 
 				Enumeration<String> names = multi.getFileNames();
+				
 				while (names.hasMoreElements()) {
 
 					String name = names.nextElement();
 					String image_name = multi.getFilesystemName(name); // 원본 이름.
-					pw.append(g.toJson(image_name));
+					String image_url = request.getContextPath() + File.separator + "uploadImage" + File.separator + image_name;
+					pw.append(g.toJson(image_url));
 				}
-				pw.flush();
 				pw.close();
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

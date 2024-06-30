@@ -45,7 +45,7 @@
           </div>
           <div class="swiper-slide">
             <a href="javascript:;" class="swiper_bg">
-              <img src="../image/main/Asset7.png" alt="">
+              <img src="../image/main/main_banner5.png" alt="">
             </a>
           </div>
         </div>
@@ -99,13 +99,13 @@
                       </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="game_box">
+                      <a href="javascript:;" onclick="window.open('../game/BlackJack/index.jsp')" class="game_box">
                         <img src="../image/main/gameimg4.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="game_box">
-                        <img src="../image/main/dummy.png" alt="">
+                      <a href="javascript:;" onclick="window.open('../game/doodleJump/index.jsp')" class="game_box">
+                        <img src="../image/main/gameimg5.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">

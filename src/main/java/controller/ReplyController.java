@@ -45,19 +45,18 @@ public class ReplyController extends HttpServlet {
 				// 게시글 상세 페이지에서 해당 게시글의 댓글 목록 조회
 				int board_seq = Integer.parseInt(request.getParameter("board_seq")); 
 				String order_by = request.getParameter("order_by");
-				// 댓글 목록을 담은 데이터 직렬화
-				String reply_list = gson.toJson(dao.selectByBoardSeq(board_seq, order_by));
+				String user_id = (String)request.getSession().getAttribute("loginID");
+				
+				Map<String, Object> result = new HashMap<>();
+				result.put("nickname", MemberDAO.getInstance().getNickname(user_id));
+				result.put("board_info", dao.selectByBoardSeq(board_seq, order_by));
 				// 직렬화한 데이터 전송
-				response.getWriter().append(reply_list);
+				response.getWriter().append(gson.toJson(result));
 			
 			} else if(cmd.equals("/write.reply")){
 				// 댓글 작성
 				// 세션에 저장된 로그인 ID 저장
 				String user_id = (String)request.getSession().getAttribute("loginID");
-				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
-				if(user_id != null) {
-					user_id = "user000";
-				}
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				String nickname = MemberDAO.getInstance().getNickname(user_id);
 				dao.insert(new ReplyDTO(0, nickname, request.getParameter("content"), null, board_seq, "N"));

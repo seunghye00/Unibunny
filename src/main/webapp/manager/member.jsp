@@ -117,7 +117,7 @@
                             <input type="text" class="input_tag" id="search_input" placeholder="아이디 혹은 닉네임">
                           </div>
                           <div class="search_img">
-                            <a href="javascript:search_user()"><img src="../image/icon/ico_search.png" alt="검색 로고"></a>
+                            <a href="javascript:search_user(1,'first')"><img src="../image/icon/ico_search.png" alt="검색 로고"></a>
                           </div>
                         </div>
                       </div>
