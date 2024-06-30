@@ -76,7 +76,7 @@ public class QNAController extends HttpServlet {
         	} else if (cmd.equals("/list.qna")) {
                 List<QNADTO> qnaList = dao.selectAllQnA();
                 request.setAttribute("qnaList", qnaList);
-                request.getRequestDispatcher("/manager/qna.jsp").forward(request, response);
+                request.getRequestDispatcher("/admin/qna.jsp").forward(request, response);
             } else if (cmd.equals("/detail.qna")) {
                 int question_seq = Integer.parseInt(request.getParameter("question_seq"));
                 QNADTO qna = dao.selectQnABySeq(question_seq);
@@ -84,7 +84,7 @@ public class QNAController extends HttpServlet {
 
                 request.setAttribute("qna", qna);
                 request.setAttribute("file", file);
-                request.getRequestDispatcher("/manager/qna_detail.jsp").forward(request, response);
+                request.getRequestDispatcher("/admin/qna_detail.jsp").forward(request, response);
             } else if (cmd.equals("/answer.qna")) {
                 int question_seq = Integer.parseInt(request.getParameter("question_seq"));
                 String answer_content = request.getParameter("answer_content");
