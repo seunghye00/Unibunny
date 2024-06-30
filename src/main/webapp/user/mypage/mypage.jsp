@@ -194,7 +194,7 @@
                         <input type="text" id="id" readonly value="${my_info.userid}">
 
                         <label for="password" style="display: none">비밀번호</label>
-                        <input type="password" name="pw" id="password" readonly placeholder="변경할 비밀번호를 입력해주세요" style="display: none">
+                        <input type="password" name="pw" id="password" readonly placeholder="변경할 비밀번호를 입력하세요" style="display: none">
 
                         <label for="nickname">닉네임</label>
                         <input type="text" name="nickname" id="nickname" readonly value="${my_info.nickname}">
