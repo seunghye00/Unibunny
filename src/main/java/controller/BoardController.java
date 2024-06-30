@@ -311,7 +311,7 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("activeTab", "bookmarks");
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request, response);
 
-			} else if (cmd.equals("/manager/total.board")) {
+			} else if (cmd.equals("/admin/total.board")) {
 				// 관리자 페이지에서 전체 게시글의 수를 구하는 경로
 
 				String delete_yn = request.getParameter("deleted");
@@ -327,7 +327,7 @@ public class BoardController extends HttpServlet {
 				Gson g = new Gson();
 				pw.append(g.toJson(result));
 
-			} else if (cmd.equals("/manager/list.board")) {
+			} else if (cmd.equals("/admin/list.board")) {
 				// 관리자 페이지에서 해당 페이지의 게시글의 목록를 구하는 경로
 
 				String delete_yn = request.getParameter("deleted");
@@ -346,13 +346,13 @@ public class BoardController extends HttpServlet {
 					pw.append(gson.toJson(dao.selectListDeleteAll(start_num, end_num)));
 				}
 
-			} else if (cmd.equals("/manager/detail.board")) {
+			} else if (cmd.equals("/admin/detail.board")) {
 				// 게시글 상세 페이지
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				request.setAttribute("dto", dao.selectBySeq(board_seq));
 				String loginID = (String) request.getSession().getAttribute("loginID");
 				request.setAttribute("nickname", MemberDAO.getInstance().getNickname(loginID));
-				request.getRequestDispatcher("/manager/detail.jsp").forward(request, response);
+				request.getRequestDispatcher("/admin/detail.jsp").forward(request, response);
 			} else if (cmd.equals("/deletedboard.board")) {
 				
 				String pcpage = request.getParameter("cpage");
@@ -370,7 +370,7 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("record_count_per_page", Pagination.recordCountPerPage);
 				request.setAttribute("navi_count_per_page", Pagination.naviCountPerPage);
 				request.setAttribute("record_total_count", dao.getDeletedRecordCount());
-				request.getRequestDispatcher("/manager/keepboard.jsp").forward(request, response);
+				request.getRequestDispatcher("/admin/keepboard.jsp").forward(request, response);
 				
 			}else if(cmd.equals("/deleteYN_N_To_Y.board")) {
 				
@@ -378,7 +378,7 @@ public class BoardController extends HttpServlet {
 				
 				BoardDAO.getInstance().updateToY(board_seq);
 				
-				response.sendRedirect("/manager/keepboard.jsp");
+				response.sendRedirect("/admin/keepboard.jsp");
 				
 			}else if(cmd.equals("/deleteYN_Y_To_N.board")) {
 				
@@ -386,7 +386,7 @@ public class BoardController extends HttpServlet {
 				
 				BoardDAO.getInstance().updateToN(board_seq);
 				
-				response.sendRedirect("/manager/keepboard.jsp");
+				response.sendRedirect("/admin/keepboard.jsp");
 			} else if(cmd.equals("/restoreUpdateToN.board")) {
 				// 임시 보관된 게시물 서블릿
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));

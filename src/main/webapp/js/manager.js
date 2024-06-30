@@ -893,7 +893,7 @@ function get_community_list(choice, cpage, deleted) {
 	}
 	// 해당 등급의 총 회원 수를 불러오기 위한 코드
 	$.ajax({
-		url: "/manager/total." + choice,
+		url: "/admin/total." + choice,
 		dataType: "json",
 		data : { deleted : deleted }
 	}).done(function(resp) {
@@ -960,7 +960,7 @@ function get_community_list(choice, cpage, deleted) {
 			page_nation.append(next_btn);
 
 			$.ajax({
-				url: "/manager/list." + choice,
+				url: "/admin/list." + choice,
 				dataType: "json",
 				data: {
 					cpage: cpage,
@@ -980,7 +980,7 @@ function get_community_list(choice, cpage, deleted) {
 					if(choice == "board"){
 						// 게시글을 조회한 경우
 						hidden_input.val(i.board_seq);
-						a.attr("href", "/manager/detail.board?board_seq="+i.board_seq);
+						a.attr("href", "/admin/detail.board?board_seq="+i.board_seq);
 					} else if (choice == "notice"){
 						// 공지사항을 조회한 경우
 						hidden_input.val(i.notice_seq);
@@ -1046,7 +1046,7 @@ function get_community_list(choice, cpage, deleted) {
 					}
 				} else {
 					// 댓글 목록을 출력할 조회할 경우
-					let a = $("<a>", { "href" : "/manager/detail.board?board_seq="+i.board_seq});
+					let a = $("<a>", { "href" : "/admin/detail.board?board_seq="+i.board_seq});
 					
 					let row = $("<div>", { "class": "table_row" });	
 					let col = $("<div>", { "class" : "table_col" });

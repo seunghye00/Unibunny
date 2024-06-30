@@ -108,16 +108,16 @@
                   <button type="button" id="file">+</button>
                 </div>
                 <div id="filebox"></div>
+                </div>
+                </form>
                 <div style="padding: 10px;"></div>
                 <div class="write">
                   <textarea id="summernote"></textarea>
-                </div>
-              </div>
+                </div>  
               <div class="btns">
                 <button class="write_btn" type="button" id="write_board">작성하기</button>
                 <button class="list_btn" onclick="location.href='/user/crud/list.jsp'" type="button">돌아가기</button>
               </div>
-              </form>
             </div>
           </div>
         </div>
