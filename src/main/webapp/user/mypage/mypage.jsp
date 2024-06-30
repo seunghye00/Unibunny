@@ -13,6 +13,8 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <script defer src="../../../js/common.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style>
 /* 페이지네이션 스타일 */
 .profile_wrapper .bottom_box {
@@ -192,7 +194,7 @@
                         <input type="text" id="id" readonly value="${my_info.userid}">
 
                         <label for="password" style="display: none">비밀번호</label>
-                        <input type="password" name="pw" id="password" readonly value="${my_info.pw}" style="display: none">
+                        <input type="password" name="pw" id="password" readonly placeholder="변경할 비밀번호를 입력하세요" style="display: none">
 
                         <label for="nickname">닉네임</label>
                         <input type="text" name="nickname" id="nickname" readonly value="${my_info.nickname}">
@@ -200,11 +202,12 @@
                         <input type="text" name="phone" id="phone" readonly value="${my_info.phone}">
                         <label for="email">이메일</label>
                         <input type="text" name="email" id="email" readonly value="${my_info.email}">
+                        <button class="postcode_btn" style="display: none" type="button">우편번호</button>
                         <label for="address1">주소</label>
                         <input type="text" name="address1" id="address1" readonly value="${my_info.address1}">
                         <label for="address2">상세주소</label>
                         <input type="text" name="address2" id="address2" readonly value="${my_info.address2}">
-                        <label for="postcode">우편번호</label>
+                        <label for="postcode">우편번호</label>	
                         <input type="text" name="postcode" id="postcode" readonly value="${my_info.postcode}">
                       </div>
                     </div>
@@ -234,55 +237,40 @@
                 </form>
 
                 <!-- 게임 기록 확인 -->
-                <div class="profile_contents_wrap" id="myScore">
-                  <div class="profile_title">게임 기록 확인</div>
+<div class="profile_contents_wrap" id="myScore">
+  <div class="profile_title">게임 기록 확인</div>
 
-                  <select class="tab-dropdown dropdown">
-                    <option value="">카테고리 선택.</option>
-                    <option value="내 프로필">내 프로필</option>
-                    <option value="계정관리">계정관리</option>
-                    <option value="게임 기록 확인">게임 기록 확인</option>
-                    <option value="작성한 글">작성한 글</option>
-                    <option value="작성한 댓글">작성한 댓글</option>
-                    <option value="북마크">북마크</option>
-                    <option value="1:1문의">1:1문의</option>
-                  </select>
+  <select class="tab-dropdown dropdown">
+    <option value="">카테고리 선택.</option>
+    <option value="내 프로필">내 프로필</option>
+    <option value="계정관리">계정관리</option>
+    <option value="게임 기록 확인">게임 기록 확인</option>
+    <option value="작성한 글">작성한 글</option>
+    <option value="작성한 댓글">작성한 댓글</option>
+    <option value="북마크">북마크</option>
+    <option value="1:1문의">1:1문의</option>
+  </select>
 
-                  <div class="profile_contents">
-                    <div class="my_score">
-                      <div class="dropdown-container">
-                        <select id="dropdown" class="dropdown">
-                          <option value="">게임을 선택하세요.</option>
-                          <option value="option1">Game 1</option>
-                          <option value="option2">Game 2</option>
-                          <option value="option3">Game 3</option>
-                          <option value="option4">Game 4</option>
-                          <option value="option5">Game 5</option>
-                        </select>
-                      </div>
+  <div class="profile_contents">
+    <div class="my_score">
+      <div class="dropdown-container">
+        <select name="gameid" id="gameSelect" required>
+          <option value="all">전체 게임</option>
+        </select>
+      </div>
 
-                      <div class="list_table">
-                        <div class="table_row table_header">
-                          <div class="table_col"><span>번호</span></div>
-                          <div class="table_col"><span>게임명</span></div>
-                          <div class="table_col"><span>점수</span></div>
-                          <div class="table_col"><span>플레이 날짜</span></div>
-                        </div>
-                        
-                        <c:forEach var="dto" items="${myscore}">
-                          <div class="table_row">
-                            <div class="table_col"><span>${dto.score_seq}</span></div>
-                            <div class="table_col"><span>${dto.game_id}</span></div>
-                            <div class="table_col"><span>${dto.score}</span></div>
-                            <div class="table_col"><span><fmt:formatDate value="${dto.end_time}" pattern="yyyy.MM.dd" /></span></div>
-                          </div>
-                        </c:forEach>
-                        
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div class="list_table" id="scoreTable">
+        <div class="table_row table_header">
+          <div class="table_col"><span>번호</span></div>
+          <div class="table_col"><span>게임명</span></div>
+          <div class="table_col"><span>점수</span></div>
+          <div class="table_col"><span>플레이 날짜</span></div>
+        </div>
+        <!-- 점수 목록이 여기에 동적으로 추가됩니다 -->
+      </div>
+    </div>
+  </div>
+</div>
 
                 <!-- 작성한 글 -->
                 <div class="profile_contents_wrap" id="myPosts">
@@ -495,6 +483,26 @@
         $('.cancel_changes_btn').hide();
         $('.profile_edit_btn').show();
     });
+    
+    
+    $.ajax({
+        url: '/getgames.game',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var gameSelect = $('#gameSelect');
+            gameSelect.empty();
+            gameSelect.append('<option value="all">전체 게임</option>'); // 전체 게임 옵션 추가
+            $.each(data, function (index, game) {
+                gameSelect.append('<option value="' + game.game_id + '">' + game.game_name + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('게임 데이터를 가져오는데 실패했습니다:', status, error);
+        }
+    });
+    
+    
 });
 
             
@@ -502,64 +510,120 @@
          // 마이페이지 계정관리
 
             document.getElementById('edit_button').addEventListener('click', function () {
-            // 모든 input 요소를 선택
-            const inputs = document.querySelectorAll('.my_account input');
+  // 모든 input 요소를 선택
+  const inputs = document.querySelectorAll('.my_account input');
 
-            // 각 input 요소의 readonly 속성을 제거하고 border 스타일을 추가
-            inputs.forEach((input) => {
-              // 원래 값을 data-original-value 속성에 저장
-              if (!input.hasAttribute('data-original-value')) {
-                input.setAttribute('data-original-value', input.value);
-              }
-              input.removeAttribute('readonly');
-              input.style.border = '1px solid #ffffff';
-            });
+  // 각 input 요소의 readonly 속성을 제거하고 border 스타일을 추가
+  inputs.forEach((input) => {
+    // id가 'id'인 input 요소는 제외
+    if (input.id === 'id' || input.id === 'address1' || input.id === 'postcode') {
+      return;
+    }
 
-            // 비밀번호 관련 라벨과 input을 표시
-            const passwordLabel = document.querySelector('label[for="password"]');
-            const passwordInput = document.getElementById('password');
+    // 원래 값을 data-original-value 속성에 저장
+    if (!input.hasAttribute('data-original-value')) {
+      input.setAttribute('data-original-value', input.value);
+    }
+    input.removeAttribute('readonly');
+    input.style.border = '1px solid #ffffff';
+  });
 
-            if (passwordLabel && passwordInput) {
-              passwordLabel.style.display = 'block';
-              passwordInput.style.display = 'block';
-              passwordInput.style.border = '1px solid #ffffff'; // 비밀번호 input에도 border 스타일 추가
-            }
+  // 비밀번호 관련 라벨과 input을 표시
+  const passwordLabel = document.querySelector('label[for="password"]');
+  const passwordInput = document.getElementById('password');
+  const postcodeButton = document.querySelector('.postcode_btn');
 
-            // 버튼 표시/숨기기
-            document.getElementById('edit_button').style.display = 'none';
-            document.getElementById('edit_actions').style.display = 'flex';
-          });
+  if (passwordLabel && passwordInput) {
+    passwordLabel.style.display = 'block';
+    passwordInput.style.display = 'block';
+    passwordInput.style.border = '1px solid #ffffff'; // 비밀번호 input에도 border 스타일 추가
+  }
 
-          document.getElementById('cancel_button').addEventListener('click', function () {
-            // 모든 input 요소를 선택
-            const inputs = document.querySelectorAll('.my_account input');
+  if (postcodeButton) { 
+      postcodeButton.style.display = 'block';
+  }
+  
+  // 버튼 표시/숨기기
+  document.getElementById('edit_button').style.display = 'none';
+  document.getElementById('edit_actions').style.display = 'flex';
+});
 
-            // 각 input 요소의 readonly 속성을 다시 추가하고 border 스타일 제거
-            inputs.forEach((input) => {
-              // data-original-value 속성에 저장된 원래 값으로 복원
-              const originalValue = input.getAttribute('data-original-value');
-              if (originalValue !== null) {
-                input.value = originalValue;
-              }
-              input.setAttribute('readonly', true);
-              input.style.border = 'none';
-            });
 
-            // 비밀번호 관련 라벨과 input을 숨기기
-            const passwordLabel = document.querySelector('label[for="password"]');
-            const passwordInput = document.getElementById('password');
+            document.getElementById('cancel_button').addEventListener('click', function () {
+                // 모든 input 요소를 선택
+                const inputs = document.querySelectorAll('.my_account input');
 
-            if (passwordLabel && passwordInput) {
-              passwordLabel.style.display = 'none';
-              passwordInput.style.display = 'none';
-            }
+                // 각 input 요소의 readonly 속성을 다시 추가하고 border 스타일 제거
+                inputs.forEach((input) => {
+                  // id가 'id'인 input 요소는 제외
+                  if (input.id === 'id') {
+                    return;
+                  } 
 
-            // 버튼 표시/숨기기
-            document.getElementById('edit_button').style.display = 'inline';
-            document.getElementById('edit_actions').style.display = 'none';
-          });
+                  // data-original-value 속성에 저장된 원래 값으로 복원
+                  const originalValue = input.getAttribute('data-original-value');
+                  if (originalValue !== null) {
+                    input.value = originalValue;
+                  }
+                  input.setAttribute('readonly', true);
+                  input.style.border = 'none';
+                });
 
-            
+                // 비밀번호 관련 라벨과 input을 숨기기
+                const passwordLabel = document.querySelector('label[for="password"]');
+                const passwordInput = document.getElementById('password');
+                const postcodeButton = document.querySelector('.postcode_btn'); 
+
+                if (passwordLabel && passwordInput) {
+                  passwordLabel.style.display = 'none';
+                  passwordInput.style.display = 'none';
+                }
+
+                if (postcodeButton) { 
+                    postcodeButton.style.display = 'none';
+                }
+                
+                
+                // 버튼 표시/숨기기
+                document.getElementById('edit_button').style.display = 'inline';
+                document.getElementById('edit_actions').style.display = 'none';
+              }); 
+         
+         
+         
+            document.getElementById('apply_button').addEventListener('click', function (event) {
+            	  // 모든 input 요소를 선택
+            	  const inputs = document.querySelectorAll('.my_account input');
+
+            	  // 유효성 검사 플래그
+            	  let isValid = true;
+
+            	  // 각 input 요소를 검사
+            	  inputs.forEach((input) => {
+            	    // id가 'address2'인 input 요소는 제외
+            	    if (input.id === 'address2' || input.id === 'id') {
+            	      return;
+            	    }
+
+            	    // input 값이 null이거나 빈 문자열이면 유효하지 않음
+            	    if (input.value === null || input.value.trim() === '') {
+            	      isValid = false;
+            	      input.style.border = '1px solid red'; // 경고를 위해 빨간 테두리 추가
+            	    } else if (input.id === 'postcode' && input.value.length > 10) {
+            	      isValid = false;
+            	      alert('우편번호는 10자 이하로 입력해 주십시오');
+            	      input.style.border = '1px solid red'; // 경고를 위해 빨간 테두리 추가
+            	    } else {
+            	      input.style.border = '1px solid #ffffff'; // 유효한 경우 흰색 테두리로 변경
+            	    }
+            	  });
+
+            	  // 유효하지 않은 경우 경고 메시지 표시
+            	  if (!isValid) {
+            	    alert('올바른 정보를 입력해 주십시오');
+            	    event.preventDefault(); // 폼 제출을 막음
+            	  }
+            	});
             
             
             
@@ -625,6 +689,19 @@
                 document.querySelector(".default_contents").style.display = "block";
               }
             });
+            
+            // 다음 우편번호 서비스 사용
+            $(".postcode_btn").click(function() {
+               new daum.Postcode({
+                  oncomplete: function(data) {
+                     $("#postcode").val(data.zonecode);
+                     $("#address1").val(data.jibunAddress);
+                     $("#address2").val("");
+                  },
+               }).open();
+            });
+            
+            
             </script>
           </div>
         </div>

@@ -11,7 +11,7 @@ var COL = 1; // 각각 행과 열을 나타내는 상수
 // 윈도우가 처음 로드될 때
 window.onload = function() {
    // 게임 로그 전송
-   StartGameFunctions.sendScore(gameId);
+   StartGameFunctions.sendGameid(gameId);
     var gameConfig = {
        type: Phaser.CANVAS,
        width: gameOptions.tileSize * 4 + gameOptions.tileSpacing * 5,
@@ -141,6 +141,7 @@ var playGame = new Phaser.Class({
                 this.handleMove(-1, 0);
             }
         }
+        EndGameFunctions.sendScore(score,gameId)
     },
     // 숫자 2 타일 추가
     addTile: function(){

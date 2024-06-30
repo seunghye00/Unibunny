@@ -1,5 +1,5 @@
 package commons;
 
 public enum Duptype {
-	Userid, Nickname, Phone, Email
+	Userid, Nickname, Reg_num ,Phone, Email
 }
