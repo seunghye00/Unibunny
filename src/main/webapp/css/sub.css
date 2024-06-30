@@ -658,7 +658,7 @@
 .cont_box .cont_body .board_head {
   min-height: 100px;
   color: var(--color-text);
-  z-index: 3;
+  z-index: 4;
   position: relative;
 }
 
@@ -1172,15 +1172,16 @@
 }
 
 .podium .first img {
-  position: absolute;
-  top: -270px;
+  /* position: absolute; */
+  /* top: -270px; */
   /* 이미지의 위치를 조정하는 값 */
-  left: 55%;
-  transform: translateX(-50%);
+  /* left: 55%; */
+  /* transform: translateX(-50%); */
   /* 이미지 크기 조정 */
   width: 120px;
   height: 120px;
   z-index: 1;
+  position: relative;
 }
 
 .podium .first-2 {
@@ -1196,16 +1197,17 @@
 }
 
 .podium .second img {
-  position: absolute;
+  /* position: absolute; */
   /* 이미지의 위치를 조정하는 값 */
-  top: -225px;
-  left: 10%;
-  transform: translateX(-50%);
+  /* top: -225px; */
+  /* left: 10%; */
+  /* transform: translateX(-50%); */
   /* 이미지 크기 조정 */
   width: 120px;
   height: 120px;
   /* 이미지 크기 조정 */
   z-index: 1;
+  position: relative;
 }
 
 .podium .second-2 {
@@ -1221,16 +1223,17 @@
 }
 
 .podium .third img {
-  position: absolute;
+  /* position: absolute; */
   /* 이미지의 위치를 조정하는 값 */
-  top: -205px;
-  left: 105%;
-  transform: translateX(-50%);
+  /* top: -205px; */
+  /* left: 105%; */
+  /* transform: translateX(-50%); */
   /* 이미지 크기 조정 */
   width: 120px;
   height: 120px;
   /* 이미지 크기 조정 */
   z-index: 1;
+  position: relative;
 }
 
 .podium .third-2 {
@@ -1238,11 +1241,12 @@
   top: -175px;
   left: 80%;
   transform: translateX(-50%);
-  width: 120px;
+  width: 135px;
   height: 120px;
   z-index: 1;
   display: flex;
   flex-direction: column-reverse;
+  align-content: center;
 }
 
 .podium img {
@@ -2356,15 +2360,16 @@
   } */
 
   .podium .first img {
-    position: absolute;
+    /* position: absolute; */
     /* 이미지의 위치를 조정하는 값 */
-    top: -275px;
-    left: 55%;
-    transform: translateX(-50%);
+    /* top: -275px; */
+    /* left: 55%; */
+    /* transform: translateX(-50%); */
     width: 120px;
     height: 120px;
     z-index: 1;
     padding-top: 10px;
+    position: relative;
   }
 
   .podium .first-2 {
@@ -2381,13 +2386,14 @@
 
   .podium .second img {
     position: absolute;
-    top: -225px;
-    left: 55%;
-    transform: translateX(-50%);
+    /* top: -225px; */
+    /* left: 55%; */
+    /* transform: translateX(-50%); */
     width: 120px;
     height: 120px;
     z-index: 1;
     padding-top: 10px;
+    position: relative;
   }
 
   .podium .second-2 {
@@ -2403,14 +2409,15 @@
   }
 
   .podium .third img {
-    position: absolute;
-    top: -205px;
-    left: 55%;
-    transform: translateX(-50%);
+    /* position: absolute; */
+    /* top: -205px; */
+    /* left: 55%; */
+    /* transform: translateX(-50%); */
     width: 120px;
     height: 120px;
     z-index: 1;
     padding-top: 10px;
+    position: relative;
   }
 
   .podium .third-2 {

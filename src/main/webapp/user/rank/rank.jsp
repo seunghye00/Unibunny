@@ -33,7 +33,7 @@
 							<div class="game_list">
 								<a href="javascript:;" class="cpage" title="게임1로 이동" gamelistNum=1>FlappyCirby</a>
 								<a href="javascript:;" title="게임2로 이동" gamelistNum=2>4096</a> <a
-									href="javascript:;" title="게임3로 이동" gamelistNum=3>슛팅월넛</a> <a
+									href="javascript:;" title="게임3로 이동" gamelistNum=3>shooting walnut</a> <a
 									href="javascript:;" title="게임4로 이동" gamelistNum=4>블랙잭</a> <a
 									href="javascript:;" title="게임5로 이동" gamelistNum=5>Doodle Jump</a>
 							</div>
@@ -158,21 +158,24 @@
             $first2.empty(); // 기존 내용 지우기
             var $score = $('<p>').text(topData.score + '점');
             var $nickname = $('<p>').text(topData.nickname);
-            $first2.append($score).append($nickname);
+            var $rankimg= $('<img src="../../image/rank/gold.png" alt="로고">')
+            $first2.append($score).append($nickname).append($rankimg);
         } else if (i === 1) {
             // 두 번째 데이터를 .second-2에 추가
             var $second2 = $('.second-2');
             $second2.empty(); // 기존 내용 지우기
             var $score = $('<p>').text(topData.score + '점');
             var $nickname = $('<p>').text(topData.nickname);
-            $second2.append($score).append($nickname);
+            var $rankimg= $('<img src="../../image/rank/silver.png" alt="로고">')
+            $second2.append($score).append($nickname).append($rankimg);
         } else if (i === 2) {
             // 세 번째 데이터를 .third-2에 추가
             var $third2 = $('.third-2');
             $third2.empty(); // 기존 내용 지우기
             var $score = $('<p>').text(topData.score + '점');
             var $nickname = $('<p>').text(topData.nickname);
-            $third2.append($score).append($nickname);
+            var $rankimg= $('<img src="../../image/rank/bronze.png" alt="로고">')
+            $third2.append($score).append($nickname).append($rankimg);
         }
     }
 

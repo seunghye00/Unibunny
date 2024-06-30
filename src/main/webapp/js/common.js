@@ -585,7 +585,6 @@ function imageUploader(file, editor) {
 	$.ajax({
 		data: data,
 		type: "POST",
-		// url은 자신의 이미지 업로드 처리 컨트롤러 경로로 설정해주세요.
 		url: '/imageUpload.boardfile',
 		enctype: 'multipart/form-data',
 		cache: false,
@@ -593,9 +592,7 @@ function imageUploader(file, editor) {
 		processData: false,
 		dataType: 'json',
 		success: function(data) {
-			console.log(data);
 			$("#summernote").summernote('insertImage', data);
-		
 		}
 	});
 }
@@ -1141,7 +1138,7 @@ $('#write_comm').on('click', function() {
 		url: '/write.reply',
 		method: 'post',
 		data: {
-			content: $('.input_box').html(),
+			content: $('.input_box').text(),
 			board_seq: get_board_seq()
 		}
 	}).done(function() {

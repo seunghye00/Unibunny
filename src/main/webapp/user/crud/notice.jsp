@@ -43,29 +43,29 @@
 											<li><a href="/list.board" id="board_all">전체 게시글</a></li>
 											<li><a
 												href="/list.board?api=/list.board&page=1&gameId=1"
-												id="game1">게임1</a></li>
+												id="game1">Flappy Cirby</a></li>
 											<li><a
 												href="/list.board?api=/list.board&page=1&gameId=2"
-												id="game2">게임2</a></li>
+												id="game2">4096</a></li>
 											<li><a
 												href="/list.board?api=/list.board&page=1&gameId=3"
-												id="game3">게임3</a></li>
+												id="game3">shooting walnut</a></li>
 											<li><a
 												href="/list.board?api=/list.board&page=1&gameId=4"
-												id="game4">게임4</a></li>
+												id="game4">블랙잭</a></li>
 											<li><a
 												href="/list.board?api=/list.board&page=1&gameId=5"
-												id="game5">게임5</a></li>
+												id="game5">Doodle Jump</a></li>
 									</div>
 								</div>
 								<select name="sub_menu" id="sub_menu" class="sub_menu">
 									<option value="notice">공지사항</option>
 									<option value="board_all">전체 게시글</option>
-									<option value="game1">게임1</option>
-									<option value="game2">게임2</option>
-									<option value="game3">게임3</option>
-									<option value="game4">게임4</option>
-									<option value="game5">게임5</option>
+									<option value="game1">Flappy Cirby</option>
+									<option value="game2">4096</option>
+									<option value="game3">shooting walnut</option>
+									<option value="game4">블랙잭</option>
+									<option value="game5">Doodle Jump</option>
 								</select>
 								<div class="list_box">
 									<div class="choi_box">
