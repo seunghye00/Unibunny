@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -44,8 +46,6 @@ public class BoardFilesController extends HttpServlet {
 		BoardFilesDAO dao = BoardFilesDAO.getInstance();
 
 		PrintWriter pw = response.getWriter();
-		
-	
 
 		try {
 			if (cmd.equals("/list.boardfile")) {
@@ -141,7 +141,7 @@ public class BoardFilesController extends HttpServlet {
 			    }
 
 			} else if (cmd.equals("/imageUpload.boardfile")) {
-
+				
 				// 최대 사이즈 제한
 				int maxSize = 1024 * 1024 * 50;
 
@@ -149,7 +149,7 @@ public class BoardFilesController extends HttpServlet {
 				String realPath = request.getServletContext().getRealPath("/uploadImage");
 				// 저장 위치의 폴더를 파일 인스턴스로 생성
 				File uploadPath = new File(realPath);
-
+				System.out.println(realPath);
 				// 파일(폴더)의 존재여부 검사 후 존재하지 않는다면 폴더 생성
 				if (!uploadPath.exists()) {
 					uploadPath.mkdir();
@@ -158,13 +158,14 @@ public class BoardFilesController extends HttpServlet {
 						new DefaultFileRenamePolicy());
 
 				Enumeration<String> names = multi.getFileNames();
+				
 				while (names.hasMoreElements()) {
 
 					String name = names.nextElement();
 					String image_name = multi.getFilesystemName(name); // 원본 이름.
-					pw.append(g.toJson(image_name));
+					String image_url = request.getContextPath() + File.separator + "uploadImage" + File.separator + image_name;
+					pw.append(g.toJson(image_url));
 				}
-				pw.flush();
 				pw.close();
 			}
 

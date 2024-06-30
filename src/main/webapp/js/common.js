@@ -559,49 +559,47 @@ $('#likes_btn').on('click', function() {
 	$('.views_list, .recent_list').hide();
 });*/
 
-// 섬머노트 에디터 초기 설정
+// 서머노트 에디터 초기 설정
 function editer_setting() {
 	$('#summernote').summernote({
-		height: 500,                 // 에디터 높이 설정
+		height: 600,                 // 에디터 높이 설정
 		minHeight: null,             // 최소 높이 설정
 		maxHeight: null,             // 최대 높이 설정
 		focus: true,                 // 초기 포커스 설정
 		lang: "ko-KR",				 // 한글 설정
 		// 이미지 업로드 시 실행할 함수
-		/*
 		callbacks: {
 			onImageUpload: function(files, editor, welEditable) {
-				// 다중 이미지 처리를 위해 for문 사용
-				for (var i = 0; i < files.length; i++) {
-					imageUploader(files[i], this);
-				}
+				imageUploader(files[0], this);
 			}
-		} */
-	});
-}
-/*
-function imageUploader(file, el) {
-
-	var formData = new FormData();
-	formData.append('file', file);
-
-	$.ajax({
-		data: formData,
-		type: "POST",
-		// url은 자신의 이미지 업로드 처리 컨트롤러 경로로 설정해주세요.
-		url: '/imageUpload.boardfile',
-		contentType: false,
-		processData: false,
-		enctype: 'multipart/form-data',
-		success: function(data) {
-			console.log(data);
-			$(el).summernote('insertImage', "${pageContext.request.contextPath}/assets/images/upload/" + data, function($image) {
-				$image.css('width', "100%");
-			});
 		}
 	});
 }
-*/
+
+// 서머노트 이미지 업로드 메서드
+function imageUploader(file, editor) {
+	
+	data = new FormData();
+	data.append('uploadFile', file);
+
+	$.ajax({
+		data: data,
+		type: "POST",
+		// url은 자신의 이미지 업로드 처리 컨트롤러 경로로 설정해주세요.
+		url: '/imageUpload.boardfile',
+		enctype: 'multipart/form-data',
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: 'json',
+		success: function(data) {
+			console.log(data);
+			$("#summernote").summernote('insertImage', data);
+		
+		}
+	});
+}
+
 // 게시글 작성 & 수정 페이지에서 파일 첨부 버튼 클릭 시
 $("#addfile #file").on("click", function() {
 	// 현재 요소의 파일 갯수 확인 후 5개 이상 추가 방지	
@@ -674,27 +672,27 @@ $("#update_board_btn").on("click", function() {
 		$("#edit_title").focus();
 		return false;
 	}
-	/*
+	
 	if ($(".note-editable").text().trim() == "") {
 		alert("내용를 먼저 입력해주세요");
 		$(".note-editable").focus();
 		return false;
-	}*/
+	}
 	$.ajax({
 		url: '/update.board',
 		dataType: 'json',
 		data: {
-			board_seq : get_board_seq(),
+			board_seq: get_board_seq(),
 			title: $("#edit_title").val(),
-			content: "아오"
+			content: $(".note-editable").html()
 		}
 	}).done(function(resp) {
 		console.log(resp)
-		 // 성공 시 form 제출
-		 $("#board_update_form").submit();
+		// 성공 시 form 제출
+		$("#board_update_form").submit();
 	});
-	
-	
+
+
 });
 
 // 게시글 수정 페이지에서 취소 버튼 클릭 시
@@ -1178,12 +1176,10 @@ $('#back_btn').on('click', function() {
 
 // 게시글 작성 버튼 클릭 시
 $('#board_write_btn').on('click', function() {
-
-	if ($(".header_my:nth-child(2) a").text().slice(0, -1) == "") {
+	if ($(".header_my:nth-child(2) a").text().trim() == "") {
 		alert("회원만 이용 가능한 서비스 입니다.");
 		return false;
 	}
-
 	location.href = '/user/crud/write_board.jsp';
 });
 
