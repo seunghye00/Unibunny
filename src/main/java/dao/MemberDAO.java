@@ -158,7 +158,7 @@ public class MemberDAO {
 	public int updateUserInfo(MemberDTO dto) throws Exception {
 //	해당 유저의 id로 회원의 정보를 수정한다.
 //	마이 페이지의 계정 관리 기능
-		String sql = "update member set nickname = ?, pw = ?, phone = ?, email = ?, address1 = ?, address2 = ?, postcode = ? where userid = ?";
+		String sql = "update member set nickname = ?, pw = ?, phone = ?, email = ?, postcode = ?, address1 = ?, address2 = ? where userid = ?";
 		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql);
 
 		) {
