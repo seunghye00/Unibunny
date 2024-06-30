@@ -374,18 +374,12 @@ public class MemberController extends HttpServlet {
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 
             } else if(cmd.equals("/edit.member")) {
-
-//				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
-//				회원 정보 수정
-
-				
-				
-			}else if(cmd.equals("/edit.member")) {
 //				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
 //				회원 정보 수정
 				
 				String id = (String)request.getSession().getAttribute("loginID"); //변조의 가능성이 있기때문에, 세션에서 받아와야한다.
 				String pw = request.getParameter("pw");
+				String pwsha512 = EncryptionUitls.getSHA512(pw);
 				String nickname = request.getParameter("nickname");
 				String phone = request.getParameter("phone");
 				String email = request.getParameter("email");
@@ -394,7 +388,7 @@ public class MemberController extends HttpServlet {
 				String postcode = request.getParameter("postcode");
 				
 
-				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 1,null));
+				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pwsha512, phone, null, email, postcode, address1, address2, null, 1,null));
 
 				response.sendRedirect("/mypage.member");
 				
