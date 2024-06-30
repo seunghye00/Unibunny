@@ -25,12 +25,6 @@
 							<img src="../image/logo.png" alt="">
 						</h1>
 				</a></li>
-				<li class="snb_cate"><a href="#"> <span>대시보드</span>
-				</a></li>
-				<li class="snb_cate"><a href="#"> <span>배너 관리</span>
-				</a></li>
-				<li class="snb_cate"><a href="#"> <span>게임 관리</span>
-				</a></li>
 				<li class="snb_cate"><a href="/admin/member.jsp"> <span
 						>회원 관리</span>
 				</a></li>
