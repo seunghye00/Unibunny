@@ -78,7 +78,7 @@
                       </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="our_box">
+                      <a href="https://www.instagram.com/jongho__00/" target="_brank" class="our_box">
                         <div class="our_tit">
                           <div class="img_box">
                             <img src="../../image/ourpage/호두.png" alt="">
@@ -112,7 +112,7 @@
                       </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="https://www.instagram.com/minseo10.17/" class="our_box">
+                      <a href="https://www.instagram.com/minseo10.17/" target="_brank" class="our_box">
                         <div class="our_tit">
                           <div class="img_box">
                             <img src="../../image/ourpage/푸바오.jpg" alt="">
