@@ -33,7 +33,7 @@
 									<div class="board_box">
 										<div class="board_head">
 											<div class="title">
-												<div id="board_title">${dto.title }</div>
+												<div id="board_title">${dto.title}</div>
 												<div class="btn_box">
 													<button class="option_btn mark_option" id="bookmark_btn"
 														type="button">
@@ -57,7 +57,7 @@
 												<div class="views">조회수 : ${dto.view_count}</div>
 												<div class="bookmark"></div>
 												<div class="edit_box">
-													<c:if test="${loginID} eq ${nickname}">
+													<c:if test="${nickname eq dto.nickname}">
 														<div class="btn_box">
 															<button class="write_btn" id="edit_btn" type="button">수정</button>
 														</div>
@@ -117,6 +117,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="user_nickname" style="display:none;">${nickname}</div>
 		<jsp:include page="../../common/footer.jsp" />
 	</div>
 

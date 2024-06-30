@@ -468,7 +468,8 @@
   margin-top: 10px;
 }
 
-.file-input-wrapper input[type="file"] {
+.file-input-wrapper input[type="file"],
+.file-input-wrapper>div{
   flex-grow: 1;
   height: 100%;
   padding: 10px;

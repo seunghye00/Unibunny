@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 
 import commons.Pagination;
 import dao.BoardDAO;
+import dao.BoardFilesDAO;
 import dao.MemberDAO;
 import dto.BoardDTO;
 import dto.NoticeDTO;
@@ -145,7 +146,7 @@ public class BoardController extends HttpServlet {
 					} else {
 						request.setAttribute("record_total_count", dao.getRecordCountGame(game_Id));
 					}
-
+					
 					request.getRequestDispatcher("/user/crud/list.jsp").forward(request, response);
 				}
 			}
@@ -196,13 +197,14 @@ public class BoardController extends HttpServlet {
 						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
 						cpage * Pagination.recordCountPerPage);
 				request.setAttribute("boardlist", list);
+			
 			} else if (cmd.equals("/write.board")) {
 				// 게시글 등록
 				int game_id = Integer.parseInt(request.getParameter("game_id"));
 				String title = request.getParameter("title");
 				String content = request.getParameter("content");
-				String writer = (String) request.getSession().getAttribute("loginID");
-				writer = "default";
+				String user_id = (String) request.getSession().getAttribute("loginID");
+				String writer = MemberDAO.getInstance().getNickname(user_id);
 				int board_seq = dao.insert(game_id, title, content, writer);
 				Gson g = new Gson();
 				// 등록한 게시물의 seq 값 반환
@@ -226,25 +228,18 @@ public class BoardController extends HttpServlet {
 			} else if (cmd.equals("/update.board")) {
 				// 게시글 수정
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-				System.out.println(request.getParameter("edit_content"));
-				dao.update(board_seq, request.getParameter("edit_title"), request.getParameter("edit_content"));
-				response.sendRedirect("/user/detail.board?board_seq=" + board_seq);
-			
+				int result = dao.update(board_seq, request.getParameter("title"), request.getParameter("content"));
+				Gson g = new Gson();
+				// 수정한 게시물의 결과 값 반환
+				pw.append(g.toJson(result));
+				
 			} else if (cmd.equals("/delete.board")) {
 				// 게시글 삭제
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				dao.deleteBySeq(board_seq);
+				BoardFilesDAO.getInstance().deleteByBoardSeq(board_seq);
 				response.sendRedirect("/list.board");
-				String pcpage = request.getParameter("cpage");
-				if (pcpage == null) {
-					pcpage = "1";
-				}
-				int cpage = Integer.parseInt(pcpage);
-				List<BoardDTO> list = dao.selectListAll(
-						cpage * Pagination.recordCountPerPage - (Pagination.recordCountPerPage - 1),
-						cpage * Pagination.recordCountPerPage);
-				request.setAttribute("boardlist", list);
-			
+				
 			} else if (cmd.equals("/myboard.board")) {
 				String id = (String) request.getSession().getAttribute("loginID");
 				System.out.println("진입");
@@ -383,7 +378,7 @@ public class BoardController extends HttpServlet {
 				
 				BoardDAO.getInstance().updateToY(board_seq);
 				
-				response.sendRedirect("/admin_list.board");
+				response.sendRedirect("/manager/keepboard.jsp");
 				
 			}else if(cmd.equals("/deleteYN_Y_To_N.board")) {
 				
@@ -391,7 +386,7 @@ public class BoardController extends HttpServlet {
 				
 				BoardDAO.getInstance().updateToN(board_seq);
 				
-				response.sendRedirect("/admin_list.board");
+				response.sendRedirect("/manager/keepboard.jsp");
 			} else if(cmd.equals("/restoreUpdateToN.board")) {
 				// 임시 보관된 게시물 서블릿
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));

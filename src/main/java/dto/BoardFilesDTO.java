@@ -1,7 +1,7 @@
 package dto;
 
 public class BoardFilesDTO {
-	private int file_seq;
+	private int board_files_seq;
 	private String oriname;
 	private String sysname;
 	private int board_seq;
@@ -10,20 +10,20 @@ public class BoardFilesDTO {
 		super();
 	}
 
-	public BoardFilesDTO(int file_seq, String oriname, String sysname, int board_seq) {
+	public BoardFilesDTO(int board_files_seq, String oriname, String sysname, int board_seq) {
 		super();
-		this.file_seq = file_seq;
+		this.board_files_seq = board_files_seq;
 		this.oriname = oriname;
 		this.sysname = sysname;
 		this.board_seq = board_seq;
 	}
 
 	public int getFile_seq() {
-		return file_seq;
+		return board_files_seq;
 	}
 
 	public void setFile_seq(int file_seq) {
-		this.file_seq = file_seq;
+		this.board_files_seq = board_files_seq;
 	}
 
 	public String getOriname() {

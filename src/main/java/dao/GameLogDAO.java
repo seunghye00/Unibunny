@@ -30,7 +30,8 @@ public class GameLogDAO {
 	}
 
 	public int insertGameLog(int gameID, String nickname) throws Exception {
-	    String sql = "insert into gamelog (log_seq, start_time, game_id, nickname) values (log_seq.nextval, sysdate, ?, ?)";
+	    
+		String sql = "insert into gamelog (log_seq, start_time, game_id, nickname) values (log_seq.nextval, sysdate, ?, ?)";
 
 	    try (Connection con = this.getConnection(); 
 	         PreparedStatement pstat = con.prepareStatement(sql, new String[]{"LOG_SEQ"})) { // 컬럼 이름 대문자로 지정

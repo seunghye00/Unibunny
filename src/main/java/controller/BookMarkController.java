@@ -37,21 +37,11 @@ public class BookMarkController extends HttpServlet {
 		try {
 			if(cmd.equals("/save.bookmark")) {
 				String user_id = (String)request.getSession().getAttribute("loginID");
-				System.out.println(user_id);
-				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
-				if(user_id == null) {
-					user_id = "user001";
-				}
-				System.out.println(user_id);
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				int result = dao.saveBookMark(user_id, board_seq);
 				pw.append(g.toJson(result));
 			} else if(cmd.equals("/unsave.bookmark")) {
 				String user_id = (String)request.getSession().getAttribute("loginID");
-				// loginID에 임시 데이터 대입 => 이후에 삭제할 코드
-				if(user_id == null) {
-					user_id = "user001";
-				}
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				int result = dao.unsaveBookMark(user_id, board_seq);
 				pw.append(g.toJson(result));
@@ -63,9 +53,6 @@ public class BookMarkController extends HttpServlet {
 				// 로그인한 ID로 해당 게시글의 북마크 여부 조회
 				int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 				String user_id = (String)request.getSession().getAttribute("loginID");
-				// 임시 데이터 추후 삭제 !!!!
-				user_id = "user001";
-				System.out.println((dao.checkLog(board_seq, user_id)));
 				pw.append(g.toJson(dao.checkLog(board_seq, user_id)));
 			}
 		} catch(Exception e) {
