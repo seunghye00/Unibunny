@@ -154,7 +154,7 @@ public class MemberController extends HttpServlet {
                 String json = "";
 
                 try {
-                    if(isExist = false) {
+                    
                     	if (mode.equals("userid"))
                             isExist = mdao.isExist(Duptype.Userid, value);
                         else if (mode.equals("email"))
@@ -171,9 +171,6 @@ public class MemberController extends HttpServlet {
                     	json = gson.toJson(jsonResponseTest);
                     	
                     	pw.println(json);
-                    } else {
-                    	
-                    }
 
                 } catch (SQLException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

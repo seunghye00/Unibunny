@@ -87,7 +87,7 @@
                             <span class="our_name">박종호</span>
                             <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> jongho_00</span>
                             <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-2370-1713</span>
-                            <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, React, SQL</span>
+                            <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, SQL</span>
                             <span class="our_role">팀장, 회원 관리</span>
                             <span class="our_txt">유연한 사고와 책임감이 있는 개발자<br>박종호 입니다.</span>
                           </div>
@@ -121,7 +121,7 @@
                             <span class="our_name">손민서</span>
                             <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> minseo._.10.17</span>
                             <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-3824-6685</span>
-                            <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, React, SQL</span>
+                            <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, SQL</span>
                             <span class="our_role">테스트 관리 및 QA관리</span>
                             <span class="our_txt">유연한 사고와 책임감이 있는 개발자<br>손민서 입니다.</span>
                           </div>
