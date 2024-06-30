@@ -767,6 +767,7 @@
 .cont_box .cont_body .board_body .board_cont {
   min-height: 300px;
   padding: 10px;
+  overflow: auto;
 }
 
 .cont_box .cont_body .btn_box .edit_btn {
