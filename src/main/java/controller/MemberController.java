@@ -1,7 +1,5 @@
 package controller;
 
-
-
 import java.io.File;
 
 import java.io.BufferedReader;
@@ -19,7 +17,6 @@ import java.util.Map;
 import java.util.Enumeration;
 
 import java.util.Map;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,8 +54,9 @@ import dto.MemberDTO;
 public class MemberController extends HttpServlet {
 	public static MemberDAO mdao;
 
-    //HttpSession session으로 세션 오브젝트 생성
-    private static HttpSession session;
+	// HttpSession session으로 세션 오브젝트 생성
+	private static HttpSession session;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -131,16 +129,18 @@ public class MemberController extends HttpServlet {
                     session.setAttribute("memcode", map.get("memcode"));
 
                     if ("0".equals(map.get("memcode"))) {
+                        response.sendRedirect("admin/main.jsp");
+                    } else if("1".equals(map.get("memcode"))) {
                         response.sendRedirect("user/main.jsp");
-                    } else {
-                        response.sendRedirect("manager/main.jsp");
+                    }else if("2".equals(map.get("memcode"))) {
+                    	response.getWriter().write("<script>alert('블랙리스트 회원이므로 로그인 할수 없습니다.'); location.href='login/login.jsp'</script>");
                     }
                 } else {
                     // 로그인 실패 시
                     response.getWriter().write("<script>alert('로그인 정보를 다시 확인하세요'); location.href='login/login.jsp'</script>");
                 }
 
-
+		
 
 //				회원가입 ajax 정규표현식 코드
             } else if (cmd.equals("/check.member")) {
@@ -162,6 +162,8 @@ public class MemberController extends HttpServlet {
                         isExist = mdao.isExist(Duptype.Phone, value);
                     else if (mode.equals("nickname"))
                         isExist = mdao.isExist(Duptype.Nickname, value);
+                    else if (mode.equals("reg_num"))
+                        isExist = mdao.isExist(Duptype.Reg_num, value);
 
                     JsonObject jsonResponseTest = new JsonObject();
                     jsonResponseTest.addProperty("exists", isExist);
@@ -220,8 +222,9 @@ public class MemberController extends HttpServlet {
 
 
                 String newPassword = pwGen.generateRandomPassword();
+                String pwsha512 = EncryptionUitls.getSHA512(newPassword);
 
-                boolean result = mdao.findPassword(find_input_id, newPassword, find_input_email, find_input_reg);
+                boolean result = mdao.findPassword(find_input_id, pwsha512, find_input_email, find_input_reg);
 
                 JSONObject jsonResponse = new JSONObject();
 
@@ -578,12 +581,15 @@ public class MemberController extends HttpServlet {
 				
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.sendRedirect("/error.jsp");
-		}
-		
-		print_writer.close();
+		}catch(
+
+	Exception e)
+	{
+		e.printStackTrace();
+		response.sendRedirect("/error.jsp");
+	}
+
+	print_writer.close();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
