@@ -24,27 +24,27 @@
       <div class="swiper mainSwiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=1" class="swiper_bg">
               <img src="../image/main/main_banner1.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=2" class="swiper_bg">
               <img src="../image/main/main_banner_jh.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=3" class="swiper_bg">
               <img src="../image/main/main_banner_ms.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=4" class="swiper_bg">
               <img src="../image/main/main_banner4.png" alt="">
             </a>
           </div>
           <div class="swiper-slide">
-            <a href="javascript:;" class="swiper_bg">
+            <a href="/list.board?api=/list.board&page=1&gameId=5" class="swiper_bg">
               <img src="../image/main/main_banner5.png" alt="">
             </a>
           </div>
@@ -89,12 +89,12 @@
 					  </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="game_box">
+                      <a href="javascript:;" onclick="window.open('../game/4096/index.jsp')" class="game_box">
                         <img src="../image/main/gameimg2.png" alt="">
                       </a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="javascript:;" class="game_box">
+                      <a href="javascript:;" onclick="window.open('../game/shootingwalnut/index.jsp')" class="game_box">
                         <img src="../image/main/game_banner_ms.png" alt="">
                       </a>
                     </div>
@@ -145,7 +145,7 @@
                 <!-- 타이틀 박스 공통 -->
                 <div class="title_box">
                   <p class="title">인기글</p>
-                  <a href="http://localhost/list.board?api=/like.board&page=1"></a>
+                  <a href="/list.board?api=/like.board&page=1"></a>
                 </div>
                 <div class="list_table main_list_table">
                   <div class="table_row table_header">
