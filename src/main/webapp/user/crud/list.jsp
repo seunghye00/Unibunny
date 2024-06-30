@@ -40,22 +40,22 @@
 										<ul>
 											<li class="sub_title not_link">게시글</li>
 											<li><a href="javascript:;" class="cpage" id="board_all">전체 게시글</a></li>
-											<li><a href="javascript:;" id="game1">게임1</a></li>
-											<li><a href="javascript:;" id="game2">게임2</a></li>
-											<li><a href="javascript:;" id="game3">게임3</a></li>
-											<li><a href="javascript:;" id="game4">게임4</a></li>
-											<li><a href="javascript:;" id="game5">게임5</a></li>
+											<li><a href="javascript:;" id="game1">Flappy Cirby</a></li>
+											<li><a href="javascript:;" id="game2">4096</a></li>
+											<li><a href="javascript:;" id="game3">슛팅월넛</a></li>
+											<li><a href="javascript:;" id="game4">블랙잭</a></li>
+											<li><a href="javascript:;" id="game5">Doodle Jump</a></li>
 										</ul>
 									</div>
 								</div>
 								<select name="sub_menu" id="sub_menu" class="sub_menu">
 									<option value="notice">공지사항</option>
 									<option value="board_all">전체 게시글</option>
-									<option value="game1">게임1</option>
-									<option value="game2">게임2</option>
-									<option value="game3">게임3</option>
-									<option value="game4">게임4</option>
-									<option value="game5">게임5</option>
+									<option value="game1">Flappy Cirby</option>
+									<option value="game2">4096</option>
+									<option value="game3">슛팅월넛</option>
+									<option value="game4">블랙잭</option>
+									<option value="game5">Doodle Jump</option>
 								</select>
 								<div class="list_box">
 									<div class="choi_box">
