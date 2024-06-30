@@ -208,26 +208,143 @@ $('#likes_btn').on('click', function() {
 	$('.views_list, .recent_list').hide();
 });*/
 
+// 서머노트 에디터 초기 설정
+function editer_setting() {
+	$('#summernote').summernote({
+		height: 600,                 // 에디터 높이 설정
+		minHeight: null,             // 최소 높이 설정
+		maxHeight: null,             // 최대 높이 설정
+		focus: true,                 // 초기 포커스 설정
+		lang: "ko-KR",				 // 한글 설정
+		// 이미지 업로드 시 실행할 함수
+		callbacks: {
+			onImageUpload: function(files, editor, welEditable) {
+				imageUploader(files[0], this);
+			}
+		}
+	});
+}
+
+// 서머노트 이미지 업로드 메서드
+function imageUploader(file, editor) {
+	
+	data = new FormData();
+	data.append('uploadFile', file);
+
+	$.ajax({
+		data: data,
+		type: "POST",
+		url: '/imageUpload.boardfile',
+		enctype: 'multipart/form-data',
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: 'json',
+		success: function(data) {
+			$("#summernote").summernote('insertImage', data);
+		}
+	});
+}
+
+// 게시글 작성 & 수정 페이지에서 파일 첨부 버튼 클릭 시
+$("#addfile #file").on("click", function() {
+	// 현재 요소의 파일 갯수 확인 후 5개 이상 추가 방지	
+	if ($(".file-input-wrapper").length > 4) {
+		alert("파일 첨부는 5개까지만 가능합니다.");
+		return false;
+	}
+	let file_input_wrapper = $("<div>", { "class": "file-input-wrapper" });
+	let input_file = $("<input>", {
+		"type": "file",
+		"name": "file" + ($(".file-input-wrapper").length + 1),
+		"id": "file" + ($(".file-input-wrapper").length + 1)
+	});
+	let remove_btn = $("<button>", { "type": "button", "class": "remove_file_input" });
+	remove_btn.text("-");
+	file_input_wrapper.append(input_file, remove_btn);
+	$("#filebox").append(file_input_wrapper);
+
+	// 제거 버튼 클릭 시 해당 파일 선택 요소 삭제
+	$(".remove_file_input").on("click", function() {
+		$(this).closest('.file-input-wrapper').remove();
+	})
+});
+
+
+
+// 게시글 작성 페이지에서 작성하기 버튼 클릭 시
+$("#write_board").on("click", function() {
+
+	if ($("#choi_menu").val() == "") {
+		alert("카테고리를 먼저 선택해주세요");
+		$("#choi_menu").focus();
+		return false;
+	}
+	if ($("#insert_title").val().trim() == "") {
+		alert("제목을 먼저 입력해주세요");
+		$("#insert_title").focus();
+		return false;
+	}
+	if ($(".note-editable").text().trim() == "") {
+		alert("내용를 먼저 입력해주세요");
+		$(".note-editable").focus();
+		return false;
+	}
+
+	$.ajax({
+		url: '/write.board',
+		dataType: 'json',
+		data: {
+			game_id: $("#choi_menu").val(),
+			title: $("#insert_title").val(),
+			content: $(".note-editable").html()
+		}
+	}).done(function(resp) {
+		$("#board_seq").val(resp);
+		$("#board_write_form").submit(); // 성공 시 form 제출
+	});
+});
+
 // 게시글 상세 페이지에서 수정 버튼 클릭 시
 $('#edit_btn').on('click', function() {
 	location.href = '/tryUpdate.board?board_seq=' + get_board_seq();
 });
 
 // 게시글 수정 페이지에서 완료 버튼 클릭 시
-$('#update_btn').on('click', function(e) {
-	e.preventDefault();
+$("#update_board_btn").on("click", function() {
 
-	let trimmedHtml = $('#summernote').html().trim();
-	$('#summernote').html(trimmedHtml);
-	console.log($('#summernote').text());
-	$('#update_board').submit();
-	// return false;
+	if ($("#edit_title").val().trim() == "") {
+		alert("제목을 먼저 입력해주세요");
+		$("#edit_title").focus();
+		return false;
+	}
+	
+	if ($(".note-editable").text().trim() == "") {
+		alert("내용를 먼저 입력해주세요");
+		$(".note-editable").focus();
+		return false;
+	}
+	$.ajax({
+		url: '/update.board',
+		dataType: 'json',
+		data: {
+			board_seq: get_board_seq(),
+			title: $("#edit_title").val(),
+			content: $(".note-editable").html()
+		}
+	}).done(function(resp) {
+		console.log(resp)
+		// 성공 시 form 제출
+		$("#board_update_form").submit();
+	});
+
+
 });
 
 // 게시글 수정 페이지에서 취소 버튼 클릭 시
 $('#cancel_btn').on('click', function() {
 	if (confirm('수정하신 내용은 저장되지 않습니다.')) {
-		location.href = '/user/detail.board?board_seq=' + board_seq;
+		location.href = '/user/detail.board?board_seq=' + get_board_seq();
 	}
 });
 
@@ -246,10 +363,13 @@ function get_board_seq() {
 // 게시글 상세 페이지에서 로그인된 ID의 좋아요 및 북마크 기록을 확인하는 메서드
 function get_user_record() {
 	// 게시글 북마크 기록
+	if ($("#user_nickname").text() == "") {
+		return false;
+	}
 	$.ajax({
 		url: '/check.bookmark',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() },
+		data: { board_seq: get_board_seq() }
 	}).done(function(resp) {
 		if (resp) {
 			$('.fa-regular.fa-bookmark').hide();
@@ -261,7 +381,7 @@ function get_user_record() {
 	$.ajax({
 		url: '/check.boardLike',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() },
+		data: { board_seq: get_board_seq() }
 	}).done(function(resp) {
 		if (resp) {
 			$('.fa-regular.fa-thumbs-up').hide();
@@ -276,7 +396,7 @@ function get_options_record() {
 	$.ajax({
 		url: '/count.bookmark',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() },
+		data: { board_seq: get_board_seq() }
 	}).done(function(resp) {
 		$('.bookmark').text('스크랩 수 : ' + resp);
 	});
@@ -284,7 +404,7 @@ function get_options_record() {
 	$.ajax({
 		url: '/count.boardLike',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() },
+		data: { board_seq: get_board_seq() }
 	}).done(function(resp) {
 		$('#board_like').text(resp);
 	});
@@ -295,7 +415,7 @@ function get_reply_likes(reply_seq) {
 	$.ajax({
 		url: '/count.replyLike',
 		dataType: 'json',
-		data: { reply_seq: reply_seq },
+		data: { reply_seq: reply_seq }
 	}).done(function(resp) {
 		// reply_seq와 일치하는 .comm_seq 요소 선택
 		let comm_seq = $('.comm_seq').filter(function() {
@@ -306,13 +426,15 @@ function get_reply_likes(reply_seq) {
 	});
 }
 
-// 게시글의 파일 목록을 받아오는 메서드
+// 게시글 상세 페이지에서 파일 목록을 받아오는 메서드
 function get_file_list() {
+	console.log(get_board_seq());
 	$.ajax({
-		url: '/list.file',
+		url: '/list.boardfile',
 		dataType: 'json',
-		data: { board_seq: get_board_seq() },
+		data: { board_seq: get_board_seq() }
 	}).done(function(resp) {
+		console.log(resp);
 		if (resp.length == 0) {
 			// 파일이 존재하지 않는 경우 버튼 클릭 불가능
 			$('.file_option').attr('disabled', true).css('cursor', 'default');
@@ -323,25 +445,55 @@ function get_file_list() {
 		file_list.empty();
 
 		for (let i of resp) {
-			let file = $('<div>', { class: 'files' });
-			let file_name = $('<button>', { class: 'down_file' });
+			let file = $('<div>', { "class": 'files' });
+			let file_name = $('<a>', { "href": '/download.boardfile?sysname=' + i.sysname + "&oriname=" + i.oriname });
+			file_name.css({ "display": "flex", "padding": "10px" });
 			file_name.text(i.oriname);
 			file.append(file_name);
 			file_list.append(file);
+		}
+	});
+}
 
-			file_name.on('click', function() {
-				console.log(i.oriname);
-				console.log(i.sysname);
-				$.ajax({
-					url: '/download.file',
-					dataType: 'json',
-					data: {
-						oriname: i.oriname,
-						sysname: i.sysname,
-					},
-				}).done(function(resp) {
-					console(resp);
-				});
+// 게시글 수정 페이지에서 파일 목록을 받아오는 메서드
+function get_files() {
+	console.log(get_board_seq());
+	$.ajax({
+		url: '/list.boardfile',
+		dataType: 'json',
+		data: { board_seq: get_board_seq() }
+	}).done(function(resp) {
+		console.log(resp);
+		if (resp.length == 0) {
+			// 파일이 존재하지 않는 경우 메서드 종료
+			return false;
+		}
+
+		for (let i = 0; i < resp.length; i++) {
+
+			let file_input_wrapper = $("<div>", { "class": "file-input-wrapper" });
+			let input_file = $("<div>", {
+				"name": "file" + (i + 1),
+				"id": "file" + (i + 1)
+			});
+			input_file.text(resp[i].oriname);
+			let remove_btn = $("<button>", { "type": "button", "class": "remove_file_input" });
+			remove_btn.text("-");
+			file_input_wrapper.append(input_file, remove_btn);
+			$("#filebox").append(file_input_wrapper);
+
+			// 제거 버튼 클릭 시 해당 파일 선택 요소 삭제
+			$(".remove_file_input").off().on("click", function() {
+				if (confirm("정말로 삭제하시겠습니까 ? \n수정하기를 취소하셔도 파일 삭제는 유지됩니다.")) {
+					$.ajax({
+						url: '/delete.boardfile',
+						dataType: 'json',
+						data: {
+							sysname: $(this).prev().text()
+						}
+					});
+					$(this).closest('.file-input-wrapper').remove();
+				}
 			});
 		}
 	});
@@ -357,7 +509,9 @@ function click_option(element) {
 				// 게시글 좋아요 취소
 				$.ajax({
 					url: '/delete.boardLike',
-					data: { board_seq: get_board_seq() },
+					data: { board_seq: get_board_seq() }
+				}).done(function() {
+					get_options_record();
 				});
 			} else {
 				// 댓글 좋아요 취소
@@ -365,7 +519,7 @@ function click_option(element) {
 				let reply_seq = comm.closest('.comm').find('.comm_seq').text();
 				$.ajax({
 					url: '/delete.replyLike',
-					data: { reply_seq: reply_seq },
+					data: { reply_seq: reply_seq }
 				}).done(function() {
 					console.log('좋아요 취소');
 					get_reply_likes(reply_seq);
@@ -373,14 +527,14 @@ function click_option(element) {
 			}
 		} else if ($(element).hasClass('mark_option')) {
 			// 북마크 취소 기능
-			console.log('북마크 취소');
 			$.ajax({
 				url: '/unsave.bookmark',
 				data: { board_seq: get_board_seq() },
-				type: 'POST',
+				type: 'POST'
 			}).done(function() {
 				// 북마크 취소 완료 후 처리
 				$(element).removeClass('active');
+				get_options_record();
 			});
 		} else {
 			// 파일 목록 닫기 기능
@@ -396,7 +550,9 @@ function click_option(element) {
 				// 게시글 좋아요
 				$.ajax({
 					url: '/insert.boardLike',
-					data: { board_seq: get_board_seq() },
+					data: { board_seq: get_board_seq() }
+				}).done(function() {
+					get_options_record();
 				});
 			} else {
 				// 댓글 좋아요
@@ -404,22 +560,21 @@ function click_option(element) {
 				let reply_seq = comm.closest('.comm').find('.comm_seq').text();
 				$.ajax({
 					url: '/insert.replyLike',
-					data: { reply_seq: reply_seq },
+					data: { reply_seq: reply_seq }
 				}).done(function() {
 					get_reply_likes(reply_seq);
 				});
 			}
 		} else if ($(element).hasClass('mark_option')) {
 			// 북마크 기능
-			console.log('북마크 등록');
 			$.ajax({
 				url: '/save.bookmark',
 				data: { board_seq: get_board_seq() },
-				type: 'POST',
+				type: 'POST'
 			}).done(function(resp) {
 				// 북마크 저장 전송
-				console.log(resp);
 				$(element).addClass('active');
+				get_options_record();
 			});
 		} else {
 			// 파일이 존재하는 경우 파일 목록 열기 기능
@@ -430,18 +585,17 @@ function click_option(element) {
 		$(element).children('.fa-regular').hide();
 		$(element).children('.fa-solid').show();
 	}
-	get_options_record();
 }
 
 // 추천 or 북마크 or 파일 버튼 클릭 시
 $('.option_btn').on('click', function() {
+	if ($("#user_nickname").text() == "") {
+		alert("회원만 이용 가능한 서비스 입니다.");
+		return false;
+	}
 	click_option($(this));
 });
 
-// 댓글 좋아요 버튼 클릭 시
-$('#comm_likes_btn').click(function() {
-	get_comm_list('thumbs_up'); // 추천수에 따라 정렬된 목록 불러오기
-});
 
 // 댓글 목록 불러오는 메서드
 function get_comm_list(order_by) {
@@ -454,15 +608,12 @@ function get_comm_list(order_by) {
 		dataType: 'json',
 		data: {
 			board_seq: get_board_seq(),
-			order_by: order_by,
+			order_by: order_by
 		},
 	}).done(function(resp) {
-		// console.log("${loginID}");
-
 		let comm_list = $('.comm_list');
 		comm_list.empty();
-		console.log(resp);
-		if (resp.length == 0) {
+		if ((resp.board_info.length) == 0) {
 			// 댓글이 존재하지 않는 경우
 			let no_comm = $('<div>', { class: 'no_comm' });
 			no_comm.text('댓글이 존재하지 않습니다.');
@@ -470,7 +621,7 @@ function get_comm_list(order_by) {
 			return;
 		}
 
-		for (let i of resp) {
+		for (let i of resp.board_info) {
 			let comm = $('<div>', { class: 'comm' });
 
 			let comm_info = $('<div>', { class: 'comm_info' });
@@ -487,10 +638,8 @@ function get_comm_list(order_by) {
 				contenteditable: 'false',
 			});
 			comm_cont.text(i.content);
-
 			let edit_box = $('<div>', { class: 'edit_box' });
-			if (true) {
-				// if (i.writer == "${nickname}") {
+			if (i.nickname == resp.nickname) {
 				let btn_box1 = $('<div>', { class: 'btn_box' });
 				let edit_btn = $('<button>', {
 					class: 'write_btn comm_btn',
@@ -546,7 +695,7 @@ function get_comm_list(order_by) {
 			$.ajax({
 				url: '/check.replyLike',
 				dataType: 'json',
-				data: { reply_seq: i.reply_seq },
+				data: { reply_seq: i.reply_seq }
 			}).done(function(resp) {
 				if (resp) {
 					icon1.hide();
@@ -560,6 +709,10 @@ function get_comm_list(order_by) {
 			$('.option_btn')
 				.off()
 				.on('click', function() {
+					if ($("#user_nickname").text() == "") {
+						alert("회원만 이용 가능한 서비스 입니다.");
+						return false;
+					}
 					click_option(this);
 				});
 			$('.comm .write_btn')
@@ -625,15 +778,18 @@ $('#write_comm').on('click', function() {
 		$('.input_box').html('');
 		return;
 	}
-	console.log('test');
+	if ($("#user_nickname").text() == "") {
+		alert("회원만 이용 가능한 서비스 입니다.");
+		return false;
+	}
 	// 작성한 댓글 내용 ajax로 전달
 	$.ajax({
 		url: '/write.reply',
 		method: 'post',
 		data: {
-			content: $('.input_box').html(),
-			board_seq: get_board_seq(),
-		},
+			content: $('.input_box').text(),
+			board_seq: get_board_seq()
+		}
 	}).done(function() {
 		location.reload();
 	});
@@ -664,8 +820,12 @@ $('#back_btn').on('click', function() {
 	location.href = '/list.board';
 });
 
-// 작성 버튼 클릭 시
-$('#write_btn').on('click', function() {
+// 게시글 작성 버튼 클릭 시
+$('#board_write_btn').on('click', function() {
+	if ($(".header_my:nth-child(2) a").text().trim() == "") {
+		alert("회원만 이용 가능한 서비스 입니다.");
+		return false;
+	}
 	location.href = '/user/crud/write_board.jsp';
 });
 
@@ -689,5 +849,3 @@ $(document).ready(function() {
 	//     lang: 'ko-KR'
 	// });
 });
-
-
