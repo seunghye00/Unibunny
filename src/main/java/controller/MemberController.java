@@ -129,7 +129,7 @@ public class MemberController extends HttpServlet {
                     session.setAttribute("memcode", map.get("memcode"));
 
                     if ("0".equals(map.get("memcode"))) {
-                        response.sendRedirect("admin/main.jsp");
+                        response.sendRedirect("admin/member.jsp");
                     } else if("1".equals(map.get("memcode"))) {
                         response.sendRedirect("user/main.jsp");
                     }else if("2".equals(map.get("memcode"))) {
@@ -154,23 +154,24 @@ public class MemberController extends HttpServlet {
                 String json = "";
 
                 try {
-                    if (mode.equals("userid"))
-                        isExist = mdao.isExist(Duptype.Userid, value);
-                    else if (mode.equals("email"))
-                        isExist = mdao.isExist(Duptype.Email, value);
-                    else if (mode.equals("phone"))
-                        isExist = mdao.isExist(Duptype.Phone, value);
-                    else if (mode.equals("nickname"))
-                        isExist = mdao.isExist(Duptype.Nickname, value);
-                    else if (mode.equals("reg_num"))
-                        isExist = mdao.isExist(Duptype.Reg_num, value);
+                    
+                    	if (mode.equals("userid"))
+                            isExist = mdao.isExist(Duptype.Userid, value);
+                        else if (mode.equals("email"))
+                            isExist = mdao.isExist(Duptype.Email, value);
+                        else if (mode.equals("phone"))
+                            isExist = mdao.isExist(Duptype.Phone, value);
+                        else if (mode.equals("nickname"))
+                            isExist = mdao.isExist(Duptype.Nickname, value);
+                        else if (mode.equals("reg_num"))
+                            isExist = mdao.isExist(Duptype.Reg_num, value);
+                    	JsonObject jsonResponseTest = new JsonObject();
+                    	jsonResponseTest.addProperty("exists", isExist);
+                    	Gson gson = new Gson();
+                    	json = gson.toJson(jsonResponseTest);
+                    	
+                    	pw.println(json);
 
-                    JsonObject jsonResponseTest = new JsonObject();
-                    jsonResponseTest.addProperty("exists", isExist);
-                    Gson gson = new Gson();
-                    json = gson.toJson(jsonResponseTest);
-
-                    pw.println(json);
                 } catch (SQLException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     JsonObject errorResponse = new JsonObject();
@@ -377,18 +378,12 @@ public class MemberController extends HttpServlet {
 				request.getRequestDispatcher("/user/mypage/mypage.jsp").forward(request,response);
 
             } else if(cmd.equals("/edit.member")) {
-
-//				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
-//				회원 정보 수정
-
-				
-				
-			}else if(cmd.equals("/edit.member")) {
 //				마이페이지 계정관리에서 회원의 정보를 수정된값으로 갱신함
 //				회원 정보 수정
 				
 				String id = (String)request.getSession().getAttribute("loginID"); //변조의 가능성이 있기때문에, 세션에서 받아와야한다.
 				String pw = request.getParameter("pw");
+				String pwsha512 = EncryptionUitls.getSHA512(pw);
 				String nickname = request.getParameter("nickname");
 				String phone = request.getParameter("phone");
 				String email = request.getParameter("email");
@@ -397,7 +392,7 @@ public class MemberController extends HttpServlet {
 				String postcode = request.getParameter("postcode");
 				
 
-				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pw, phone, null, email, postcode, address1, address2, null, 1,null));
+				int result = MemberDAO.getInstance().updateUserInfo(new MemberDTO(id, nickname, pwsha512, phone, null, email, postcode, address1, address2, null, 1,null));
 
 				response.sendRedirect("/mypage.member");
 				
@@ -579,17 +574,20 @@ public class MemberController extends HttpServlet {
 				
 				print_writer.append(gson.toJson(mdao.searchMemAndSelectNtoM(start_num, end_num, grade, user_info)));
 				
-			}
-
-		}catch(
-
-	Exception e)
-	{
-		e.printStackTrace();
-		response.sendRedirect("/error.jsp");
-	}
-
-	print_writer.close();
+			}else if (cmd.equals("/checkSession.member")) {
+	                if (request.getSession().getAttribute("loginID") != null) {
+	                    response.getWriter().write("logged_in");
+	                } else {
+	                    response.getWriter().write("logged_out");
+	                }
+	                return; // 이 부분에서 메서드를 종료합니다.
+	            }
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.sendRedirect("/error.jsp");
+		}
+		
+		print_writer.close();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
