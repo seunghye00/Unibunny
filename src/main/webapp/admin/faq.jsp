@@ -25,24 +25,13 @@
 							<img src="../image/logo.png" alt="">
 						</h1>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>대시보드</span>
+				<li class="snb_cate"><a href="/admin/member.jsp"> <span
+						>회원 관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>배너
+				<li class="snb_cate"><a href="/admin/community.jsp"> <span>게시판
 							관리</span>
 				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>게임
-							관리</span>
-				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>회원
-							관리</span>
-				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>게시판
-							관리</span>
-				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>공지사항
-							관리</span>
-				</a></li>
-				<li class="snb_cate"><a href="javascript:;"> <span>고객센터</span>
+				<li class="snb_cate"><a href="/list.faq?userType=admin"> <span class="cpage">고객센터</span>
 				</a></li>
 			</ul>
 		</div>
