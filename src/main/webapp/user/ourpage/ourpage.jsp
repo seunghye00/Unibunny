@@ -85,7 +85,7 @@
                           </div>
                            <div class="our_cont">
                             <span class="our_name">박종호</span>
-                            <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> jongho_00</span>
+                            <span class="our_insta"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i> jongco_00</span>
                             <span class="our_phone"><i class="fa-brands fa-whatsapp" style="color: #ffffff;"></i> 010-2370-1713</span>
                             <span class="our_stack"><i class="fa-brands fa-dev" style="color: #ffffff;"></i> JS, JAVA, SQL</span>
                             <span class="our_role">팀장, 회원 관리</span>

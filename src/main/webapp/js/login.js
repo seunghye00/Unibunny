@@ -4,7 +4,6 @@ $(document).ready(function() {
    let isid = false;
    let isemail = false;
    let isphone = false;
-   let input_first =false
    // 폼 제출 버튼 클릭 핸들러
    $("#signup_form button").on("click", function(event) {
       if (!isid) {

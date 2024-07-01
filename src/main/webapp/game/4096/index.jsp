@@ -24,9 +24,7 @@
         }
     </style>
     <script defer src="../4096/js/jquery.min.js"></script>
-    <script defer src="../4096/js/phaser.min.js"></script>
     <script defer src="../4096/js/phaser3.min.js"></script>
-    <script defer src="../4096/js/phaser-spine.min.js"></script>
     <script defer src="../4096/js/swiper.min.js"></script>
     <script defer src="../4096/js/viewport.js"></script>
     <script defer src="../4096/js/game.js"></script>

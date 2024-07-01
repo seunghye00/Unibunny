@@ -77,11 +77,6 @@ public class MemberDAO {
 	    String sql = "SELECT * FROM member WHERE ";
 	    String column = "";
 	    
-	    // '-' 이후 문자 제거
-	    if (dup == Duptype.Reg_num && value.indexOf("-") != -1) {
-	        value = value.substring(0, value.indexOf("-"));
-	    }
-
 	    if (dup == Duptype.Userid) {
 	        column = "userid = ?"; // 그럼 여기 sql문에 ? 부분에 value값이 들어가서 쿼리됨. 그리고 이 값을 true, false 값 리턴시킴.
 	    } else if (dup == Duptype.Nickname) {
@@ -90,9 +85,7 @@ public class MemberDAO {
 	        column = "phone = ?";
 	    } else if (dup == Duptype.Email) {
 	        column = "email = ?";
-	    } else if (dup == Duptype.Reg_num) {
-	        column = "reg_num = ?";
-	    } else {
+	    }  else {
 	        return false;
 	    }
 
