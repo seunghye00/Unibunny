@@ -91,9 +91,10 @@
 				
 				<script>
 					$(document).ready(function () {
-						get_file_list("board");
+						// 아이콘 숨기기
+						$('.fa-solid').hide();
+						get_file_list();
 						get_comm_list("default");
-						get_user_record();
 					});
 				</script>
 			</body>

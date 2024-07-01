@@ -4,7 +4,6 @@ $(document).ready(function() {
    let isid = false;
    let isemail = false;
    let isphone = false;
-   let input_first =false
    // 폼 제출 버튼 클릭 핸들러
    $("#signup_form button").on("click", function(event) {
       if (!isid) {
@@ -23,52 +22,47 @@ $(document).ready(function() {
    });
 
    // 닉네임 유효성 검사
-$("#input_nickname").keyup(function() {
-    const nickname_pattern = /^[A-Za-z0-9가-힣]{3,10}$/;
-    const input = $(this);
-    let nickname = input.val();
-    
-    // 특수문자 제거
-    nickname = nickname.replace(/[^A-Za-z0-9가-힣]/g, '');
-    input.val(nickname);
-    
-    const h2 = input.parent().children()[1];
+// 닉네임 유효성 검사
+	$("#input_nickname").keyup(function() {
+		const nickname_pattern = /^[A-Za-z0-9가-힣!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{3,10}$/;
+		const nickname = $(this).val();
+		const h2 = $(this).parent().children()[1];
 
-    if (nickname === "" || !nickname_pattern.test(nickname)) {
-        h2.style.color = "#ff3737";
-        h2.textContent = "＊영어 대소문자, 숫자, 한글을 포함하여 3~10글자 사이를 입력하세요.(특수문자 사용 불가)*";
-        isnickname = false;
-        return;
-    }
+		if (nickname === "" || !nickname_pattern.test(nickname)) {
+			h2.style.color = "#ff3737";
+			h2.textContent =
+				"＊영어 대소문자, 숫자, 한글을 포함하여 3~10글자 사이를 입력하세요.*";
+			isnickname = false;
+			return;
+		}
 
-    // Ajax 요청
-    $.ajax({
-        url: "/check.member",
-        type: "get",
-        data: {
-            mode: "nickname",
-            value: nickname,
-        },
-        dataType: "json", // JSON 형식으로 받음
-        success: function(response) {
-            if (response.exists) {
-                h2.style.color = "#ff3737";
-                h2.textContent = "이미 사용 중인 닉네임 입니다.";
-                isnickname = false;
-            } else {
-                h2.style.color = "#18ff18";
-                h2.textContent = "사용 가능한 닉네임 입니다.";
-                isnickname = true;
-            }
-        },
-        error: function() {
-            h2.style.color = "#ff3737";
-            h2.textContent = "서버 오류가 발생했습니다.";
-            isnickname = false;
-        },
-    });
-});
-
+		// Ajax 요청
+		$.ajax({
+			url: "/check.member",
+			type: "get",
+			data: {
+				mode: "nickname",
+				value: nickname,
+			},
+			dataType: "json", // JSON 형식으로 받음
+			success: function(response) {
+				if (response.exists) {
+					h2.style.color = "#ff3737";
+					h2.textContent = "이미 사용 중인 닉네임 입니다.";
+					isnickname = false;
+				} else {
+					h2.style.color = "#18ff18";
+					h2.textContent = "사용 가능한 닉네임 입니다.";
+					isnickname = true;
+				}
+			},
+			error: function() {
+				h2.style.color = "#ff3737";
+				h2.textContent = "서버 오류가 발생했습니다.";
+				isnickname = false;
+			},
+		});
+	});
 
 
    // 아이디 유효성 검사

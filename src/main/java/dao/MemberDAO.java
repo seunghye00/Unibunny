@@ -39,7 +39,7 @@ public class MemberDAO {
 
 	// 회원가입
 	public int insert(MemberDTO dto) throws Exception {
-		String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
+		String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate)";
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, dto.getUserid());
 			System.out.println("aa");
@@ -51,7 +51,6 @@ public class MemberDAO {
 			pst.setString(7, dto.getPostcode());
 			pst.setString(8, dto.getAddress1());
 			pst.setString(9, dto.getAddress2());
-			pst.setInt(10, dto.getMemcode());
 
 			return pst.executeUpdate();
 
@@ -78,11 +77,6 @@ public class MemberDAO {
 	    String sql = "SELECT * FROM member WHERE ";
 	    String column = "";
 	    
-	    // '-' 이후 문자 제거
-	    if (dup == Duptype.Reg_num && value.indexOf("-") != -1) {
-	        value = value.substring(0, value.indexOf("-"));
-	    }
-
 	    if (dup == Duptype.Userid) {
 	        column = "userid = ?"; // 그럼 여기 sql문에 ? 부분에 value값이 들어가서 쿼리됨. 그리고 이 값을 true, false 값 리턴시킴.
 	    } else if (dup == Duptype.Nickname) {
@@ -91,9 +85,7 @@ public class MemberDAO {
 	        column = "phone = ?";
 	    } else if (dup == Duptype.Email) {
 	        column = "email = ?";
-	    } else if (dup == Duptype.Reg_num) {
-	        column = "reg_num = ?";
-	    } else {
+	    }  else {
 	        return false;
 	    }
 

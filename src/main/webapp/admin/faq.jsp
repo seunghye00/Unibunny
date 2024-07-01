@@ -64,7 +64,7 @@
 							<div class="con">
 								<div class="select_subject">
 									<ul>
-										<li><a href="/list.faq?userType=manager">FAQ</a></li>
+										<li><a href="/list.faq?userType=admin" class="cpage">FAQ</a></li>
 										<li><a href="/list.qna">Q&A</a></li>
 									</ul>
 								</div>
@@ -95,13 +95,6 @@
 									</div>
 								</form>
 								<div style="padding: 20px;"></div>
-								<div class="pagination">
-									<a href="javascript:;" class="btn_prev btn_disabled"></a> <a
-										href="javascript:;" class="active_page">1</a> <a
-										href="javascript:;">2</a> <a href="javascript:;">3</a> <a
-										href="javascript:;">4</a> <a href="javascript:;">5</a> <a
-										href="javascript:;" class="btn_next"></a>
-								</div>
 							</div>
 						</div>
 					</div>

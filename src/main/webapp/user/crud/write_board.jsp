@@ -16,22 +16,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-<style>
-	select {
-  color: black; /* 텍스트 색상 */
-  background-color: white; /* 배경 색상 */
-}
-
-select option {
-  color: black; /* 옵션 텍스트 색상 */
-  background-color: white; /* 옵션 배경 색상 */
-}
-
-select option:hover {
-  background-color: lightgray; /* 마우스를 올렸을 때 배경 색상 */
-}
-	
-</style>
 </head>
 <body>
 <div class="wrapper">
@@ -45,49 +29,74 @@ select option:hover {
 					</h1>
 					<div class="header_con">
 						<ul class="header_gnb">
-							<li><a href="javascript:;" class="gnb_comu"><span>커뮤니티</span></a>
+							<li><a href="/list.board" class="gnb_comu"><span>커뮤니티</span></a>
 							</li>
-							<li><a href="javascript:;" class="gnb_rank"><span>랭킹</span></a>
+							<li><a href="/user/rank/rank.jsp" class="gnb_rank"><span>랭킹</span></a>
 							</li>
-							<li><a href="javascript:;" class="gnb_our"><span>OUR
+							<li><a href="/user/ourpage/ourpage.jsp" class="gnb_our"><span>OUR
 										PAGE</span></a></li>
-							<li><a href="javascript:;" class="gnb_cs"><span>고객센터</span></a>
+							<li><a href="/list.faq" class="gnb_cs"><span>고객센터</span></a>
 							</li>
 						</ul>
 						<ul class="header_my">
-							<li class="my_01 "><a href="javascript:;" class="btn_mypage"><img
-									src="../../image/icon/mypageW.png" alt="마이페이지 로고"></a></li>
-							<li class="my_02"><a href="javascript:;" class="btn_login"><img
-									src="../../image/icon/login.png" alt="로그인 로고"></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="mob_wrap">
-					<h1 class="mob_logo">
-						<a href="javascript:;" title="메인으로 가기"> <img
-							src="../../image/logo.png" alt="">
-						</a>
-					</h1>
-					<div class="mob_ham"></div>
-					<div onclick="history.back();" class="mob_page_cover"></div>
-					<div class="mob_menu">
-						<ul class="mob_list">
-							<li><strong><a href="javascript:;">커뮤니티</a></strong></li>
-							<li><strong><a href="javascript:;">랭킹</a></strong></li>
-							<li><strong><a href="javascript:;">OUR PAGE</a></strong></li>
-							<li><strong><a href="javascript:;">고객센터</a></strong></li>
+							
+                    <%
+                        String profileImg = (String) session.getAttribute("profileImg");
+                        String nickName = (String) session.getAttribute("nickName");
+                    %>
 
-						</ul>
-						<div class="mob_my">
-							<ul>
-								<li><a href="javascript:;" class="mob_mypage"><img
-										src="../image/icon/mypage.png" alt="마이페이지 로고"></a></li>
-								<li><a href="javascript:;" class="mob_login"><img
-										src="../image/icon/login.png" alt="로그인 로고"></a></li>
-								<li>
-									<div onclick="history.back();" class="mob_close"></div>
-								</li>
-							</ul>
+                    <% if (profileImg != null && nickName != null) { %>
+	                <li class="my_01 "><a href="javascript:;" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="<%=profileImg%>" alt=""></a></li>
+	                <li class="my_01 "><a href="jacascript::"><%=nickName%>님</a></li>
+	                <li class="my_02"><a href="/logout.member" class="btn_login"><img src="../../image/icon/logout.png"
+	                      alt="로그아웃 로고"></a></li>
+                    <% } else { %>
+                    <li class="my_01">
+                        <a href="javascript:;" class="btn_mypage">
+                            <img src="../../image/icon/mypageW.png" alt="마이페이지 로고">
+                        </a>
+                    </li>
+                    <li class="my_02">
+                        <a href="/login/login.jsp" class="btn_login">
+                            <img src="../../image/icon/login.png" alt="로그인 로고">
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+        <div class="mob_wrap">
+            <h1 class="mob_logo">
+                <a href="/user/main.jsp" title="메인으로 가기">
+                    <img src="../../image/logo.png" alt="">
+                </a>
+            </h1>
+            <div class="mob_ham"></div>
+            <div onclick="history.back();" class="mob_page_cover"></div>
+            <div class="mob_menu">
+                <ul class="mob_list">
+                    <li><strong><a href="/list.board">커뮤니티</a></strong></li>
+                    <li><strong><a href="/user/rank/rank.jsp">랭킹</a></strong></li>
+                    <li><strong><a href="/user/ourpage/ourpage.jsp">OUR PAGE</a></strong></li>
+                    <li><strong><a href="/list.faq">고객센터</a></strong></li>
+                </ul>
+                <div class="mob_my">
+                    <ul>
+							<% if (profileImg != null && nickName != null) { %>
+	                <li class="my_01 "><a href="javascript:;" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="<%=profileImg%>" alt=""></a></li>
+	                <li class="my_02"><a href="/logout.member" class="btn_login"><img src="../../image/icon/mob_logout.png"
+	                      alt="로그아웃 로고"></a></li>
+                    <% } else { %>                    
+                        <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png"
+                                                                           alt="마이페이지 로고"></a>
+                        </li>
+                        <li><a href="/login/login.jsp" class="mob_login"><img src="../../image/icon/login_b.png" alt="로그인 로고"></a>
+                        </li>
+                        <li>
+                            <div onclick="history.back();" class="mob_close"></div>
+                        </li>
+                        <% } %>
+                    </ul>
 						</div>
 					</div>
 				</div>
@@ -100,8 +109,14 @@ select option:hover {
             <div class="con write_con board_write">
               <div class="title_box">
                 <p class="title">게시글 작성하기</p>
-                <select name="gameid" id="gameSelect" required></select>
-	
+                <select name="choi_menu" id="choi_menu" class="choi_menu">
+                	<option value="">-------- 카테고리 --------</option>
+					<option value="1">게임1</option>
+					<option value="2">게임2</option>
+					<option value="3">게임3</option>
+					<option value="4">게임4</option>
+					<option value="5">게임5</option>
+				</select>
               </div>
               <form action="/upload.boardfile"  method="post" enctype="multipart/form-data" id="board_write_form">
               <div class="list_table">
@@ -161,26 +176,6 @@ select option:hover {
     <script>
       $(document).ready(function () {
        	editer_setting();
-       	
-     // AJAX 요청을 통해 게임 데이터를 가져와 select 옵션 추가
-        $.ajax({
-            url: '/getgames.game',
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var gameSelect = $('#gameSelect');
-                gameSelect.empty();
-                $.each(data, function (index, game) {
-                    gameSelect.append('<option value="' + game.game_id + '">' + game.game_name + '</option>');
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('게임 데이터를 가져오는데 실패했습니다:', status, error);
-            }
-        });
-       	
-       	
-       	
       });
     </script>
 </body>

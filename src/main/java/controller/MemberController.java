@@ -129,21 +129,21 @@ public class MemberController extends HttpServlet {
                     session.setAttribute("memcode", map.get("memcode"));
 
                     if ("0".equals(map.get("memcode"))) {
-                        response.sendRedirect("admin/main.jsp");
+                        response.sendRedirect("admin/member.jsp");
                     } else if("1".equals(map.get("memcode"))) {
                         response.sendRedirect("user/main.jsp");
                     }else if("2".equals(map.get("memcode"))) {
-                    	response.getWriter().write("<script>alert('블랙리스트 회원이므로 로그인 할수 없습니다.'); location.href='login/login.jsp'</script>");
+                    	response.getWriter().write("<script>alert('블랙리스트 회원 이므로 로그인 할수 없습니다.'); location.href='login/login.jsp'</script>");
+                    	response.getWriter().flush();
                     }
                 } else {
                     // 로그인 실패 시
                     response.getWriter().write("<script>alert('로그인 정보를 다시 확인하세요'); location.href='login/login.jsp'</script>");
+                    response.getWriter().flush();
                 }
 
-		
-
 //				회원가입 ajax 정규표현식 코드
-            } else if (cmd.equals("/check.member")) {
+            }else if (cmd.equals("/check.member")) {
                 response.setContentType("application/json; charset=UTF-8");
                 PrintWriter pw = response.getWriter();
 
@@ -154,33 +154,36 @@ public class MemberController extends HttpServlet {
                 String json = "";
 
                 try {
-                    if (mode.equals("userid"))
-                        isExist = mdao.isExist(Duptype.Userid, value);
-                    else if (mode.equals("email"))
-                        isExist = mdao.isExist(Duptype.Email, value);
-                    else if (mode.equals("phone"))
-                        isExist = mdao.isExist(Duptype.Phone, value);
-                    else if (mode.equals("nickname"))
-                        isExist = mdao.isExist(Duptype.Nickname, value);
-                    else if (mode.equals("reg_num"))
-                        isExist = mdao.isExist(Duptype.Reg_num, value);
+                    
+                    	if (mode.equals("userid"))
+                            isExist = mdao.isExist(Duptype.Userid, value);
+                        else if (mode.equals("email"))
+                            isExist = mdao.isExist(Duptype.Email, value);
+                        else if (mode.equals("phone"))
+                            isExist = mdao.isExist(Duptype.Phone, value);
+                        else if (mode.equals("nickname"))
+                            isExist = mdao.isExist(Duptype.Nickname, value);
+                    	JsonObject jsonResponseTest = new JsonObject();
+                    	jsonResponseTest.addProperty("exists", isExist);
+                    	Gson gson = new Gson();
+                    	json = gson.toJson(jsonResponseTest);
+                    	
+                    	pw.println(json);
 
-                    JsonObject jsonResponseTest = new JsonObject();
-                    jsonResponseTest.addProperty("exists", isExist);
-                    Gson gson = new Gson();
-                    json = gson.toJson(jsonResponseTest);
-
-                    pw.println(json);
                 } catch (SQLException e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     JsonObject errorResponse = new JsonObject();
                     errorResponse.addProperty("error", "Database Error: " + e.getMessage());
+                    Gson gson = new Gson();
+                    json = gson.toJson(errorResponse);
 
                     pw.println(json);
                 } catch (Exception e) {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     JsonObject errorResponse = new JsonObject();
                     errorResponse.addProperty("error", "Internal Server Error");
+                    Gson gson = new Gson();
+                    json = gson.toJson(errorResponse);
 
                     pw.println(json);
                 } finally {
@@ -188,6 +191,7 @@ public class MemberController extends HttpServlet {
                     pw.close();
                 }
             }
+
             // 계정찾기
             else if (cmd.equals("/findAccount.member")) {
                 String find_input_reg = request.getParameter("find_input_reg");

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,13 +50,14 @@
                     <span>1</span>
                   </div>
                   <div class="table_col">
-                    <span>푸라닭</span>
+                    <span>작성자 : ${qna.userid}</span>
                   </div>
                   <div class="table_col">
-                    <span>블랙알리오</span>
+                    <span>${qna.question_title }</span>
                   </div>
                   <div class="table_col">
-                    <span>24.06.12</span>
+                    <span><fmt:formatDate value="${qna.write_date}"
+                                            pattern="yyyy.MM.dd HH:mm" /></span>
                   </div>
                 </div>
                 <div class="table_row">
@@ -63,19 +65,22 @@
                     <span>첨부파일 : </span>
                   </div>
                   <div class="table_col">
-                    <span>치킨.jpg</span>
+                     <c:if test="${file != null}">
+                                            <a href="/download.qnafile?fileName=${file.sysname}">${file.oriname}</a>
+                                        </c:if>
                   </div>
                 </div>
               </div>
               <div>
-                <textarea id="summernote"> 집 가고싶다</textarea>
+                <!-- <p> 태그를 제거한 내용을 출력 -->
+                <textarea id="summernote"><c:out value="${cleanedContent}" escapeXml="false"/></textarea>
               </div>
               <div class="answer_section">
                 <h3>답변</h3>
-                <textarea readonly>너도? 나도 ㅋㅋ</textarea>
+                <textarea readonly>${qna.answer_content}</textarea>
               </div>
               <div class="btns">
-                <a href="qa.html" class="list_btn">
+                <a href="/myqna.qna" class="list_btn">
                   <button>돌아가기</button>
               </a>
               </div>
@@ -88,11 +93,13 @@
   </div>
   <script>
     $(document).ready(function () {
+      // Summernote 초기화
       $('#summernote').summernote({
         height: 250,                 // 에디터 높이 설정
         minHeight: null,             // 최소 높이 설정
         maxHeight: null,             // 최대 높이 설정
-        focus: true                  // 초기 포커스 설정
+        focus: true,                 // 초기 포커스 설정
+        toolbar: false               // 툴바 숨김
       });
 
       $('#summernote').summernote('disable');  // 읽기 전용 모드 설정
