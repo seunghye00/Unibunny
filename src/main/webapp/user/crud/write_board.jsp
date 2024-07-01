@@ -16,22 +16,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-<style>
-	select {
-  color: black; /* 텍스트 색상 */
-  background-color: white; /* 배경 색상 */
-}
-
-select option {
-  color: black; /* 옵션 텍스트 색상 */
-  background-color: white; /* 옵션 배경 색상 */
-}
-
-select option:hover {
-  background-color: lightgray; /* 마우스를 올렸을 때 배경 색상 */
-}
-	
-</style>
 </head>
 <body>
 <div class="wrapper">
@@ -100,8 +84,14 @@ select option:hover {
             <div class="con write_con board_write">
               <div class="title_box">
                 <p class="title">게시글 작성하기</p>
-                <select name="gameid" id="gameSelect" required></select>
-	
+                <select name="choi_menu" id="choi_menu" class="choi_menu">
+                	<option value="">-------- 카테고리 --------</option>
+					<option value="1">게임1</option>
+					<option value="2">게임2</option>
+					<option value="3">게임3</option>
+					<option value="4">게임4</option>
+					<option value="5">게임5</option>
+				</select>
               </div>
               <form action="/upload.boardfile"  method="post" enctype="multipart/form-data" id="board_write_form">
               <div class="list_table">
@@ -161,26 +151,6 @@ select option:hover {
     <script>
       $(document).ready(function () {
        	editer_setting();
-       	
-     // AJAX 요청을 통해 게임 데이터를 가져와 select 옵션 추가
-        $.ajax({
-            url: '/getgames.game',
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var gameSelect = $('#gameSelect');
-                gameSelect.empty();
-                $.each(data, function (index, game) {
-                    gameSelect.append('<option value="' + game.game_id + '">' + game.game_name + '</option>');
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('게임 데이터를 가져오는데 실패했습니다:', status, error);
-            }
-        });
-       	
-       	
-       	
       });
     </script>
 </body>
