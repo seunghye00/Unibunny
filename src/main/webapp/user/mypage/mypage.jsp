@@ -414,7 +414,7 @@
                         <c:forEach var="dto" items="${myqna}">
                           <div class="table_row">
                             <div class="table_col"><span>${dto.question_seq}</span></div>
-                            <div class="table_col"><a href="/user/detail.board?board_seq=${dto.question_seq}">${dto.question_title}</a></div>
+                            <div class="table_col"><a href="/user/detail.qna?question_seq=${dto.question_seq}">${dto.question_title}</a></div>
                             <div class="table_col"><span><fmt:formatDate value="${dto.write_date}" pattern="yyyy.MM.dd" /></span></div>
                             <div class="table_col"><span>${dto.answer_yn}</span></div>
                           </div>
