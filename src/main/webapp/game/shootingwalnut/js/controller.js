@@ -5,11 +5,14 @@ class Controller extends Phaser.Scene {
         super({ key: "controller" });
         this.lastFired = 0;
         this.gameOver = false;
+        
     }
 
     init(){ // scene 이 start 될때마다 실행되는 함수
         this.score = 0;
         this.gameOver = false;
+        var gameId = 3;
+        StartGameFunctions.sendGameid(gameId);
     }
 
     preload() {
@@ -170,6 +173,6 @@ class Controller extends Phaser.Scene {
         this.physics.pause(); // 물리 엔진 일시정지
         player.setTint(0xff0000); // 플레이어 색상 변경 (빨간색)
         this.gameOver = true; // 게임 오버 플래그 설정
-        this.scene.start("gameover", { score: this.score }); // 게임 오버 씬으로 점수 전달
+        this.scene.start("gameover", { score: this.score, gameId: 3 }); // 게임 오버 씬으로 점수 및 gameId 전달
     }
 }

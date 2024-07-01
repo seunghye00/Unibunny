@@ -1,10 +1,7 @@
 class gamestart extends Phaser.Scene {
 
     constructor() {
-		var gameId = 2;
         super({ key: "gamestart" });
-        // 게임 로그 전송
-        StartGameFunctions.sendGameid(gameId);
     }
 
     preload() {
