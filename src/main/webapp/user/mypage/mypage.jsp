@@ -480,7 +480,7 @@
         imageContainer.append('<img src="' + originalImageSrc + '" alt="Profile Image">');
         // 버튼 숨기기
         $('.apply_changes_btn').hide();
-        $('.cancel_changes_btn').hide();
+        $('.cancel_changes_btn').hide();	
         $('.profile_edit_btn').show();
     });
     
