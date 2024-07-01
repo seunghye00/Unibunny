@@ -185,10 +185,10 @@ function search_user(cpage, moment) {
 		cpage = 1;
 	}
 	let grade = "회원";
-	if($("a.grade.cpage").text() == "블랙리스트"){
+	if ($("a.grade.cpage").text() == "블랙리스트") {
 		grade = "정지된 회원";
 	}
-	
+
 	let user_info = $(".input_tag").val();
 
 	$.ajax({
@@ -537,7 +537,7 @@ function get_member_list(grade, cpage) {
 // 게시글의 파일 목록을 받아오는 메서드
 function get_file_list() {
 	$.ajax({
-		url: '/list.file',
+		url: '/list.boardfile',
 		dataType: 'json',
 		data: { board_seq: get_board_seq() },
 	}).done(function(resp) {
@@ -551,26 +551,12 @@ function get_file_list() {
 		file_list.empty();
 
 		for (let i of resp) {
-			let file = $('<div>', { class: 'files' });
-			let file_name = $('<button>', { class: 'down_file' });
+			let file = $('<div>', { "class": 'files' });
+			let file_name = $('<a>', { "href": '/download.boardfile?sysname=' + i.sysname + "&oriname=" + i.oriname });
+			file_name.css({ "display": "flex", "padding": "10px" });
 			file_name.text(i.oriname);
 			file.append(file_name);
 			file_list.append(file);
-
-			file_name.on('click', function() {
-				console.log(i.oriname);
-				console.log(i.sysname);
-				$.ajax({
-					url: '/download.file',
-					dataType: 'json',
-					data: {
-						oriname: i.oriname,
-						sysname: i.sysname,
-					},
-				}).done(function(resp) {
-					console(resp);
-				});
-			});
 		}
 	});
 }
@@ -592,7 +578,7 @@ function get_comm_list(order_by) {
 	}).done(function(resp) {
 		let comm_list = $('.comm_list');
 		comm_list.empty();
-		if (resp.length == 0) {
+		if ((resp.board_info.length) == 0) {
 			// 댓글이 존재하지 않는 경우
 			let no_comm = $('<div>', { class: 'no_comm' });
 			no_comm.text('댓글이 존재하지 않습니다.');
@@ -600,7 +586,7 @@ function get_comm_list(order_by) {
 			return;
 		}
 
-		for (let i of resp) {
+		for (let i of resp.board_info) {
 			let comm = $('<div>', { class: 'comm' });
 
 			let comm_info = $('<div>', { class: 'comm_info' });
@@ -626,13 +612,7 @@ function get_comm_list(order_by) {
 				type: 'button',
 			});
 			del_btn.text('임시 삭제');
-			let cancel_btn = $('<button>', {
-				class: 'write_btn edit_btn',
-				type: 'button',
-				style: 'display:none',
-			});
-			cancel_btn.text('취소');
-			btn_box2.append(del_btn, cancel_btn);
+			btn_box2.append(del_btn);
 			edit_box.append(btn_box2);
 
 			comm.append(comm_info, comm_cont, edit_box);
@@ -657,33 +637,6 @@ function get_comm_list(order_by) {
 						}
 					}
 				});
-		}
-	});
-}
-
-// 게시글 상세 페이지에서 로그인된 ID의 좋아요 및 북마크 기록을 확인하는 메서드
-function get_user_record() {
-	// 게시글 북마크 기록
-	$.ajax({
-		url: '/check.bookmark',
-		dataType: 'json',
-		data: { board_seq: get_board_seq() },
-	}).done(function(resp) {
-		if (resp) {
-			$('.fa-regular.fa-bookmark').hide();
-			$('.fa-solid.fa-bookmark').show();
-		}
-	});
-
-	// 게시글 좋아요 기록
-	$.ajax({
-		url: '/check.boardLike',
-		dataType: 'json',
-		data: { board_seq: get_board_seq() },
-	}).done(function(resp) {
-		if (resp) {
-			$('.fa-regular.fa-thumbs-up').hide();
-			$('.fa-solid.fa-thumbs-up').show();
 		}
 	});
 }
@@ -816,11 +769,16 @@ function get_options_record() {
 }
 
 
-// 게시글 상세 페이지에서 삭제 버튼 클릭 시
+// 관리자가 조회하는 게시글 상세 페이지에서 삭제 버튼 클릭 시
 $('#del_btn').on('click', function() {
 	if (confirm('임시 보관함으로 이동시킵니까?')) {
 		location.href = '/deleteYN_N_To_Y.board?board_seq=' + get_board_seq();
 	}
+});
+
+// 관리자가 조회하는 게시글 상세 페이지에서 삭제 버튼 클릭 시
+$('#back_btn').on('click', function() {
+	location.href = '/admin/community.jsp';
 });
 
 // 임시보관 게시물 페이지에서 복구 버튼 클릭 시
@@ -850,9 +808,9 @@ $(document).on("click", ".restore_board", function() {
 // 임시보관 댓글 페이지에서 복구 버튼 클릭 시
 $(document).on("click", ".restore_reply", function(e) {
 	// 상위 태그인 a 태그의 href 속성으로 이동 동작을 막기 위한 코드
-	e.stopPropagation(); 
+	e.stopPropagation();
 	e.preventDefault();
-	
+
 	if (confirm('해당 댓글을 복구 시킵니까?')) {
 		let replySeq = $(this).closest(".table_row").find(".reply_seq span").text();
 		$.ajax({
@@ -895,9 +853,9 @@ function get_community_list(choice, cpage, deleted) {
 	$.ajax({
 		url: "/admin/total." + choice,
 		dataType: "json",
-		data : { deleted : deleted }
+		data: { deleted: deleted }
 	}).done(function(resp) {
-		
+
 		let record_count_per_page = resp.record_count_per_page;
 		let navi_count_per_page = resp.navi_count_per_page;
 		let record_total_count = resp.total_data;
@@ -964,134 +922,134 @@ function get_community_list(choice, cpage, deleted) {
 				dataType: "json",
 				data: {
 					cpage: cpage,
-					deleted : deleted
+					deleted: deleted
 				}
 			}).done(function(resp) {
-				
+
 				let index = cpage * 10 - 9;
-				
+
 				for (let i of resp) {
-					if(choice == "board" || choice == "notice") {
+					if (choice == "board" || choice == "notice") {
 						// 게시글 목록을 출력할 조회할 경우
-					let row = $("<div>", { "class": "table_row" });	
-					let hidden_input = $("<input>", { "type" : "hidden" });
-					let a = $("<a>");
-					
-					if(choice == "board"){
-						// 게시글을 조회한 경우
-						hidden_input.val(i.board_seq);
-						a.attr("href", "/admin/detail.board?board_seq="+i.board_seq);
-					} else if (choice == "notice"){
-						// 공지사항을 조회한 경우
-						hidden_input.val(i.notice_seq);
-						a.attr("href", "/admin_detail.notice?notice_seq="+i.notice_seq);
-					}
-					
-					let col = $("<div>", { "class" : "table_col" });
-					let span = $("<span>");
-					
-					// table_col 첫번째 요소에 index 값 삽입
-					span.text(index++);
-					col.append(span);
-					row.append(col);
+						let row = $("<div>", { "class": "table_row" });
+						let hidden_input = $("<input>", { "type": "hidden" });
+						let a = $("<a>");
 
-					// table_col 두번째 요소에 title 값 삽입
-					col = $("<div>", { "class": "table_col title" });
-					span = $("<span>");
-					span.text(i.title);
-					col.append(span);
-					row.append(col);
+						if (choice == "board") {
+							// 게시글을 조회한 경우
+							hidden_input.val(i.board_seq);
+							a.attr("href", "/admin/detail.board?board_seq=" + i.board_seq);
+						} else if (choice == "notice") {
+							// 공지사항을 조회한 경우
+							hidden_input.val(i.notice_seq);
+							a.attr("href", "/admin_detail.notice?notice_seq=" + i.notice_seq);
+						}
 
-					// table_col 세번째 요소에 nickname 값 삽입
-					col = $("<div>", { "class": "table_col" });
-					span = $("<span>");
-					span.text(i.nickname);
-					col.append(span);
-					row.append(col);
+						let col = $("<div>", { "class": "table_col" });
+						let span = $("<span>");
 
-					// table_col 네번째 요소에 write_date 값 삽입
-					col = $("<div>", { "class": "table_col" });
-					span = $("<span>");
-					
-					if (deleted == "N"){
-						span.text(i.write_date);
-					} else {
-						span.text(i.delete_date)
-					}
-					
-					col.append(span);
-					row.append(col);
-
-					// table_col 다섯번째 요소에 조회수 or 버튼 삽입
-					col = $("<div>", { "class": "table_col" });
-					
-					if (deleted == "N"){
-						span = $("<span>");
-						span.text(i.view_count);
+						// table_col 첫번째 요소에 index 값 삽입
+						span.text(index++);
 						col.append(span);
+						row.append(col);
+
+						// table_col 두번째 요소에 title 값 삽입
+						col = $("<div>", { "class": "table_col title" });
+						span = $("<span>");
+						span.text(i.title);
+						col.append(span);
+						row.append(col);
+
+						// table_col 세번째 요소에 nickname 값 삽입
+						col = $("<div>", { "class": "table_col" });
+						span = $("<span>");
+						span.text(i.nickname);
+						col.append(span);
+						row.append(col);
+
+						// table_col 네번째 요소에 write_date 값 삽입
+						col = $("<div>", { "class": "table_col" });
+						span = $("<span>");
+
+						if (deleted == "N") {
+							span.text(i.write_date);
+						} else {
+							span.text(i.delete_date)
+						}
+
+						col.append(span);
+						row.append(col);
+
+						// table_col 다섯번째 요소에 조회수 or 버튼 삽입
+						col = $("<div>", { "class": "table_col" });
+
+						if (deleted == "N") {
+							span = $("<span>");
+							span.text(i.view_count);
+							col.append(span);
+						} else {
+							col.addClass("restore");
+							let btn = $("<button>", { "class": "restore_btn restore_board", "type": "button" })
+							btn.text("복구");
+							col.append(btn);
+						}
+						row.append(col);
+						row.append(hidden_input);
+						// 테이블에 데이터 출력
+						if (deleted == "N") {
+							a.append(row)
+							$(".list_table").append(a);
+						} else {
+							$(".list_table").append(row);
+						}
 					} else {
+						// 댓글 목록을 출력할 조회할 경우
+						let a = $("<a>", { "href": "/admin/detail.board?board_seq=" + i.board_seq });
+
+						let row = $("<div>", { "class": "table_row" });
+						let col = $("<div>", { "class": "table_col" });
+						let span = $("<span>");
+
+						// table_col 첫번째 요소에 board_seq 값 삽입
+						span.text(i.board_seq);
+						col.append(span);
+						row.append(col);
+
+						// table_col 두번째 요소에 reply_seq 값 삽입
+						col = $("<div>", { "class": "table_col reply_seq" });
+						span = $("<span>");
+						span.text(i.reply_seq);
+						col.append(span);
+						row.append(col);
+
+						// table_col 세번째 요소에 content 값 삽입
+						col = $("<div>", { "class": "table_col" });
+						span = $("<span>");
+						span.text(i.content);
+						col.append(span);
+						row.append(col);
+
+						// table_col 네번째 요소에 nickname 값 삽입
+						col = $("<div>", { "class": "table_col" });
+						span = $("<span>");
+						span.text(i.nickname);
+						col.append(span);
+						row.append(col);
+
+						// table_col 다섯번째 요소에 버튼 삽입
+						col = $("<div>", { "class": "table_col" });
 						col.addClass("restore");
-						let btn = $("<button>", { "class" : "restore_btn restore_board", "type" : "button" })
+						let btn = $("<button>", { "class": "restore_btn restore_reply", "type": "button" })
 						btn.text("복구");
 						col.append(btn);
-					}
-					row.append(col);
-					row.append(hidden_input);
-					// 테이블에 데이터 출력
-					if(deleted == "N"){
-						a.append(row)
+						row.append(col);
+
+						a.append(row);
 						$(".list_table").append(a);
-					} else {
-						$(".list_table").append(row);
 					}
-				} else {
-					// 댓글 목록을 출력할 조회할 경우
-					let a = $("<a>", { "href" : "/admin/detail.board?board_seq="+i.board_seq});
-					
-					let row = $("<div>", { "class": "table_row" });	
-					let col = $("<div>", { "class" : "table_col" });
-					let span = $("<span>");
-					
-					// table_col 첫번째 요소에 board_seq 값 삽입
-					span.text(i.board_seq);
-					col.append(span);
-					row.append(col);
-
-					// table_col 두번째 요소에 reply_seq 값 삽입
-					col = $("<div>", { "class": "table_col reply_seq" });
-					span = $("<span>");
-					span.text(i.reply_seq);
-					col.append(span);
-					row.append(col);
-
-					// table_col 세번째 요소에 content 값 삽입
-					col = $("<div>", { "class": "table_col" });
-					span = $("<span>");
-					span.text(i.content);
-					col.append(span);
-					row.append(col);
-
-					// table_col 네번째 요소에 nickname 값 삽입
-					col = $("<div>", { "class": "table_col" });
-					span = $("<span>");
-					span.text(i.nickname);					
-					col.append(span);
-					row.append(col);
-
-					// table_col 다섯번째 요소에 버튼 삽입
-					col = $("<div>", { "class": "table_col" });
-					col.addClass("restore");
-					let btn = $("<button>", { "class" : "restore_btn restore_reply", "type" : "button" })
-					btn.text("복구");
-					col.append(btn);	
-					row.append(col);
-				
-					a.append(row);
-					$(".list_table").append(a);
 				}
-			}
 			});
-			
+
 		} else {
 			// 검색한 결과가 없을 경우
 			let row = $("<div>", { "class": "table_row" });
