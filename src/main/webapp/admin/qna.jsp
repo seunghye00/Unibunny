@@ -64,8 +64,8 @@
 							<div class="con qa_con">
 								<div class="select_subject">
 									<ul>
-										<li><a href="/list.faq?userType=manager">FAQ</a></li>
-										<li><a href="/list.qna">Q&A</a></li>
+										<li><a href="/list.faq?userType=admin">FAQ</a></li>
+										<li><a href="/list.qna" class="cpage">Q&A</a></li>
 									</ul>
 								</div>
 								<div style="padding: 30px;"></div>
@@ -107,25 +107,6 @@
 											</div>
 										</div>
 									</c:forEach>
-								</div>
-
-								<div class="search_box">
-									<div class="search_bar">
-										<div class="search_input">
-											<input type="text" class="input_tag" id="search_input">
-										</div>
-										<div class="search_img">
-											<a href="javascript:;"><img
-												src="../image/icon/ico_search.png" alt="검색 로고"></a>
-										</div>
-									</div>
-								</div>
-								<div class="pagination">
-									<a href="javascript:;" class="btn_prev btn_disabled"></a> <a
-										href="javascript:;" class="active_page">1</a> <a
-										href="javascript:;">2</a> <a href="javascript:;">3</a> <a
-										href="javascript:;">4</a> <a href="javascript:;">5</a> <a
-										href="javascript:;" class="btn_next"></a>
 								</div>
 							</div>
 						</div>

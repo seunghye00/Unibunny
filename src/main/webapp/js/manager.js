@@ -537,7 +537,7 @@ function get_member_list(grade, cpage) {
 // 게시글의 파일 목록을 받아오는 메서드
 function get_file_list() {
 	$.ajax({
-		url: '/list.file',
+		url: '/list.boardfile',
 		dataType: 'json',
 		data: { board_seq: get_board_seq() },
 	}).done(function(resp) {
@@ -551,26 +551,12 @@ function get_file_list() {
 		file_list.empty();
 
 		for (let i of resp) {
-			let file = $('<div>', { class: 'files' });
-			let file_name = $('<button>', { class: 'down_file' });
+			let file = $('<div>', { "class": 'files' });
+			let file_name = $('<a>', { "href": '/download.boardfile?sysname=' + i.sysname + "&oriname=" + i.oriname });
+			file_name.css({ "display": "flex", "padding": "10px" });
 			file_name.text(i.oriname);
 			file.append(file_name);
 			file_list.append(file);
-
-			file_name.on('click', function() {
-				console.log(i.oriname);
-				console.log(i.sysname);
-				$.ajax({
-					url: '/download.file',
-					dataType: 'json',
-					data: {
-						oriname: i.oriname,
-						sysname: i.sysname,
-					},
-				}).done(function(resp) {
-					console(resp);
-				});
-			});
 		}
 	});
 }
@@ -657,33 +643,6 @@ function get_comm_list(order_by) {
 						}
 					}
 				});
-		}
-	});
-}
-
-// 게시글 상세 페이지에서 로그인된 ID의 좋아요 및 북마크 기록을 확인하는 메서드
-function get_user_record() {
-	// 게시글 북마크 기록
-	$.ajax({
-		url: '/check.bookmark',
-		dataType: 'json',
-		data: { board_seq: get_board_seq() },
-	}).done(function(resp) {
-		if (resp) {
-			$('.fa-regular.fa-bookmark').hide();
-			$('.fa-solid.fa-bookmark').show();
-		}
-	});
-
-	// 게시글 좋아요 기록
-	$.ajax({
-		url: '/check.boardLike',
-		dataType: 'json',
-		data: { board_seq: get_board_seq() },
-	}).done(function(resp) {
-		if (resp) {
-			$('.fa-regular.fa-thumbs-up').hide();
-			$('.fa-solid.fa-thumbs-up').show();
 		}
 	});
 }
@@ -816,11 +775,16 @@ function get_options_record() {
 }
 
 
-// 게시글 상세 페이지에서 삭제 버튼 클릭 시
+// 관리자가 조회하는 게시글 상세 페이지에서 삭제 버튼 클릭 시
 $('#del_btn').on('click', function() {
 	if (confirm('임시 보관함으로 이동시킵니까?')) {
 		location.href = '/deleteYN_N_To_Y.board?board_seq=' + get_board_seq();
 	}
+});
+
+// 관리자가 조회하는 게시글 상세 페이지에서 삭제 버튼 클릭 시
+$('#back_btn').on('click', function() {
+	location.href = '/admin/community.jsp';
 });
 
 // 임시보관 게시물 페이지에서 복구 버튼 클릭 시

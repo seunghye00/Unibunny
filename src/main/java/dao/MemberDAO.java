@@ -39,7 +39,7 @@ public class MemberDAO {
 
 	// 회원가입
 	public int insert(MemberDTO dto) throws Exception {
-		String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE, MEMCODE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate, ?)";
+		String sql = "INSERT INTO member (USERID, NICKNAME, PW, PHONE, REG_NUM, EMAIL, POSTCODE, ADDRESS1, ADDRESS2, JOIN_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,sysdate)";
 		try (Connection con = this.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, dto.getUserid());
 			System.out.println("aa");
@@ -51,7 +51,6 @@ public class MemberDAO {
 			pst.setString(7, dto.getPostcode());
 			pst.setString(8, dto.getAddress1());
 			pst.setString(9, dto.getAddress2());
-			pst.setInt(10, dto.getMemcode());
 
 			return pst.executeUpdate();
 
