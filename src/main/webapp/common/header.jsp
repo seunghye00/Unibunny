@@ -53,6 +53,7 @@
                             <img src="../../image/icon/login.png" alt="로그인 로고">
                         </a>
                     </li>
+                    
                     <% } %>
                 </ul>
             </div>
@@ -76,9 +77,13 @@
                     <ul>
 							<% if (profileImg != null && nickName != null) { %>
 	                <li class="my_01 "><a href="javascript:;" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="<%=profileImg%>" alt=""></a></li>
-	                <li class="my_01 "><a href="jacascript::"><%=nickName%>님</a></li>
+	                
+
 	                <li class="my_02"><a href="/logout.member" class="btn_login"><img src="../../image/icon/mob_logout.png"
 	                      alt="로그아웃 로고"></a></li>
+	                      <li>
+                            <div onclick="history.back();" class="mob_close"></div>
+                        </li>
                     <% } else { %>                    
                         <li><a href="javascript:;" class="mob_mypage"><img src="../../image/icon/mypage.png"
                                                                            alt="마이페이지 로고"></a>

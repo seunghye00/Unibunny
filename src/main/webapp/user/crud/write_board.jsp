@@ -84,7 +84,6 @@
                     <ul>
 							<% if (profileImg != null && nickName != null) { %>
 	                <li class="my_01 "><a href="javascript:;" onclick="location.href='/mypage.member'" class="btn_mypage"><img src="<%=profileImg%>" alt=""></a></li>
-	                <li class="my_01 "><a href="jacascript::"><%=nickName%>님</a></li>
 	                <li class="my_02"><a href="/logout.member" class="btn_login"><img src="../../image/icon/mob_logout.png"
 	                      alt="로그아웃 로고"></a></li>
                     <% } else { %>                    
