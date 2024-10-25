@@ -28,6 +28,9 @@
   - 고객센터(Q&A, FAQ, 공지사항) 기능 구현 / 고객센터 및 랭킹 페이지 제작
   - [ 관리자 콘솔 ] 고객센터 관리 기능 구현 / 고객센터 관리 페이지 제작
 
+## 아키텍처
+![image](https://github.com/user-attachments/assets/a2597b4f-b1ba-4f78-b68a-36c7c8b975d1)
+
 ## 개발 환경
 ### Front-End
 - HTML5, CSS3, Javascript(ES6+), JSP
